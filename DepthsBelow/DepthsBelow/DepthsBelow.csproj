@@ -121,10 +121,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Component.cs" />
+    <Compile Include="Core.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
     <Compile Include="RenderComponent.cs" />
     <Compile Include="Soldier.cs" />
     <Compile Include="TransformComponent.cs" />
