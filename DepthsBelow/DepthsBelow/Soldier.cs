@@ -12,18 +12,18 @@ namespace DepthsBelow
 {
 	class Soldier : Entity
 	{
-		Game1 game;
+		Core game;
 		static Texture2D Texture;
 
 		// Components
 		TransformComponent transform;
 
-		static public void LoadContent(Game1 game)
+		static public void LoadContent(Core game)
 		{
 			Texture = game.Content.Load<Texture2D>("images/soldier");
 		}
 
-		public Soldier(Game1 game)
+		public Soldier(Core game)
 		{
 			if (Texture == null)
 				LoadContent(game);
