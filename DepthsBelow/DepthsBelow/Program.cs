@@ -10,7 +10,7 @@ namespace DepthsBelow
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (Core game = new Core())
             {
                 game.Run();
             }
