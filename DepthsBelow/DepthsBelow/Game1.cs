@@ -19,10 +19,19 @@ namespace DepthsBelow
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
+		Soldier soldier;
+
 		public Game1()
 		{
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
+
+			graphics.PreferredBackBufferWidth = 1280;
+			graphics.PreferredBackBufferHeight = 720;
+			graphics.IsFullScreen = true;
+
+
+			this.IsMouseVisible = true;
 		}
 
 		/// <summary>
@@ -48,6 +57,9 @@ namespace DepthsBelow
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			// TODO: use this.Content to load your game content here
+			Soldier.LoadContent(this);
+			soldier = new Soldier(this);
+			
 		}
 
 		/// <summary>
@@ -71,6 +83,7 @@ namespace DepthsBelow
 				this.Exit();
 
 			// TODO: Add your update logic here
+			soldier.Update(gameTime);
 
 			base.Update(gameTime);
 		}
@@ -84,6 +97,11 @@ namespace DepthsBelow
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			// TODO: Add your drawing code here
+			spriteBatch.Begin();
+			SpriteRenderComponent rc = soldier.GetComponent<SpriteRenderComponent>();
+			if (rc != null)
+				rc.Draw(spriteBatch);
+			spriteBatch.End();
 
 			base.Draw(gameTime);
 		}
