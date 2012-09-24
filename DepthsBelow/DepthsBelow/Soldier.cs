@@ -15,6 +15,8 @@ namespace DepthsBelow
 		Core game;
 		static Texture2D Texture;
 
+		private KeyboardState lastKeyboardState;
+
 		static public void LoadContent(Core game)
 		{
 			Texture = game.Content.Load<Texture2D>("images/soldier");
@@ -25,18 +27,24 @@ namespace DepthsBelow
 			if (Texture == null)
 				LoadContent(game);
 
-			SpriteRenderComponent rc = new SpriteRenderComponent(this);
+			Component.SpriteRenderer rc = new Component.SpriteRenderer(this);
 			rc.Texture = Texture;
+			rc.Color = Color.HotPink;
 			this.AddComponent(rc);
-
-			this.AddComponent(new TransformComponent(this));
 		}
 
 		public void Update(GameTime gameTime)
 		{
 			KeyboardState ks = Keyboard.GetState();
-			if (ks.IsKeyDown(Keys.Left))
-				transform.Position.X--;
+			if (ks.IsKeyDown(Keys.Right) && lastKeyboardState.IsKeyUp(Keys.Right))
+				gridTransform.Position.X += 1;
+			lastKeyboardState = ks;
+
+			Console.WriteLine(pixelTransform.X + " " + gridTransform.X);
+			if (pixelTransform.Position.X < gridTransform.X * 32)
+			{
+				pixelTransform.Position.X += 2;
+			}
 		}
 	}
 }

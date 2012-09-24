@@ -28,7 +28,7 @@ namespace DepthsBelow
 
 			graphics.PreferredBackBufferWidth = 1280;
 			graphics.PreferredBackBufferHeight = 720;
-			graphics.IsFullScreen = false;
+			graphics.IsFullScreen = true;
 
 			this.IsMouseVisible = true;
 		}
@@ -97,7 +97,7 @@ namespace DepthsBelow
 
 			// TODO: Add your drawing code here
 			spriteBatch.Begin();
-			SpriteRenderComponent rc = soldier.GetComponent<SpriteRenderComponent>();
+			Component.SpriteRenderer rc = soldier.GetComponent<Component.SpriteRenderer>();
 			if (rc != null)
 				rc.Draw(spriteBatch);
 			spriteBatch.End();
