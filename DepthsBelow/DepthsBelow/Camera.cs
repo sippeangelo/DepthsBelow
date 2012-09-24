@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace DepthsBelow
 {
-	class Camera
+	public class Camera
 	{
 		public float Zoom;
 		public Matrix Transform;

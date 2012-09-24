@@ -19,7 +19,8 @@ namespace DepthsBelow
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
-		Camera camera;
+		public Camera camera;
+		MouseControl mouse;
 		Soldier soldier;
 
 		public Core()
@@ -59,6 +60,9 @@ namespace DepthsBelow
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);
 			soldier = new Soldier(this);
+
+			mouse = new MouseControl(this);
+			mouse.LoadContent();
 		}
 
 		/// <summary>
@@ -82,6 +86,7 @@ namespace DepthsBelow
 				this.Exit();
 
 			camera.Update(gameTime);
+			mouse.Update(gameTime);
 
 			// TODO: Add your update logic here
 			soldier.Update(gameTime);
@@ -103,6 +108,8 @@ namespace DepthsBelow
 			Component.SpriteRenderer rc = soldier.GetComponent<Component.SpriteRenderer>();
 			if (rc != null)
 				rc.Draw(spriteBatch);
+
+			mouse.Draw(spriteBatch);
 
 			spriteBatch.End();
 
