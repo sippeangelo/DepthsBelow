@@ -17,7 +17,7 @@ namespace DepthsBelow.Component
 			}
 			set
 			{
-				Position.X = X;
+				Position.X = value;
 			}
 		}
 		public float Y
@@ -28,7 +28,7 @@ namespace DepthsBelow.Component
 			}
 			set
 			{
-				Position.Y = Y;
+				Position.Y = value;
 			}
 		}
 		public float Rotation;
