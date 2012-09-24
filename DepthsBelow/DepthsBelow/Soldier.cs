@@ -35,12 +35,11 @@ namespace DepthsBelow
 
 		public void Update(GameTime gameTime)
 		{
-			KeyboardState ks = Keyboard.GetState();
+			/*KeyboardState ks = Keyboard.GetState();
 			if (ks.IsKeyDown(Keys.Right) && lastKeyboardState.IsKeyUp(Keys.Right))
 				gridTransform.Position.X += 1;
-			lastKeyboardState = ks;
-
-			Console.WriteLine(pixelTransform.X + " " + gridTransform.X);
+			lastKeyboardState = ks;*/
+			
 			if (pixelTransform.Position.X < gridTransform.X * 32)
 			{
 				pixelTransform.Position.X += 2;

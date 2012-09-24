@@ -19,6 +19,7 @@ namespace DepthsBelow
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
+		Camera camera;
 		Soldier soldier;
 
 		public Core()
@@ -28,7 +29,7 @@ namespace DepthsBelow
 
 			graphics.PreferredBackBufferWidth = 1280;
 			graphics.PreferredBackBufferHeight = 720;
-			graphics.IsFullScreen = true;
+			graphics.IsFullScreen = false;
 
 			this.IsMouseVisible = true;
 		}
@@ -42,7 +43,7 @@ namespace DepthsBelow
 		protected override void Initialize()
 		{
 			// TODO: Add your initialization logic here
-
+			camera = new Camera(this);
 			base.Initialize();
 		}
 
@@ -58,7 +59,6 @@ namespace DepthsBelow
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);
 			soldier = new Soldier(this);
-			
 		}
 
 		/// <summary>
@@ -81,6 +81,8 @@ namespace DepthsBelow
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
 				this.Exit();
 
+			camera.Update(gameTime);
+
 			// TODO: Add your update logic here
 			soldier.Update(gameTime);
 
@@ -95,11 +97,13 @@ namespace DepthsBelow
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
-			// TODO: Add your drawing code here
-			spriteBatch.Begin();
+			spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
+
+			// TODO: Foreach etc...
 			Component.SpriteRenderer rc = soldier.GetComponent<Component.SpriteRenderer>();
 			if (rc != null)
 				rc.Draw(spriteBatch);
+
 			spriteBatch.End();
 
 			base.Draw(gameTime);
