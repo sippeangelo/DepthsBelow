@@ -15,9 +15,6 @@ namespace DepthsBelow
 		Core game;
 		static Texture2D Texture;
 
-		// Components
-		TransformComponent transform;
-
 		static public void LoadContent(Core game)
 		{
 			Texture = game.Content.Load<Texture2D>("images/soldier");
@@ -32,8 +29,7 @@ namespace DepthsBelow
 			rc.Texture = Texture;
 			this.AddComponent(rc);
 
-			transform = new TransformComponent(this);
-			this.AddComponent(transform);
+			this.AddComponent(new TransformComponent(this));
 		}
 
 		public void Update(GameTime gameTime)

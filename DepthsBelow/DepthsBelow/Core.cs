@@ -28,7 +28,7 @@ namespace DepthsBelow
 
 			graphics.PreferredBackBufferWidth = 1280;
 			graphics.PreferredBackBufferHeight = 720;
-			graphics.IsFullScreen = true;
+			graphics.IsFullScreen = false;
 
 			this.IsMouseVisible = true;
 		}

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace DepthsBelow
 {
-	class TransformComponent : Component
+	public class TransformComponent : Component
 	{
 		public Vector2 Position;
 		public float Rotation;

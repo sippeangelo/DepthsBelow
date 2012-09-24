@@ -8,6 +8,7 @@ namespace DepthsBelow
 	public class Entity
 	{
 		List<Component> Components;
+		public TransformComponent transform;
 
 		public Entity()
 		{
@@ -28,6 +29,9 @@ namespace DepthsBelow
 		public void AddComponent(Component c)
 		{
 			Components.Add(c);
+
+			if (c is TransformComponent)
+				this.transform =(TransformComponent)c;
 		}
 	}
 }
