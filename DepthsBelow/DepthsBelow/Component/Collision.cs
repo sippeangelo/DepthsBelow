@@ -19,7 +19,7 @@ namespace DepthsBelow.Component
         {
         	this.Width = width;
         	this.Height = height;
-		this.Rectangle = new Rectangle(0, 0, width, height);
+		    this.Rectangle = new Rectangle(0, 0, width, height);
         }
         public void Update(GameTime gameTime)
         {
