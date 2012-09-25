@@ -13,7 +13,19 @@ namespace DepthsBelow
 	public class Soldier : Entity
 	{
 		Core game;
-        public bool selected = false;
+		private bool _selected;
+		public bool Selected
+		{
+			get
+			{
+				return _selected;
+			}
+			set
+			{
+				_selected = value;
+				this.GetComponent<Component.SpriteRenderer>().Color = (value) ? Color.Blue : Color.HotPink; 
+			}
+		}
 		static Texture2D Texture;
 
 		private KeyboardState lastKeyboardState;
