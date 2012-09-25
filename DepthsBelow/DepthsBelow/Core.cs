@@ -21,7 +21,7 @@ namespace DepthsBelow
 
 		public Camera camera;
 		MouseInput mouse;
-		Soldier soldier;
+		public Soldier soldier;
 
 		public Core()
 		{

@@ -49,10 +49,10 @@ namespace DepthsBelow
 
 			if (ms.LeftButton == ButtonState.Released && selectionRectangle != Rectangle.Empty)
 			{
-                /*if (selectionRectangle.Intersects()) 
+                if (selectionRectangle.Intersects(core.soldier.collision.Rectangle)) 
                 {
-
-                }*/
+                    core.soldier.selected = true;
+                }
 				selectionRectangle = Rectangle.Empty;
 			}
 
