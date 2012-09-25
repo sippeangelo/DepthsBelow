@@ -9,6 +9,7 @@ namespace DepthsBelow
 		List<Component.Component> Components;
 		public Component.PixelTransform pixelTransform;
 		public Component.GridTransform gridTransform;
+        public Component.Collision collision;
 
 		public Entity()
 		{
@@ -17,6 +18,8 @@ namespace DepthsBelow
 			AddComponent(pixelTransform);
 			gridTransform = new Component.GridTransform(this);
 			AddComponent(gridTransform);
+            collision = new Component.Collision(this, 32, 32);
+            AddComponent(collision);
 		}
 
 		public T GetComponent<T>() where T : Component.Component

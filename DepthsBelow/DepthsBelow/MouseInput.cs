@@ -49,6 +49,10 @@ namespace DepthsBelow
 
 			if (ms.LeftButton == ButtonState.Released && selectionRectangle != Rectangle.Empty)
 			{
+                /*if (selectionRectangle.Intersects()) 
+                {
+
+                }*/
 				selectionRectangle = Rectangle.Empty;
 			}
 

@@ -13,6 +13,7 @@ namespace DepthsBelow
 	class Soldier : Entity
 	{
 		Core game;
+        bool selected = false;
 		static Texture2D Texture;
 
 		private KeyboardState lastKeyboardState;

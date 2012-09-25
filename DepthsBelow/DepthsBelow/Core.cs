@@ -32,7 +32,7 @@ namespace DepthsBelow
 			graphics.PreferredBackBufferHeight = 720;
 			graphics.IsFullScreen = false;
 
-			graphics.SynchronizeWithVerticalRetrace = false;
+			//graphics.SynchronizeWithVerticalRetrace = false;
 			this.IsFixedTimeStep = false;
 			graphics.ApplyChanges();
 
