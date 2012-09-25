@@ -20,7 +20,7 @@ namespace DepthsBelow
 		SpriteBatch spriteBatch;
 
 		public Camera camera;
-		MouseControl mouse;
+		MouseInput mouse;
 		Soldier soldier;
 
 		public Core()
@@ -61,7 +61,7 @@ namespace DepthsBelow
 			Soldier.LoadContent(this);
 			soldier = new Soldier(this);
 
-			mouse = new MouseControl(this);
+			mouse = new MouseInput(this);
 			mouse.LoadContent();
 		}
 
