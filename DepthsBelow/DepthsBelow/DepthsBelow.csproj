@@ -125,7 +125,7 @@
     <Compile Include="Component\GridTransform.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="MouseControl.cs" />
+    <Compile Include="MouseInput.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Component\SpriteRenderer.cs" />
