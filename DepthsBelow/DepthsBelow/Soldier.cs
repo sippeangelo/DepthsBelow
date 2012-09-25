@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace DepthsBelow
 {
-	class Soldier : Entity
+	public class Soldier : Entity
 	{
 		Core game;
         bool selected = false;
@@ -32,10 +32,14 @@ namespace DepthsBelow
 			rc.Texture = Texture;
 			rc.Color = Color.HotPink;
 			this.AddComponent(rc);
+
+			Component.Collision cc = new Component.Collision(this, 32, 32);
+			this.AddComponent(cc);
 		}
 
-		public void Update(GameTime gameTime)
+		public override void Update(GameTime gameTime)
 		{
+			base.Update(gameTime);
 			/*KeyboardState ks = Keyboard.GetState();
 			if (ks.IsKeyDown(Keys.Right) && lastKeyboardState.IsKeyUp(Keys.Right))
 				gridTransform.Position.X += 1;

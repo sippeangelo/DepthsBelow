@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace DepthsBelow.Component
 {
-    class Collision : Component
+    public class Collision : Component
     {
 
 	    public Rectangle Rectangle;
