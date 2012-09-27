@@ -2,7 +2,7 @@
 bin
 obj
 
-#Visual Studio files
+# Visual Studio files
 *.[Oo]bj
 *.user
 *.aps
@@ -30,6 +30,9 @@ obj/
 [Dd]ebug*/
 [Rr]elease*/
 Ankh.NoLoad
+
+# XNA files
+*.cachefile
 
 # Resharper
 _ReSharper*/
