@@ -47,13 +47,24 @@ namespace DepthsBelow
 			base.Update(gameTime);
 			KeyboardState ks = Keyboard.GetState();
 			if (ks.IsKeyDown(Keys.Right) && lastKeyboardState.IsKeyUp(Keys.Right))
-				gridTransform.Position.X += 1;
+				gridTransform.X += 1;
+			if (ks.IsKeyDown(Keys.Left) && lastKeyboardState.IsKeyUp(Keys.Left))
+				gridTransform.X -= 1;
+			if (ks.IsKeyDown(Keys.Up) && lastKeyboardState.IsKeyUp(Keys.Up))
+				gridTransform.Y -= 1;
+			if (ks.IsKeyDown(Keys.Down) && lastKeyboardState.IsKeyUp(Keys.Down))
+				gridTransform.Y += 1;
 			lastKeyboardState = ks;
 
-			if (pixelTransform.Position.X < gridTransform.X*32)
-			{
-				pixelTransform.Position.X += 2;
-			}
+			int speed = 2;
+			if (pixelTransform.X < gridTransform.X * 32)
+				pixelTransform.X += speed;
+			if (pixelTransform.X > gridTransform.X * 32)
+				pixelTransform.X -= speed;
+			if (pixelTransform.Y < gridTransform.Y * 32)
+				pixelTransform.Y += speed;
+			if (pixelTransform.Y > gridTransform.Y * 32)
+				pixelTransform.Y -= speed;
 		}
 	}
 }
