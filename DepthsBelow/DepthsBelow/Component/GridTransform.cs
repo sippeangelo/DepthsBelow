@@ -8,8 +8,8 @@ namespace DepthsBelow.Component
 {
 	public class GridTransform : Component
 	{
-		public Vector2 Position;
-		public float X
+		public Point Position;
+		public int X
 		{
 			get
 			{
@@ -20,7 +20,7 @@ namespace DepthsBelow.Component
 				Position.X = value;
 			}
 		}
-		public float Y
+		public int Y
 		{
 			get
 			{
@@ -34,7 +34,12 @@ namespace DepthsBelow.Component
 
 		public GridTransform(Entity parent) : base(parent)
 		{
-			Position = Vector2.Zero;
+			Position = Point.Zero;
+		}
+
+		public Vector2 ToScreen()
+		{
+			return Grid.GridToScreen(Position);
 		}
 	}
 }

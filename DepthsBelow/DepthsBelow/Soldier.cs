@@ -71,13 +71,13 @@ namespace DepthsBelow
 			lastKeyboardState = ks;
 
 			int speed = 2;
-			if (pixelTransform.X < gridTransform.X * 32)
+			if (pixelTransform.X < gridTransform.ToScreen().X)
 				pixelTransform.X += speed;
-			else if (pixelTransform.X > gridTransform.X * 32)
+			else if (pixelTransform.X > gridTransform.ToScreen().X)
 				pixelTransform.X -= speed;
-			else if (pixelTransform.Y < gridTransform.Y * 32)
+			else if (pixelTransform.Y < gridTransform.ToScreen().Y)
 				pixelTransform.Y += speed;
-			else if (pixelTransform.Y > gridTransform.Y * 32)
+			else if (pixelTransform.Y > gridTransform.ToScreen().Y)
 				pixelTransform.Y -= speed;
 		}
 	}

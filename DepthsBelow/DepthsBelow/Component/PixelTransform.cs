@@ -41,5 +41,10 @@ namespace DepthsBelow.Component
 			Rotation = 0.0f;
 			Origin = Vector2.Zero;
 		}
+
+		public Point ToGrid()
+		{
+			return Grid.ScreenToGrid(Position);
+		}
 	}
 }
