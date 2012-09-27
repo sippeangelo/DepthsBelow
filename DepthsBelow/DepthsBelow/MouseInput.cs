@@ -66,11 +66,12 @@ namespace DepthsBelow
 				
 				selectionRectangle = Rectangle.Empty;
 			}
-            Vector2 currentGrid = core.GridChecker.FindGridPos(new Vector2(ms.X + core.camera.Position.X - core.GridChecker.TileSize() / 2, ms.Y + core.camera.Position.Y - core.GridChecker.TileSize() / 2));
+
+			Vector2 currentGrid = Grid.ScreenToGrid(new Vector2(ms.X + core.camera.Position.X - Grid.TileSize / 2, ms.Y + core.camera.Position.Y - Grid.TileSize / 2));
             currentGrid.X = Convert.ToInt32(currentGrid.X);
             currentGrid.Y = Convert.ToInt32(currentGrid.Y);
-            Vector2 currentScreen = core.GridChecker.FindScreenPos(currentGrid);
-            gridRectangle = new Rectangle((int)currentScreen.X, (int)currentScreen.Y, core.GridChecker.TileSize(), core.GridChecker.TileSize());
+			Vector2 currentScreen = Grid.GridToScreen(currentGrid);
+			gridRectangle = new Rectangle((int)currentScreen.X, (int)currentScreen.Y, Grid.TileSize, Grid.TileSize;
 
 			lastMouseState = ms;
 		}
