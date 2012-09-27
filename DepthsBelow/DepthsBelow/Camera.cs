@@ -18,6 +18,8 @@ namespace DepthsBelow
 
 		private Core core;
 
+		private MouseState lastMouseState;
+
 		public Camera(Core core)
 		{
 			this.core = core;
@@ -54,11 +56,34 @@ namespace DepthsBelow
 			if (ms.Y > core.GraphicsDevice.Viewport.Height - 20)
 				Position.Y += Speed * elapsed;
 
-			Transform = 
-				Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0))
-				* Matrix.CreateRotationZ(Rotation)
-				* Matrix.CreateScale(Zoom)
-			;
+			int scrollChange = ms.ScrollWheelValue - lastMouseState.ScrollWheelValue;
+
+			float preZoom = Zoom;
+
+			if (scrollChange > 0)
+				Zoom *= 1.15f;
+			else if (scrollChange < 0)
+				Zoom /= 1.15f;
+
+			Transform = Matrix.Identity
+					* Matrix.CreateRotationZ(Rotation)
+					* Matrix.CreateScale(Zoom)
+					* Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0));
+
+			/*var mouseOffset = core.camera.ScreenToWorld(new Vector2(ms.X, ms.Y));
+
+			if (scrollChange != 0)
+			{
+				Transform *= Matrix.CreateTranslation(new Vector3(-mouseOffset.X, -mouseOffset.Y, 0))
+				             * Matrix.CreateScale(Zoom)
+							 * Matrix.CreateTranslation(new Vector3(mouseOffset.X, mouseOffset.Y, 0));
+			}
+			else
+			{
+				Transform *= Matrix.CreateScale(Zoom) * Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0)); ;
+			}*/
+
+			lastMouseState = ms;
 		}
 	}
 }
