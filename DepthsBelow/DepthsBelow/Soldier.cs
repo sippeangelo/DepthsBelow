@@ -11,14 +11,11 @@ namespace DepthsBelow
 		public static Texture2D Texture;
 		public static Point Origin;
 		private bool _selected;
-		private Core game;
 
 		private KeyboardState lastKeyboardState;
 
-		public Soldier(Core game)
+		public Soldier(Core core) : base(core)
 		{
-			this.game = game;
-
 			if (Texture == null)
 				LoadContent(game);
 

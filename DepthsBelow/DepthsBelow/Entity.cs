@@ -11,9 +11,12 @@ namespace DepthsBelow
 		List<Component.Component> Components;
 		public Component.PixelTransform pixelTransform;
 		public Component.GridTransform gridTransform;
+		private Core core;
 
-		public Entity()
+		public Entity(Core core)
 		{
+			this.core = core;
+
 			Components = new List<Component.Component>();
 			pixelTransform = new Component.PixelTransform(this);
 			AddComponent(pixelTransform);
