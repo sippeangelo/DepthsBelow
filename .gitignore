@@ -31,5 +31,9 @@ obj/
 [Rr]elease*/
 Ankh.NoLoad
 
+# Resharper
+_ReSharper*/
+*.resharper
+
 # mstest test results
 TestResults

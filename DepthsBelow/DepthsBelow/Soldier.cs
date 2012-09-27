@@ -1,63 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using DepthsBelow.Component;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 namespace DepthsBelow
 {
 	public class Soldier : Entity
 	{
-		Core game;
+		public static Texture2D Texture;
 		private bool _selected;
-		public bool Selected
-		{
-			get
-			{
-				return _selected;
-			}
-			set
-			{
-				_selected = value;
-				this.GetComponent<Component.SpriteRenderer>().Color = (value) ? Color.Blue : Color.HotPink; 
-			}
-		}
-		static Texture2D Texture;
+		private Core game;
 
 		private KeyboardState lastKeyboardState;
 
-		static public void LoadContent(Core game)
-		{
-			Texture = game.Content.Load<Texture2D>("images/soldier");
-		}
-
 		public Soldier(Core game)
 		{
+			this.game = game;
+
 			if (Texture == null)
 				LoadContent(game);
 
-			Component.SpriteRenderer rc = new Component.SpriteRenderer(this);
-			rc.Texture = Texture;
-			rc.Color = Color.HotPink;
-			this.AddComponent(rc);
+			var rc = new SpriteRenderer(this) {Texture = Texture, Color = Color.HotPink};
+			AddComponent(rc);
 
-			Component.Collision cc = new Component.Collision(this, 32, 32);
-			this.AddComponent(cc);
+			var cc = new Collision(this, 32, 32);
+			AddComponent(cc);
+		}
+
+		public bool Selected
+		{
+			get { return _selected; }
+			set
+			{
+				_selected = value;
+				GetComponent<SpriteRenderer>().Color = (value) ? Color.Blue : Color.HotPink;
+			}
+		}
+
+		public static void LoadContent(Core game)
+		{
+			Texture = game.Content.Load<Texture2D>("images/soldier");
 		}
 
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
-			/*KeyboardState ks = Keyboard.GetState();
+			KeyboardState ks = Keyboard.GetState();
 			if (ks.IsKeyDown(Keys.Right) && lastKeyboardState.IsKeyUp(Keys.Right))
 				gridTransform.Position.X += 1;
-			lastKeyboardState = ks;*/
-			
-			if (pixelTransform.Position.X < gridTransform.X * 32)
+			lastKeyboardState = ks;
+
+			if (pixelTransform.Position.X < gridTransform.X*32)
 			{
 				pixelTransform.Position.X += 2;
 			}

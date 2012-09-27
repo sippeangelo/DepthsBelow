@@ -20,8 +20,9 @@ namespace DepthsBelow
 		SpriteBatch spriteBatch;
 
 		public Camera camera;
-		MouseInput mouse;
+		MouseInput mouseInput;
 		public Soldier soldier;
+		private Map map;
 
 		public Core()
 		{
@@ -61,12 +62,14 @@ namespace DepthsBelow
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
+			map = Content.Load<Map>("maps/test");
+
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);
 			soldier = new Soldier(this);
 
-			mouse = new MouseInput(this);
-			mouse.LoadContent();
+			mouseInput = new MouseInput(this);
+			mouseInput.LoadContent();
 		}
 
 		/// <summary>
@@ -90,7 +93,7 @@ namespace DepthsBelow
 				this.Exit();
 
 			camera.Update(gameTime);
-			mouse.Update(gameTime);
+			mouseInput.Update(gameTime);
 
 			// TODO: Add your update logic here
 			soldier.Update(gameTime);
@@ -104,16 +107,20 @@ namespace DepthsBelow
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear(Color.CornflowerBlue);
+			GraphicsDevice.Clear(Color.Black);
 
-			spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
+			// Start drawing using the camera transform
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
 
+			// Draw the level
+			map.Draw(spriteBatch);
+			// Draw units
 			// TODO: Foreach etc...
 			Component.SpriteRenderer rc = soldier.GetComponent<Component.SpriteRenderer>();
 			if (rc != null)
 				rc.Draw(spriteBatch);
-
-			mouse.Draw(spriteBatch);
+			// Draw mouse input visuals
+			mouseInput.Draw(spriteBatch);
 
 			spriteBatch.End();
 

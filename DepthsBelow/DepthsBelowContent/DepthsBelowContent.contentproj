@@ -47,6 +47,28 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="maps\test.tmx">
+      <Name>test</Name>
+      <Importer>TmxImporter</Importer>
+      <Processor>MapProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\TiledLib\TiledLib\TiledLib.csproj">
+      <Project>{EC3F6988-459C-4783-89E9-F34C0CC731C7}</Project>
+      <Name>TiledLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DepthsBelowContentPipeline\DepthsBelowContentPipeline.csproj">
+      <Project>{D054E3A6-7E05-4255-984F-69FE40D9137F}</Project>
+      <Name>DepthsBelowContentPipeline</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="maps\tilesets\aztek.jpg">
+      <Name>aztek</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
