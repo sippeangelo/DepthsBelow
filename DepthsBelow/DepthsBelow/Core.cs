@@ -22,6 +22,7 @@ namespace DepthsBelow
 		public Camera camera;
 		MouseInput mouseInput;
 		public Soldier soldier;
+        public Grid GridChecker;
 		private Map map;
 
 		public Core()
@@ -67,6 +68,8 @@ namespace DepthsBelow
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);
 			soldier = new Soldier(this);
+
+            GridChecker = new Grid();
 
 			mouseInput = new MouseInput(this);
 			mouseInput.LoadContent();

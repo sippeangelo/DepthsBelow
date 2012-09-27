@@ -121,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Grid.cs" />
     <Compile Include="Component\Collision.cs" />
     <Compile Include="Component\Component.cs" />
     <Compile Include="Component\GridTransform.cs" />

@@ -17,6 +17,9 @@ namespace DepthsBelow
 		Rectangle selectionRectangle;
 		Texture2D selectionTexture;
 
+        Rectangle gridRectangle;
+        Texture2D gridTexture;
+
 		public MouseInput(Core core)
 		{
 			this.core = core;
@@ -28,6 +31,9 @@ namespace DepthsBelow
 		{
 			selectionTexture = new Texture2D(core.GraphicsDevice, 1, 1);
 			selectionTexture.SetData(new Color[] { Color.White });
+
+            gridTexture = new Texture2D(core.GraphicsDevice, 1, 1);
+            gridTexture.SetData(new Color[] { Color.White });
 		}
 
 		public void Update(GameTime gameTime)
@@ -60,12 +66,18 @@ namespace DepthsBelow
 				
 				selectionRectangle = Rectangle.Empty;
 			}
+            Vector2 currentGrid = core.GridChecker.FindGridPos(new Vector2(ms.X + core.camera.Position.X - core.GridChecker.TileSize() / 2, ms.Y + core.camera.Position.Y - core.GridChecker.TileSize() / 2));
+            currentGrid.X = Convert.ToInt32(currentGrid.X);
+            currentGrid.Y = Convert.ToInt32(currentGrid.Y);
+            Vector2 currentScreen = core.GridChecker.FindScreenPos(currentGrid);
+            gridRectangle = new Rectangle((int)currentScreen.X, (int)currentScreen.Y, core.GridChecker.TileSize(), core.GridChecker.TileSize());
 
 			lastMouseState = ms;
 		}
 
 		public void Draw(SpriteBatch spriteBatch)
 		{
+            spriteBatch.Draw(gridTexture, gridRectangle, Color.Yellow * 0.3f);
 			spriteBatch.Draw(selectionTexture, selectionRectangle, Color.Red * 0.5f);
 		}
 	}
