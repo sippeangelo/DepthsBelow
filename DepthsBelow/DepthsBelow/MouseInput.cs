@@ -71,7 +71,7 @@ namespace DepthsBelow
             currentGrid.X = Convert.ToInt32(currentGrid.X);
             currentGrid.Y = Convert.ToInt32(currentGrid.Y);
 			Vector2 currentScreen = Grid.GridToScreen(currentGrid);
-			gridRectangle = new Rectangle((int)currentScreen.X, (int)currentScreen.Y, Grid.TileSize, Grid.TileSize;
+			gridRectangle = new Rectangle((int)currentScreen.X, (int)currentScreen.Y, Grid.TileSize, Grid.TileSize);
 
 			lastMouseState = ms;
 		}
