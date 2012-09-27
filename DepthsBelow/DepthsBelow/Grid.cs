@@ -7,12 +7,12 @@ namespace DepthsBelow
     {
         public const int TileSize = 32;
 
-		public static Vector2 GridToScreen(Point gridPos)
+		public static Vector2 GridToWorld(Point gridPos)
 		{
 			return new Vector2(gridPos.X * TileSize, gridPos.Y * TileSize);
 		}
 
-	    public static Point ScreenToGrid(Vector2 screenPos)
+	    public static Point WorldToGrid(Vector2 screenPos)
 	    {
 		    return new Point(
 				(int)Math.Floor(screenPos.X / TileSize),	

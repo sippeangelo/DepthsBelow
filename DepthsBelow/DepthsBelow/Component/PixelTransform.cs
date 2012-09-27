@@ -44,7 +44,7 @@ namespace DepthsBelow.Component
 
 		public Point ToGrid()
 		{
-			return Grid.ScreenToGrid(Position);
+			return Grid.WorldToGrid(Position);
 		}
 	}
 }

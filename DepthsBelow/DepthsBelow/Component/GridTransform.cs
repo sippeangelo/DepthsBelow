@@ -39,7 +39,7 @@ namespace DepthsBelow.Component
 
 		public Vector2 ToScreen()
 		{
-			return Grid.GridToScreen(Position);
+			return Grid.GridToWorld(Position);
 		}
 	}
 }
