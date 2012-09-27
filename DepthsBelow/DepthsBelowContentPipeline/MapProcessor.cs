@@ -26,6 +26,7 @@ namespace DepthsBelowContentPipeline
 	{
 		public int Width;
 		public int Height;
+		public string Name;
 		public MapTileContent[] Tiles;
 	}
 
@@ -70,6 +71,7 @@ namespace DepthsBelowContentPipeline
 					{
 						Width = tlc.Width,
 						Height = tlc.Height,
+						Name = tlc.Name
 					};
 
 					// we need to build up our tile list now

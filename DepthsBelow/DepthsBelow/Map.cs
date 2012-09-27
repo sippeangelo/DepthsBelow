@@ -15,6 +15,7 @@ namespace DepthsBelow
 	{
 		public int Width;
 		public int Height;
+		public string Name;
 		public Tile[] Tiles;
 	}
 
@@ -28,6 +29,9 @@ namespace DepthsBelow
 		{
 			foreach (var layer in Layers)
 			{
+				if (layer.Name == "Collision")
+					continue;
+
 				for (int y = 0; y < layer.Height; y++)
 				{
 					for (int x = 0; x < layer.Width; x++)
