@@ -32,14 +32,14 @@ namespace DepthsBelow.Component
 			}
 		}
 		public float Rotation;
-		public Point Origin;
+		public Vector2 Origin;
 
 		public PixelTransform(Entity parent)
 			: base(parent)
 		{
 			Position = Vector2.Zero;
 			Rotation = 0.0f;
-			Origin = Point.Zero;
+			Origin = Vector2.Zero;
 		}
 	}
 }
