@@ -28,6 +28,16 @@ namespace DepthsBelow
 			Speed = 300;
 		}
 
+		public Vector2 ScreenToWorld(Vector2 screenPos)
+		{
+			return Vector2.Transform(screenPos, Matrix.Invert(Transform));
+		}
+
+		public Vector2 WorldToScreen(Vector2 worldPos)
+		{
+			return Vector2.Transform(worldPos, Transform);
+		}
+
 		public void Update(GameTime gameTime)
 		{
 			float elapsed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
@@ -48,7 +58,6 @@ namespace DepthsBelow
 				Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0))
 				* Matrix.CreateRotationZ(Rotation)
 				* Matrix.CreateScale(Zoom)
-				//* Matrix.CreateTranslation(new Vector3(
 			;
 		}
 	}

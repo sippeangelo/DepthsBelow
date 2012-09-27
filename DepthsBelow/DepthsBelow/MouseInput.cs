@@ -68,9 +68,10 @@ namespace DepthsBelow
 			}
 
 			// Grid highlighting
-			Point currentGrid = Grid.ScreenToGrid(new Vector2(ms.X + core.camera.Position.X, ms.Y + core.camera.Position.Y));
-			Vector2 currentScreen = Grid.GridToScreen(currentGrid);
-			gridRectangle = new Rectangle((int)currentScreen.X, (int)currentScreen.Y, Grid.TileSize, Grid.TileSize);
+			Vector2 clickWorldPos = core.camera.ScreenToWorld(new Vector2(ms.X, ms.Y));
+			Point clickGridPos = Grid.WorldToGrid(clickWorldPos);
+			Vector2 rectWorldPos = Grid.GridToWorld(clickGridPos);
+			gridRectangle = new Rectangle((int)rectWorldPos.X, (int)rectWorldPos.Y, Grid.TileSize, Grid.TileSize);
 
 			lastMouseState = ms;
 		}
