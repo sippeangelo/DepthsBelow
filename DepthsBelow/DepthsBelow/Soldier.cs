@@ -17,7 +17,7 @@ namespace DepthsBelow
 		public Soldier(Core core) : base(core)
 		{
 			if (Texture == null)
-				LoadContent(game);
+				LoadContent(core);
 
 			pixelTransform.Origin = new Vector2(16, 16);
 
@@ -38,9 +38,9 @@ namespace DepthsBelow
 			}
 		}
 
-		public static void LoadContent(Core game)
+		public static void LoadContent(Core core)
 		{
-			Texture = game.Content.Load<Texture2D>("images/soldier2");
+			Texture = core.Content.Load<Texture2D>("images/soldier2");
 		}
 
 		public override void Update(GameTime gameTime)
