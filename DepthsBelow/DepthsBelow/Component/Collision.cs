@@ -21,7 +21,7 @@ namespace DepthsBelow.Component
         	this.Height = height;
 		    this.Rectangle = new Rectangle(0, 0, width, height);
         }
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             PixelTransform pt = this.Parent.GetComponent<PixelTransform>();
 	        this.Rectangle.X = (int)pt.X;

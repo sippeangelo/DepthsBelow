@@ -17,7 +17,7 @@ namespace DepthsBelow.Component
 
 		public virtual void Update(GameTime gameTime)
 		{
-
+			
 		}
 	}
 }
