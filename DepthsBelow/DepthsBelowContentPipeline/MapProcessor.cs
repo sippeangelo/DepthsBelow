@@ -15,6 +15,7 @@ namespace DepthsBelowContentPipeline
 	[ContentSerializerRuntimeType("DepthsBelow.Tile, DepthsBelow")]
 	public class MapTileContent
 	{
+		public int LocalId;
 		public ExternalReference<Texture2DContent> Texture;
 		public Rectangle SourceRectangle;
 		public SpriteEffects SpriteEffects;
@@ -113,6 +114,7 @@ namespace DepthsBelowContentPipeline
 						// now insert the tile into our output
 						outLayer.Tiles[i] = new MapTileContent
 						{
+							LocalId = tileIndex,
 							Texture = textureContent,
 							SourceRectangle = sourceRect,
 							SpriteEffects = spriteEffects

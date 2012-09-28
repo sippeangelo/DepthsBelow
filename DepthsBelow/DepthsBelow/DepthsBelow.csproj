@@ -106,6 +106,7 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -121,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Component\PathFinder.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="Component\Collision.cs" />
     <Compile Include="Component\Component.cs" />
@@ -140,9 +142,14 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AStar\AStar.csproj">
+      <Project>{CD3F949D-54AA-4D38-99DB-92905A375D84}</Project>
+      <Name>AStar</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DepthsBelowContent\DepthsBelowContent.contentproj">
-      <Name>DepthsBelowContent</Name>
+      <Name>DepthsBelowContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
+      <Project>{433A77A2-DE52-4875-A4EF-232CF59C2DD3}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

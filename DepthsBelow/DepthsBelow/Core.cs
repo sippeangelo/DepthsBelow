@@ -19,6 +19,8 @@ namespace DepthsBelow
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
+		public static AStar.PathFinderFast PathFinder;
+
 		public Camera camera;
 		MouseInput mouseInput;
 		public Soldier soldier;
@@ -33,7 +35,7 @@ namespace DepthsBelow
 			graphics.PreferredBackBufferHeight = 720;
 			graphics.IsFullScreen = false;
 
-			//graphics.SynchronizeWithVerticalRetrace = false;
+			graphics.SynchronizeWithVerticalRetrace = false;
 			this.IsFixedTimeStep = false;
 			graphics.ApplyChanges();
 
@@ -63,6 +65,16 @@ namespace DepthsBelow
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			map = Content.Load<Map>("maps/Cave.Level1");
+			PathFinder = new AStar.PathFinderFast(map.GetCollisionMap());
+			PathFinder.Formula = AStar.HeuristicFormula.Manhattan;
+			PathFinder.Diagonals = false;
+			PathFinder.HeavyDiagonals = false;
+			PathFinder.HeuristicEstimate = 2;
+			PathFinder.PunishChangeDirection = true;
+			PathFinder.TieBreaker = false;
+			PathFinder.SearchLimit = 50000;
+			PathFinder.DebugProgress = false;
+			PathFinder.DebugFoundPath = false;
 
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);

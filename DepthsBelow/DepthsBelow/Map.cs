@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -6,6 +7,7 @@ namespace DepthsBelow
 {
 	public class Tile
 	{
+		public int LocalId;
 		public Texture2D Texture;
 		public Rectangle SourceRectangle;
 		public SpriteEffects SpriteEffects;
@@ -52,6 +54,35 @@ namespace DepthsBelow
 					}
 				}
 			}
+		}
+
+		public byte[,] GetCollisionMap()
+		{
+			byte[,] collisionMap = new byte[1024, 1024];
+			foreach (var layer in Layers)
+			{
+				if (layer.Name == "Collision")
+				{
+					for (int y = 0; y < layer.Height; y++)
+					{
+						for (int x = 0; x < layer.Width; x++)
+						{
+							Tile tile = layer.Tiles[y*layer.Width + x];
+							if (tile == null || tile.LocalId == 0)
+								collisionMap[x, y] = 1;
+							else
+								collisionMap[x, y] = 0;
+						}
+					}
+
+					break;
+				}
+			}
+
+			//if (collisionMap == null)
+			//	throw new Exception("Map lacks a Collision layer!");
+
+			return collisionMap;
 		}
 	}
 }

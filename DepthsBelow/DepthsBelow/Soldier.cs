@@ -20,12 +20,18 @@ namespace DepthsBelow
 				LoadContent(core);
 
 			pixelTransform.Origin = new Vector2(16, 16);
+			gridTransform.Position = new Point(7, 3);
+			pixelTransform.Position = gridTransform.ToWorld();
 
 			var rc = new SpriteRenderer(this) {Texture = Texture, Color = Color.White};
 			AddComponent(rc);
 
 			var cc = new Collision(this, 32, 32);
 			AddComponent(cc);
+
+			var pfc = new PathFinder(this);
+			pfc.Goal = new Point(8, 39);
+			AddComponent(pfc);
 		}
 
 		public bool Selected
@@ -70,14 +76,14 @@ namespace DepthsBelow
 			}
 			lastKeyboardState = ks;
 
-			int speed = 2;
+			int speed = 1;
 			if (pixelTransform.X < gridTransform.ToWorld().X)
 				pixelTransform.X += speed;
-			else if (pixelTransform.X > gridTransform.ToWorld().X)
+			if (pixelTransform.X > gridTransform.ToWorld().X)
 				pixelTransform.X -= speed;
-			else if (pixelTransform.Y < gridTransform.ToWorld().Y)
+			if (pixelTransform.Y < gridTransform.ToWorld().Y)
 				pixelTransform.Y += speed;
-			else if (pixelTransform.Y > gridTransform.ToWorld().Y)
+			if (pixelTransform.Y > gridTransform.ToWorld().Y)
 				pixelTransform.Y -= speed;
 		}
 	}

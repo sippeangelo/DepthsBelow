@@ -58,7 +58,9 @@ namespace DepthsBelow
 			if (ms.LeftButton == ButtonState.Released && selectionRectangle != Rectangle.Empty)
 			{
 				if (!ks.IsKeyDown(Keys.LeftControl))
+				{
 					core.soldier.Selected = false;
+				}
 
 				if (selectionRectangle.Intersects(core.soldier.GetComponent<Component.Collision>().Rectangle))
 				{
