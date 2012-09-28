@@ -47,41 +47,43 @@ namespace DepthsBelow
 			MouseState ms = Mouse.GetState();
 
 			if (ms.X < 20)
-				Position.X -= Speed * elapsed;
-			if (ms.X > core.GraphicsDevice.Viewport.Width - 20)
 				Position.X += Speed * elapsed;
+			if (ms.X > core.GraphicsDevice.Viewport.Width - 20)
+				Position.X -= Speed * elapsed;
 
 			if (ms.Y < 20)
-				Position.Y -= Speed * elapsed;
-			if (ms.Y > core.GraphicsDevice.Viewport.Height - 20)
 				Position.Y += Speed * elapsed;
+			if (ms.Y > core.GraphicsDevice.Viewport.Height - 20)
+				Position.Y -= Speed * elapsed;
 
 			int scrollChange = ms.ScrollWheelValue - lastMouseState.ScrollWheelValue;
-
-			float preZoom = Zoom;
 
 			if (scrollChange > 0)
 				Zoom *= 1.15f;
 			else if (scrollChange < 0)
 				Zoom /= 1.15f;
 
+			// Store the current screen and world position of the mouse for zoom compensation
+			var mousePosBefore = new Vector2(ms.X, ms.Y);
+			var mousePosBeforeWorld = this.ScreenToWorld(mousePosBefore);
+
+			// Apply the matrix transformation
 			Transform = Matrix.Identity
-					* Matrix.CreateRotationZ(Rotation)
-					* Matrix.CreateScale(Zoom)
-					* Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0));
+			            * Matrix.CreateRotationZ(Rotation)
+			            * Matrix.CreateScale(Zoom)
+						* Matrix.CreateTranslation(new Vector3(Position.X, Position.Y, 0));
 
-			/*var mouseOffset = core.camera.ScreenToWorld(new Vector2(ms.X, ms.Y));
-
+			// If we've zoomed
 			if (scrollChange != 0)
 			{
-				Transform *= Matrix.CreateTranslation(new Vector3(-mouseOffset.X, -mouseOffset.Y, 0))
-				             * Matrix.CreateScale(Zoom)
-							 * Matrix.CreateTranslation(new Vector3(mouseOffset.X, mouseOffset.Y, 0));
+				// Translate the stored world position back to new screen coordinates
+				var mousePosAfter = this.WorldToScreen(mousePosBeforeWorld);
+				var change = mousePosBefore - mousePosAfter;
+
+				// Update position and matrix transformation
+				Position += change;
+				Transform *= Matrix.CreateTranslation(new Vector3(change.X, change.Y, 0));
 			}
-			else
-			{
-				Transform *= Matrix.CreateScale(Zoom) * Matrix.CreateTranslation(new Vector3(-Position.X, -Position.Y, 0)); ;
-			}*/
 
 			lastMouseState = ms;
 		}
