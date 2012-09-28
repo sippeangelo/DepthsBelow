@@ -37,7 +37,7 @@ namespace DepthsBelow.Component
 			Position = Point.Zero;
 		}
 
-		public Vector2 ToScreen()
+		public Vector2 ToWorld()
 		{
 			return Grid.GridToWorld(Position);
 		}
