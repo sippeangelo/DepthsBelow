@@ -39,6 +39,7 @@ namespace DepthsBelow
 		public void Update(GameTime gameTime)
 		{
 			MouseState ms = Mouse.GetState();
+			Vector2 mouseWorldPos = core.camera.ScreenToWorld(new Vector2(ms.X, ms.Y));
 			KeyboardState ks = Keyboard.GetState();
 
 			// Selection rectangle
@@ -46,12 +47,12 @@ namespace DepthsBelow
 			{
 				if (selectionRectangle == Rectangle.Empty)
 				{
-					selectionRectangle = new Rectangle(ms.X + (int)core.camera.Position.X, ms.Y + (int)core.camera.Position.Y, 0, 0);
+					selectionRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 0, 0);
 				}
 				else
 				{
-					selectionRectangle.Width = ms.X - selectionRectangle.X + (int)core.camera.Position.X;
-					selectionRectangle.Height = ms.Y - selectionRectangle.Y + (int)core.camera.Position.Y;
+					selectionRectangle.Width = (int)mouseWorldPos.X - selectionRectangle.X;
+					selectionRectangle.Height = (int)mouseWorldPos.Y - selectionRectangle.Y;
 				}
 			}
 			if (ms.LeftButton == ButtonState.Released && selectionRectangle != Rectangle.Empty)
@@ -68,9 +69,8 @@ namespace DepthsBelow
 			}
 
 			// Grid highlighting
-			Vector2 clickWorldPos = core.camera.ScreenToWorld(new Vector2(ms.X, ms.Y));
-			Point clickGridPos = Grid.WorldToGrid(clickWorldPos);
-			Vector2 rectWorldPos = Grid.GridToWorld(clickGridPos);
+			Point mouseGridPos = Grid.WorldToGrid(mouseWorldPos);
+			Vector2 rectWorldPos = Grid.GridToWorld(mouseGridPos);
 			gridRectangle = new Rectangle((int)rectWorldPos.X, (int)rectWorldPos.Y, Grid.TileSize, Grid.TileSize);
 
 			lastMouseState = ms;
