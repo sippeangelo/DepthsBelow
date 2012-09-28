@@ -69,17 +69,15 @@ namespace DepthsBelow
 
 				foreach (var mapObject in objectLayer.Objects)
 				{
-					Console.WriteLine(mapObject.Type);
-					Console.WriteLine(mapObject.Bounds.Left + "," + mapObject.Bounds.Top);
-
 					if (mapObject.Type == "SquadStart")
 					{
 						var soldier = new Soldier(core);
-						var mapObjectPos = new Vector2(mapObject.Bounds.Left, mapObject.Bounds.Top);
+						// HACK: For some reason, the tile object coordinates are offset by one tile on the Y-axis in the Tiled map file (https://github.com/bjorn/tiled/issues/91)
+						var mapObjectPos = new Vector2(mapObject.Bounds.X, mapObject.Bounds.Y - Grid.TileSize);
 						var mapObjectGridPos = Grid.WorldToGrid(mapObjectPos);
 						soldier.X = mapObjectGridPos.X;
 						soldier.Y = mapObjectGridPos.Y;
-
+	
 						core.Squad.Add(soldier);
 					}
 				}

@@ -76,6 +76,14 @@ namespace DepthsBelow
 				selectionRectangle = Rectangle.Empty;
 			}
 
+			// Send orders with right click
+			if (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
+			{
+				foreach (var unit in core.Squad)
+					if (unit.Selected)
+						unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
+			}
+
 			// Grid highlighting
 			Point mouseGridPos = Grid.WorldToGrid(mouseWorldPos);
 			Vector2 rectWorldPos = Grid.GridToWorld(mouseGridPos);

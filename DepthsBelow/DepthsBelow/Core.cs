@@ -25,7 +25,7 @@ namespace DepthsBelow
 		MouseInput mouseInput;
 		//public Soldier soldier;
 		public List<Soldier> Squad; 
-		private Map map;
+		public static Map Map;
 
 		public Core()
 		{
@@ -36,7 +36,7 @@ namespace DepthsBelow
 			graphics.PreferredBackBufferHeight = 720;
 			graphics.IsFullScreen = false;
 
-			graphics.SynchronizeWithVerticalRetrace = false;
+			//graphics.SynchronizeWithVerticalRetrace = false;
 			this.IsFixedTimeStep = false;
 			graphics.ApplyChanges();
 
@@ -67,9 +67,9 @@ namespace DepthsBelow
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			map = Content.Load<Map>("maps/Cave.Level1");
+			Map = Content.Load<Map>("maps/Cave.Level1");
 
-			PathFinder = new AStar.PathFinderFast(map.GetCollisionMap());
+			PathFinder = new AStar.PathFinderFast(Map.GetCollisionMap());
 			PathFinder.Formula = AStar.HeuristicFormula.Manhattan;
 			PathFinder.Diagonals = false;
 			PathFinder.HeavyDiagonals = false;
@@ -80,7 +80,7 @@ namespace DepthsBelow
 			PathFinder.DebugProgress = false;
 			PathFinder.DebugFoundPath = false;
 
-			map.ParseObjects(this);
+			Map.ParseObjects(this);
 
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);
@@ -134,7 +134,7 @@ namespace DepthsBelow
 			                  Camera.Transform);
 
 			// Draw the level
-			map.Draw(spriteBatch);
+			Map.Draw(spriteBatch);
 			// Draw units
 			// TODO: Foreach etc...
 			foreach (var soldier in Squad)

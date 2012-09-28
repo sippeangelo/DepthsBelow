@@ -21,8 +21,8 @@ namespace DepthsBelow
 				LoadContent(core);
 
 			pixelTransform.Origin = new Vector2(16, 16);
-			gridTransform.Position = new Point(7, 3);
-			pixelTransform.Position = gridTransform.ToWorld();
+			//gridTransform.Position = new Point(7, 3);
+			//pixelTransform.Position = gridTransform.ToWorld();
 
 			this.Color = Color.White;
 			var rc = new SpriteRenderer(this) {Texture = Texture, Color = Color.White};
@@ -32,7 +32,6 @@ namespace DepthsBelow
 			AddComponent(cc);
 
 			var pfc = new PathFinder(this);
-			pfc.Goal = new Point(8, 39);
 			AddComponent(pfc);
 		}
 
