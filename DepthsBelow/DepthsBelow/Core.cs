@@ -20,10 +20,11 @@ namespace DepthsBelow
 		SpriteBatch spriteBatch;
 
 		public static AStar.PathFinderFast PathFinder;
+		public Camera Camera;
 
-		public Camera camera;
 		MouseInput mouseInput;
-		public Soldier soldier;
+		//public Soldier soldier;
+		public List<Soldier> Squad; 
 		private Map map;
 
 		public Core()
@@ -51,7 +52,9 @@ namespace DepthsBelow
 		protected override void Initialize()
 		{
 			// TODO: Add your initialization logic here
-			camera = new Camera(this);
+			Camera = new Camera(this);
+			Squad = new List<Soldier>();
+
 			base.Initialize();
 		}
 
@@ -65,6 +68,8 @@ namespace DepthsBelow
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			map = Content.Load<Map>("maps/Cave.Level1");
+			map.ParseObjects(this);
+			
 			PathFinder = new AStar.PathFinderFast(map.GetCollisionMap());
 			PathFinder.Formula = AStar.HeuristicFormula.Manhattan;
 			PathFinder.Diagonals = false;
@@ -78,7 +83,7 @@ namespace DepthsBelow
 
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);
-			soldier = new Soldier(this);
+			//soldier = new Soldier(this);
 
 			mouseInput = new MouseInput(this);
 			mouseInput.LoadContent();
@@ -104,11 +109,13 @@ namespace DepthsBelow
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
 				this.Exit();
 
-			camera.Update(gameTime);
+			Camera.Update(gameTime);
 			mouseInput.Update(gameTime);
 
 			// TODO: Add your update logic here
-			soldier.Update(gameTime);
+			//soldier.Update(gameTime);
+			foreach (var soldier in Squad)
+				soldier.Update(gameTime);
 
 			base.Update(gameTime);
 		}
@@ -121,17 +128,23 @@ namespace DepthsBelow
 		{
 			GraphicsDevice.Clear(Color.Black);
 
-			// Start drawing using the camera transform
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Transform);
+			// Start drawing using the Camera transform
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null,
+			                  Camera.Transform);
 
 			// Draw the level
 			map.Draw(spriteBatch);
 			// Draw units
 			// TODO: Foreach etc...
-			Component.SpriteRenderer rc = soldier.GetComponent<Component.SpriteRenderer>();
-			if (rc != null)
-				rc.Draw(spriteBatch);
-			// Draw mouse input visuals
+			foreach (var soldier in Squad)
+			{
+				var sr = soldier.GetComponent<Component.SpriteRenderer>();
+				Console.WriteLine("Drawing soldier at: " + soldier.pixelTransform.X + "," + soldier.pixelTransform.Y);
+				if (sr != null)
+					sr.Draw(spriteBatch);
+			}
+
+		// Draw mouse input visuals
 			mouseInput.Draw(spriteBatch);
 
 			spriteBatch.End();

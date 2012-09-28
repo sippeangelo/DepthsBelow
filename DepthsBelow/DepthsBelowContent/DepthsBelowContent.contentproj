@@ -89,6 +89,7 @@
       <Name>Cave.Level1</Name>
       <Processor>MapProcessor</Processor>
       <Importer>TmxImporter</Importer>
+      <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>

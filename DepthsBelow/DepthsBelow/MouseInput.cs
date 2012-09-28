@@ -39,7 +39,7 @@ namespace DepthsBelow
 		public void Update(GameTime gameTime)
 		{
 			MouseState ms = Mouse.GetState();
-			Vector2 mouseWorldPos = core.camera.ScreenToWorld(new Vector2(ms.X, ms.Y));
+			Vector2 mouseWorldPos = core.Camera.ScreenToWorld(new Vector2(ms.X, ms.Y));
 			KeyboardState ks = Keyboard.GetState();
 
 			// Selection rectangle
@@ -55,18 +55,24 @@ namespace DepthsBelow
 					selectionRectangle.Height = (int)mouseWorldPos.Y - selectionRectangle.Y;
 				}
 			}
+			// When the mouse is released
 			if (ms.LeftButton == ButtonState.Released && selectionRectangle != Rectangle.Empty)
 			{
+				// Deselect all units
 				if (!ks.IsKeyDown(Keys.LeftControl))
 				{
-					core.soldier.Selected = false;
+					foreach (var unit in core.Squad)
+						unit.Selected = false;
 				}
 
-				if (selectionRectangle.Intersects(core.soldier.GetComponent<Component.Collision>().Rectangle))
+				// Select all units in the rectangle
+				foreach (var unit in core.Squad)
 				{
-					core.soldier.Selected = true;
+					if (selectionRectangle.Intersects(unit.GetComponent<Component.Collision>().Rectangle))
+						unit.Selected = true;
 				}
-				
+
+				// Hide the selection rectangle
 				selectionRectangle = Rectangle.Empty;
 			}
 
