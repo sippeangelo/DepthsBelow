@@ -11,6 +11,25 @@ namespace DepthsBelow
 		List<Component.Component> Components;
 		public Component.PixelTransform pixelTransform;
 		public Component.GridTransform gridTransform;
+		public int X
+		{
+			get { return this.gridTransform.X; }
+			set 
+			{ 
+				this.gridTransform.X = value;
+				this.pixelTransform.X = this.gridTransform.ToWorld().X;
+			}
+		}
+		public int Y
+		{
+			get { return this.gridTransform.Y; }
+			set
+			{
+				this.gridTransform.Y = value;
+				this.pixelTransform.Y = this.gridTransform.ToWorld().Y;
+			}
+		}
+
 		private Core core;
 
 		public Entity(Core core)

@@ -9,6 +9,7 @@ namespace DepthsBelow
 	public class Soldier : Entity
 	{
 		public static Texture2D Texture;
+		public Color Color;
 		public static Point Origin;
 		private bool _selected;
 
@@ -21,6 +22,7 @@ namespace DepthsBelow
 
 			pixelTransform.Origin = new Vector2(16, 16);
 
+			this.Color = Color.White;
 			var rc = new SpriteRenderer(this) {Texture = Texture, Color = Color.White};
 			AddComponent(rc);
 
@@ -34,7 +36,7 @@ namespace DepthsBelow
 			set
 			{
 				_selected = value;
-				GetComponent<SpriteRenderer>().Color = (value) ? Color.Blue : Color.HotPink;
+				GetComponent<SpriteRenderer>().Color = (value) ? Color.Blue : this.Color;
 			}
 		}
 

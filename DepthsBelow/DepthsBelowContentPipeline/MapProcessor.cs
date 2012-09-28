@@ -12,7 +12,7 @@ using TiledLib;
 namespace DepthsBelowContentPipeline
 {
 	// Each tile has a texture, source rect, and sprite effects.
-	[ContentSerializerRuntimeType("DepthsBelow.Tile, DepthsBelow")]
+	[ContentSerializerRuntimeType("DepthsBelow.MapTile, DepthsBelow")]
 	public class MapTileContent
 	{
 		public ExternalReference<Texture2DContent> Texture;
@@ -20,14 +20,33 @@ namespace DepthsBelowContentPipeline
 		public SpriteEffects SpriteEffects;
 	}
 
+	[ContentSerializerRuntimeType("DepthsBelow.MapObject, DepthsBelow")]
+	public class MapObjectContent
+	{
+		//public MapObjectType ObjectType;
+		public string Name;
+		public string Type;
+		public Rectangle Bounds;
+		public List<Vector2> Points;
+	}
+
 	// For each layer, we store the size of the layer and the tiles.
-	[ContentSerializerRuntimeType("DepthsBelow.Layer, DepthsBelow")]
+	[ContentSerializerRuntimeType("DepthsBelow.MapLayer, DepthsBelow")]
 	public class MapLayerContent
 	{
 		public int Width;
 		public int Height;
 		public string Name;
+	}
+	[ContentSerializerRuntimeType("DepthsBelow.MapTileLayer, DepthsBelow")]
+	public class MapTileLayerContent : MapLayerContent
+	{
 		public MapTileContent[] Tiles;
+	}
+	[ContentSerializerRuntimeType("DepthsBelow.MapObjectLayer, DepthsBelow")]
+	public class MapObjectLayerContent : MapLayerContent
+	{
+		public MapObjectContent[] Objects;
 	}
 
 	// For the map itself, we just store the size, tile size, and a list of layers.
@@ -44,8 +63,6 @@ namespace DepthsBelowContentPipeline
 	{
 		public override MapContent Process(TiledLib.MapContent input, ContentProcessorContext context)
 		{
-			//System.Diagnostics.Debugger.Launch();
-
 			// build the textures
 			TiledHelpers.BuildTileSetTextures(input, context, "maps");
 
@@ -56,18 +73,49 @@ namespace DepthsBelowContentPipeline
 			MapContent output = new MapContent
 			{
 				TileWidth = input.TileWidth,
-				TileHeight = input.TileHeight
+				TileHeight = input.TileHeight,
 			};
 
 			// iterate all the layers of the input
 			foreach (LayerContent layer in input.Layers)
 			{
+				// Get layer objects
+				var molc = layer as TiledLib.MapObjectLayerContent;
+				if (molc != null)
+				{
+					//System.Diagnostics.Debugger.Launch();
+					// create the new layer
+					MapObjectLayerContent outLayer = new MapObjectLayerContent
+					{
+						Width = molc.Width,
+						Height = molc.Height,
+						Name = molc.Name
+					};
+
+					outLayer.Objects = new MapObjectContent[molc.Objects.Count];
+					for (int i = 0; i < molc.Objects.Count; i++)
+					{
+						var layerObject = molc.Objects[i];
+						outLayer.Objects[i] = new MapObjectContent
+						{
+							//ObjectType = layerObject.ObjectType,
+							Name = layerObject.Name,
+							Type = layerObject.Type,
+							Bounds = layerObject.Bounds,
+							Points = layerObject.Points
+						};
+					}
+
+					output.Layers.Add(outLayer);
+				}
+
 				// we only care about tile layers in our demo
 				TileLayerContent tlc = layer as TileLayerContent;
+				
 				if (tlc != null)
 				{
 					// create the new layer
-					MapLayerContent outLayer = new MapLayerContent
+					MapTileLayerContent outLayer = new MapTileLayerContent
 					{
 						Width = tlc.Width,
 						Height = tlc.Height,
