@@ -126,13 +126,15 @@ namespace DepthsBelow
 			byte[,] collisionMap = new byte[1024, 1024];
 			foreach (var layer in Layers)
 			{
-				if (layer.Name == "Collision")
+				var tileLayer = layer as MapTileLayer;
+
+				if (tileLayer.Name == "Collision")
 				{
-					for (int y = 0; y < layer.Height; y++)
+					for (int y = 0; y < tileLayer.Height; y++)
 					{
-						for (int x = 0; x < layer.Width; x++)
+						for (int x = 0; x < tileLayer.Width; x++)
 						{
-							Tile tile = layer.Tiles[y*layer.Width + x];
+							MapTile tile = tileLayer.Tiles[y * layer.Width + x];
 							if (tile == null || tile.LocalId == 0)
 								collisionMap[x, y] = 1;
 							else

@@ -68,8 +68,7 @@ namespace DepthsBelow
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			map = Content.Load<Map>("maps/Cave.Level1");
-			map.ParseObjects(this);
-			
+
 			PathFinder = new AStar.PathFinderFast(map.GetCollisionMap());
 			PathFinder.Formula = AStar.HeuristicFormula.Manhattan;
 			PathFinder.Diagonals = false;
@@ -80,6 +79,8 @@ namespace DepthsBelow
 			PathFinder.SearchLimit = 50000;
 			PathFinder.DebugProgress = false;
 			PathFinder.DebugFoundPath = false;
+
+			map.ParseObjects(this);
 
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);
@@ -139,7 +140,6 @@ namespace DepthsBelow
 			foreach (var soldier in Squad)
 			{
 				var sr = soldier.GetComponent<Component.SpriteRenderer>();
-				Console.WriteLine("Drawing soldier at: " + soldier.pixelTransform.X + "," + soldier.pixelTransform.Y);
 				if (sr != null)
 					sr.Draw(spriteBatch);
 			}
