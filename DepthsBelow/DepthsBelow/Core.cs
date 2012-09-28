@@ -62,7 +62,7 @@ namespace DepthsBelow
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			map = Content.Load<Map>("maps/test");
+			map = Content.Load<Map>("maps/Cave.Level1");
 
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);
@@ -110,7 +110,7 @@ namespace DepthsBelow
 			GraphicsDevice.Clear(Color.Black);
 
 			// Start drawing using the camera transform
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.Transform);
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, camera.Transform);
 
 			// Draw the level
 			map.Draw(spriteBatch);
