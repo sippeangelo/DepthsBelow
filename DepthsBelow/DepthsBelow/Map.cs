@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -121,13 +122,15 @@ namespace DepthsBelow
 
 		public byte[,] GetCollisionMap()
 		{
-			byte[,] collisionMap = new byte[1024, 1024];
+			byte[,] collisionMap = null;
+
 			foreach (var layer in Layers)
 			{
 				var tileLayer = layer as MapTileLayer;
 
-				if (tileLayer.Name == "Collision")
+				if (tileLayer != null && tileLayer.Name == "Collision")
 				{
+					collisionMap = new byte[1024,1024];
 					for (int y = 0; y < tileLayer.Height; y++)
 					{
 						for (int x = 0; x < tileLayer.Width; x++)
@@ -144,8 +147,8 @@ namespace DepthsBelow
 				}
 			}
 
-			//if (collisionMap == null)
-			//	throw new Exception("Map lacks a Collision layer!");
+			if (collisionMap == null)
+				Debug.WriteLine("Map lacks a Collision layer! Pathfinding won't work.");
 
 			return collisionMap;
 		}

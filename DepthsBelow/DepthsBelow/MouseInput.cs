@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace DepthsBelow
 {
-	class MouseInput
+	public class MouseInput
 	{
 		Core core;
 		MouseState lastMouseState;

@@ -19,11 +19,9 @@ namespace DepthsBelow
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
-		public static AStar.PathFinderFast PathFinder;
 		public Camera Camera;
 
-		MouseInput mouseInput;
-		//public Soldier soldier;
+		public static MouseInput MouseInput;
 		public List<Soldier> Squad; 
 		public static Map Map;
 
@@ -68,26 +66,14 @@ namespace DepthsBelow
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			Map = Content.Load<Map>("maps/Cave.Level1");
-
-			PathFinder = new AStar.PathFinderFast(Map.GetCollisionMap());
-			PathFinder.Formula = AStar.HeuristicFormula.Manhattan;
-			PathFinder.Diagonals = false;
-			PathFinder.HeavyDiagonals = false;
-			PathFinder.HeuristicEstimate = 2;
-			PathFinder.PunishChangeDirection = true;
-			PathFinder.TieBreaker = false;
-			PathFinder.SearchLimit = 50000;
-			PathFinder.DebugProgress = false;
-			PathFinder.DebugFoundPath = false;
-
+			// Load map objects
 			Map.ParseObjects(this);
 
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);
-			//soldier = new Soldier(this);
 
-			mouseInput = new MouseInput(this);
-			mouseInput.LoadContent();
+			MouseInput = new MouseInput(this);
+			MouseInput.LoadContent();
 		}
 
 		/// <summary>
@@ -111,10 +97,9 @@ namespace DepthsBelow
 				this.Exit();
 
 			Camera.Update(gameTime);
-			mouseInput.Update(gameTime);
+			MouseInput.Update(gameTime);
 
-			// TODO: Add your update logic here
-			//soldier.Update(gameTime);
+			// Update soldiers in squad
 			foreach (var soldier in Squad)
 				soldier.Update(gameTime);
 
@@ -135,8 +120,8 @@ namespace DepthsBelow
 
 			// Draw the level
 			Map.Draw(spriteBatch);
+
 			// Draw units
-			// TODO: Foreach etc...
 			foreach (var soldier in Squad)
 			{
 				var sr = soldier.GetComponent<Component.SpriteRenderer>();
@@ -144,8 +129,8 @@ namespace DepthsBelow
 					sr.Draw(spriteBatch);
 			}
 
-		// Draw mouse input visuals
-			mouseInput.Draw(spriteBatch);
+			// Draw mouse input visuals
+			MouseInput.Draw(spriteBatch);
 
 			spriteBatch.End();
 
