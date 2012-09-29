@@ -146,6 +146,10 @@
       <Project>{CD3F949D-54AA-4D38-99DB-92905A375D84}</Project>
       <Name>AStar</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Krypton v2.0\Krypton\Krypton.csproj">
+      <Project>{B1BFCB2A-C001-4DAC-BA7D-B68BF28757F3}</Project>
+      <Name>Krypton</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DepthsBelowContent\DepthsBelowContent.contentproj">
       <Name>DepthsBelowContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>

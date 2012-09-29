@@ -19,6 +19,8 @@ namespace DepthsBelow
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
+		public Krypton.KryptonEngine KryptonEngine;
+
 		public Camera Camera;
 
 		public static MouseInput MouseInput;
@@ -39,6 +41,8 @@ namespace DepthsBelow
 			graphics.ApplyChanges();
 
 			this.IsMouseVisible = true;
+
+			KryptonEngine = new Krypton.KryptonEngine(this, "KryptonEffect");
 		}
 
 		/// <summary>
@@ -50,6 +54,13 @@ namespace DepthsBelow
 		protected override void Initialize()
 		{
 			// TODO: Add your initialization logic here
+
+			// Initialize lighting engine
+			this.KryptonEngine.Initialize();
+			this.KryptonEngine.SpriteBatchCompatablityEnabled = true;
+			this.KryptonEngine.CullMode = CullMode.CullClockwiseFace;
+			this.KryptonEngine.AmbientColor = new Color(35, 35, 35);
+
 			Camera = new Camera(this);
 			Squad = new List<Soldier>();
 
@@ -67,7 +78,22 @@ namespace DepthsBelow
 
 			Map = Content.Load<Map>("maps/Cave.Level1");
 			// Load map objects
-			Map.ParseObjects(this);
+			Map.Initialize(this, KryptonEngine);
+
+			// DEBUG: Test lights
+			var light = new Krypton.Lights.Light2D()
+				{
+					Texture = Krypton.LightTextureBuilder.CreatePointLight(this.GraphicsDevice, 512),
+					Range = (float)(200),
+					Color = Color.White,
+					Intensity = 1f,
+					Angle = MathHelper.TwoPi,
+					X = 17 * Grid.TileSize,
+					Y = 7 * Grid.TileSize,
+					Fov = MathHelper.TwoPi,
+					IsOn = true
+				};
+			this.KryptonEngine.Lights.Add(light);
 
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);
@@ -103,6 +129,9 @@ namespace DepthsBelow
 			foreach (var soldier in Squad)
 				soldier.Update(gameTime);
 
+			foreach (Krypton.Lights.Light2D light in KryptonEngine.Lights)
+				light.Position = Camera.ScreenToWorld(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
+
 			base.Update(gameTime);
 		}
 
@@ -112,25 +141,43 @@ namespace DepthsBelow
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime)
 		{
+			// Assign the matrix and pre-render the lightmap.
+			this.KryptonEngine.Matrix = Camera.Transform;
+			this.KryptonEngine.Bluriness = 1;
+			this.KryptonEngine.LightMapPrepare();
+
 			GraphicsDevice.Clear(Color.Black);
 
-			// Start drawing using the Camera transform
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null,
-			                  Camera.Transform);
+			/*
+			 *	Draw game world
+			 */
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Camera.Transform);
 
-			// Draw the level
-			Map.Draw(spriteBatch);
+				// Draw the level
+				Map.Draw(spriteBatch);
 
-			// Draw units
-			foreach (var soldier in Squad)
-			{
-				var sr = soldier.GetComponent<Component.SpriteRenderer>();
-				if (sr != null)
-					sr.Draw(spriteBatch);
-			}
+				// Draw units
+				foreach (var soldier in Squad)
+				{
+					var sr = soldier.GetComponent<Component.SpriteRenderer>();
+					if (sr != null)
+						sr.Draw(spriteBatch);
+				}
 
-			// Draw mouse input visuals
-			MouseInput.Draw(spriteBatch);
+			spriteBatch.End();
+
+			/*
+			 *	Draw Krypton lighting
+			 */
+			this.KryptonEngine.Draw(gameTime);
+
+			/*
+			 *	Draw HUD elements
+			 */
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Camera.Transform);
+
+				// Draw mouse input visuals
+				MouseInput.Draw(spriteBatch);
 
 			spriteBatch.End();
 

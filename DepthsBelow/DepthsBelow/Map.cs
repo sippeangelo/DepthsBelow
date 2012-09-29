@@ -59,27 +59,50 @@ namespace DepthsBelow
 
 		}
 
-		public void ParseObjects(Core core)
+		public void Initialize(Core core, Krypton.KryptonEngine kryptonEngine)
 		{
 			foreach (var layer in Layers)
 			{
 				var objectLayer = layer as MapObjectLayer;
-
-				if (objectLayer == null)
-					continue;
-
-				foreach (var mapObject in objectLayer.Objects)
+				if (objectLayer != null)
 				{
-					if (mapObject.Type == "SquadStart")
+					// Parse objects
+					foreach (var mapObject in objectLayer.Objects)
 					{
-						var soldier = new Soldier(core);
-						// HACK: For some reason, the tile object coordinates are offset by one tile on the Y-axis in the Tiled map file (https://github.com/bjorn/tiled/issues/91)
-						var mapObjectPos = new Vector2(mapObject.Bounds.X, mapObject.Bounds.Y - Grid.TileSize);
-						var mapObjectGridPos = Grid.WorldToGrid(mapObjectPos);
-						soldier.X = mapObjectGridPos.X;
-						soldier.Y = mapObjectGridPos.Y;
-	
-						core.Squad.Add(soldier);
+						if (mapObject.Type == "SquadStart")
+						{
+							var soldier = new Soldier(core);
+							// HACK: For some reason, the tile object coordinates are offset by one tile on the Y-axis in the Tiled map file (https://github.com/bjorn/tiled/issues/91)
+							var mapObjectPos = new Vector2(mapObject.Bounds.X, mapObject.Bounds.Y - Grid.TileSize);
+							var mapObjectGridPos = Grid.WorldToGrid(mapObjectPos);
+							soldier.X = mapObjectGridPos.X;
+							soldier.Y = mapObjectGridPos.Y;
+
+							core.Squad.Add(soldier);
+						}
+					}
+				}
+
+				var tileLayer = layer as MapTileLayer;
+				if (tileLayer != null)
+				{
+					// Prepare collision hulls for lighting engine
+					if (tileLayer.Name == "Collision")
+					{
+						for (int y = 0; y < tileLayer.Height; y++)
+						{
+							for (int x = 0; x < tileLayer.Width; x++)
+							{
+								MapTile mapTile = tileLayer.Tiles[y * layer.Width + x];
+								if (mapTile != null && mapTile.LocalId != 0)
+								{
+									var hull = Krypton.ShadowHull.CreateRectangle(new Vector2(TileWidth, TileHeight));
+									hull.Position.X = x * TileWidth + TileWidth/2;
+									hull.Position.Y = y * TileHeight + TileWidth / 2;
+									kryptonEngine.Hulls.Add(hull);
+								}
+							}
+						}
 					}
 				}
 			}

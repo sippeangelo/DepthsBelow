@@ -42,6 +42,9 @@ namespace DepthsBelow
 
 		public void Update(GameTime gameTime)
 		{
+			if (!core.IsActive)
+				return;
+
 			float elapsed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
 			MouseState ms = Mouse.GetState();

@@ -38,6 +38,10 @@ namespace DepthsBelow
 
 		public void Update(GameTime gameTime)
 		{
+			// Only capture input if the game window is in focus
+			if (!core.IsActive)
+				return;
+
 			MouseState ms = Mouse.GetState();
 			Vector2 mouseWorldPos = core.Camera.ScreenToWorld(new Vector2(ms.X, ms.Y));
 			KeyboardState ks = Keyboard.GetState();
