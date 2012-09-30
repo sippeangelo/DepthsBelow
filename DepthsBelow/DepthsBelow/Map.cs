@@ -66,7 +66,22 @@ namespace DepthsBelow
 				var objectLayer = layer as MapObjectLayer;
 				if (objectLayer != null)
 				{
-					// Parse objects
+					// Parse lighting engine hulls
+					/*if (objectLayer.Name == "Opaque")
+					{
+						foreach (var hullObject in objectLayer.Objects)
+						{
+							Console.WriteLine("Width: " + hullObject.Bounds.Width);
+							Console.WriteLine("Height: " + hullObject.Bounds.Height);
+							Console.WriteLine(hullObject.Bounds.X + ", " + hullObject.Bounds.Y);
+							Krypton.ShadowHull hull = Krypton.ShadowHull.CreateRectangle(new Vector2(hullObject.Bounds.Width, hullObject.Bounds.Height));
+							hull.Position.X = hullObject.Bounds.X + hullObject.Bounds.Width / 2;
+							hull.Position.Y = hullObject.Bounds.Y + hullObject.Bounds.Height / 2;
+							kryptonEngine.Hulls.Add(hull);
+						}
+					}*/
+
+					// Parse general objects
 					foreach (var mapObject in objectLayer.Objects)
 					{
 						if (mapObject.Type == "SquadStart")
@@ -104,6 +119,8 @@ namespace DepthsBelow
 							}
 						}
 					}
+
+					
 				}
 			}
 		}

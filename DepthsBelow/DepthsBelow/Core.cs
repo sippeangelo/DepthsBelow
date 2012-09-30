@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Krypton.Lights;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -84,15 +85,30 @@ namespace DepthsBelow
 			var light = new Krypton.Lights.Light2D()
 				{
 					Texture = Krypton.LightTextureBuilder.CreatePointLight(this.GraphicsDevice, 512),
-					Range = (float)(200),
+					Range = (float)(500),
 					Color = Color.White,
 					Intensity = 1f,
 					Angle = MathHelper.TwoPi,
 					X = 17 * Grid.TileSize,
 					Y = 7 * Grid.TileSize,
-					Fov = MathHelper.TwoPi,
-					IsOn = true
+					Fov = MathHelper.TwoPi / 15,
+					IsOn = true,
+					ShadowType = ShadowType.Illuminated
 				};
+			this.KryptonEngine.Lights.Add(light);
+			light = new Krypton.Lights.Light2D()
+			{
+				Texture = Krypton.LightTextureBuilder.CreatePointLight(this.GraphicsDevice, 512),
+				Range = (float)(100),
+				Color = Color.White,
+				Intensity = 1f,
+				Angle = MathHelper.TwoPi,
+				X = 17 * Grid.TileSize,
+				Y = 7 * Grid.TileSize,
+				Fov = MathHelper.TwoPi,
+				IsOn = true,
+				ShadowType = ShadowType.Illuminated
+			};
 			this.KryptonEngine.Lights.Add(light);
 
 			// TODO: use this.Content to load your game content here
@@ -147,11 +163,12 @@ namespace DepthsBelow
 			this.KryptonEngine.LightMapPrepare();
 
 			GraphicsDevice.Clear(Color.Black);
-
+			
 			/*
 			 *	Draw game world
 			 */
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, Camera.Transform);
+			//GraphicsDevice.BlendState = BlendState.AlphaBlend;
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, null, Camera.Transform);
 
 				// Draw the level
 				Map.Draw(spriteBatch);

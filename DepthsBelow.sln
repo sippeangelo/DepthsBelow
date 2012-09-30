@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AStar", "AStar\AStar.csproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{FF7D4CEE-291C-4F85-9630-977446A466D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krypton", "Krypton v2.0\Krypton\Krypton.csproj", "{B1BFCB2A-C001-4DAC-BA7D-B68BF28757F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krypton", "Krypton\Krypton\Krypton.csproj", "{B1BFCB2A-C001-4DAC-BA7D-B68BF28757F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
