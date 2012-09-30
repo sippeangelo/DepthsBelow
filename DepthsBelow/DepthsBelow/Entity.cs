@@ -9,24 +9,23 @@ namespace DepthsBelow
 	public class Entity
 	{
 		List<Component.Component> Components;
+		public Component.Transform Transform;
 		public Component.PixelTransform pixelTransform;
 		public Component.GridTransform gridTransform;
 		public int X
 		{
-			get { return this.gridTransform.X; }
+			get { return this.Transform.Grid.X; }
 			set 
-			{ 
-				this.gridTransform.X = value;
-				this.pixelTransform.X = this.gridTransform.ToWorld().X;
+			{
+				this.Transform.Grid.X = value;
 			}
 		}
 		public int Y
 		{
-			get { return this.gridTransform.Y; }
+			get { return this.Transform.Grid.Y; }
 			set
 			{
-				this.gridTransform.Y = value;
-				this.pixelTransform.Y = this.gridTransform.ToWorld().Y;
+				this.Transform.Grid.Y = value;
 			}
 		}
 
@@ -37,6 +36,8 @@ namespace DepthsBelow
 			this.core = core;
 
 			Components = new List<Component.Component>();
+			Transform = new Component.Transform(this);
+			AddComponent(Transform);
 			pixelTransform = new Component.PixelTransform(this);
 			AddComponent(pixelTransform);
 			gridTransform = new Component.GridTransform(this);

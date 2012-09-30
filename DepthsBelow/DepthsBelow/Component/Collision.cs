@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace DepthsBelow.Component
 {
@@ -21,11 +23,12 @@ namespace DepthsBelow.Component
         	this.Height = height;
 		    this.Rectangle = new Rectangle(0, 0, width, height);
         }
+
         public override void Update(GameTime gameTime)
         {
-            PixelTransform pt = this.Parent.GetComponent<PixelTransform>();
-	        this.Rectangle.X = (int)pt.X;
-	        this.Rectangle.Y = (int)pt.Y;
+			Transform transform = this.Parent.GetComponent<Transform>();
+			this.Rectangle.X = (int)transform.World.X;
+	        this.Rectangle.Y = (int)transform.World.Y;
         }
     }
 }

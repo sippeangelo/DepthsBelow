@@ -13,16 +13,14 @@ namespace DepthsBelow
 		public static Point Origin;
 		private bool _selected;
 
-		private KeyboardState lastKeyboardState;
+		private PathFinder.Node nextNode;
 
 		public Soldier(Core core) : base(core)
 		{
 			if (Texture == null)
 				LoadContent(core);
 
-			pixelTransform.Origin = new Vector2(16, 16);
-			//gridTransform.Position = new Point(7, 3);
-			//pixelTransform.Position = gridTransform.ToWorld();
+			Transform.World.Origin = new Vector2(16, 16);
 
 			this.Color = Color.White;
 			var rc = new SpriteRenderer(this) {Texture = Texture, Color = Color.White};
@@ -53,39 +51,30 @@ namespace DepthsBelow
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
-			KeyboardState ks = Keyboard.GetState();
-			if (ks.IsKeyDown(Keys.Right) && lastKeyboardState.IsKeyUp(Keys.Right))
+
+			if (nextNode == null)
+				nextNode = GetComponent<PathFinder>().Next();
+
+			if (nextNode != null)
 			{
-				gridTransform.X += 1;
-				pixelTransform.Rotation = (float)0;
+				var nodeWorldPos = Grid.GridToWorld(nextNode.Position);
+				// HACK: Make this work properly with other speeds...
+				int speed = 2*4;
+				if (Transform.World.X < nodeWorldPos.X)
+					Transform.World.X += speed;
+				if (Transform.World.X > nodeWorldPos.X)
+					Transform.World.X -= speed;
+				if (Transform.World.Y < nodeWorldPos.Y)
+					Transform.World.Y += speed;
+				if (Transform.World.Y > nodeWorldPos.Y)
+					Transform.World.Y -= speed;
+
+				if (Transform.World == nodeWorldPos)
+					nextNode = GetComponent<PathFinder>().Next();
+					
 			}
 
-			if (ks.IsKeyDown(Keys.Left) && lastKeyboardState.IsKeyUp(Keys.Left))
-			{
-				gridTransform.X -= 1;
-				pixelTransform.Rotation = (float)Math.PI;
-			}
-			if (ks.IsKeyDown(Keys.Up) && lastKeyboardState.IsKeyUp(Keys.Up))
-			{
-				gridTransform.Y -= 1;
-				pixelTransform.Rotation = (float)(3.0f*Math.PI/2.0f);
-			}
-			if (ks.IsKeyDown(Keys.Down) && lastKeyboardState.IsKeyUp(Keys.Down))
-			{
-				gridTransform.Y += 1;
-				pixelTransform.Rotation = (float)(Math.PI / 2.0f);
-			}
-			lastKeyboardState = ks;
-
-			int speed = 1;
-			if (pixelTransform.X < gridTransform.ToWorld().X)
-				pixelTransform.X += speed;
-			if (pixelTransform.X > gridTransform.ToWorld().X)
-				pixelTransform.X -= speed;
-			if (pixelTransform.Y < gridTransform.ToWorld().Y)
-				pixelTransform.Y += speed;
-			if (pixelTransform.Y > gridTransform.ToWorld().Y)
-				pixelTransform.Y -= speed;
+			/**/
 		}
 	}
 }

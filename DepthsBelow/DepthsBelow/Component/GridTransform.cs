@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace DepthsBelow.Component
 {
+	[Obsolete("Deprecated in favour of Component.Transform")]
 	public class GridTransform : Component
 	{
 		public Point Position;
