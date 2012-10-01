@@ -25,7 +25,7 @@ namespace DepthsBelow
         bool checkingDirection = false;
 
 		
-public MouseInput(Core core)
+		public MouseInput(Core core)
 		{
 			this.core = core;
 
@@ -104,8 +104,8 @@ public MouseInput(Core core)
             }
             if (checkingDirection == true && ms.RightButton == ButtonState.Pressed)
             {
-                directionNow.X = ms.X;
-                directionNow.Y = ms.Y;
+                directionNow.X = mouseWorldPos.X;
+				directionNow.Y = mouseWorldPos.Y;
             }
             else
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DepthsBelow.Component;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,12 +14,16 @@ namespace DepthsBelow
 		public static Point Origin;
 		private bool _selected;
 
+		public List<Soldier> Squad;
+
 		private PathFinder.Node nextNode;
 
-		public Soldier(Core core) : base(core)
+		public Soldier(Core core, ref List<Soldier> squad) : base(core)
 		{
 			if (Texture == null)
 				LoadContent(core);
+
+			this.Squad = squad;
 
 			Transform.World.Origin = new Vector2(16, 16);
 
@@ -52,25 +57,48 @@ namespace DepthsBelow
 		{
 			base.Update(gameTime);
 
+			float elapsed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+
 			if (nextNode == null)
 				nextNode = GetComponent<PathFinder>().Next();
 
 			if (nextNode != null)
 			{
-				var nodeWorldPos = Grid.GridToWorld(nextNode.Position);
-				// HACK: Make this work properly with other speeds...
-				int speed = 2*4;
-				if (Transform.World.X < nodeWorldPos.X)
-					Transform.World.X += speed;
-				if (Transform.World.X > nodeWorldPos.X)
-					Transform.World.X -= speed;
-				if (Transform.World.Y < nodeWorldPos.Y)
-					Transform.World.Y += speed;
-				if (Transform.World.Y > nodeWorldPos.Y)
-					Transform.World.Y -= speed;
+				List<Point> soldierCollisions = new List<Point>();
 
-				if (Transform.World == nodeWorldPos)
-					nextNode = GetComponent<PathFinder>().Next();
+				foreach (var soldier in Squad)
+				{
+					if (soldier != this)
+					{
+						if (soldier.Transform.Grid == nextNode.Position)
+						{
+							soldierCollisions.Add(soldier.Transform.Grid);
+							GetComponent<PathFinder>().RecreatePath(soldierCollisions);
+							nextNode = GetComponent<PathFinder>().Next();
+							break;
+						}
+					}
+				}
+
+				
+
+				if (nextNode != null)
+				{
+					var nodeWorldPos = Grid.GridToWorld(nextNode.Position);
+					// HACK: Make this work properly with other speeds...
+					float speed = 4f;
+					if (Transform.World.X < nodeWorldPos.X)
+						Transform.World.X += speed;
+					if (Transform.World.X > nodeWorldPos.X)
+						Transform.World.X -= speed;
+					if (Transform.World.Y < nodeWorldPos.Y)
+						Transform.World.Y += speed;
+					if (Transform.World.Y > nodeWorldPos.Y)
+						Transform.World.Y -= speed;
+
+					if (Transform.World == nodeWorldPos)
+						nextNode = GetComponent<PathFinder>().Next();
+				}
 					
 			}
 

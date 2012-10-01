@@ -29,6 +29,8 @@ namespace DepthsBelow.Component
 
 		public Point Start { get; private set; }
 
+		public byte[,] CollisionMap;
+
 		private Point goal;
 		public Point Goal
 		{
@@ -36,8 +38,8 @@ namespace DepthsBelow.Component
 			set 
 			{
 				this.goal = value;
-				this.Start = this.Parent.GetComponent<Transform>().Grid.Position;
-				this.FindPath(this.Start, value);
+				//this.Start = this.Parent.GetComponent<Transform>().Grid.Position;
+				this.FindPath(this.Parent.GetComponent<Transform>().Grid.Position, value, null);
 			}
 		}
 		
@@ -47,16 +49,7 @@ namespace DepthsBelow.Component
 		public PathFinder(Entity parent)
 			: base(parent)
 		{
-			pathFinder = new AStar.PathFinderFast(Core.Map.GetCollisionMap());
-			pathFinder.Formula = AStar.HeuristicFormula.Manhattan;
-			pathFinder.Diagonals = false;
-			pathFinder.HeavyDiagonals = false;
-			pathFinder.HeuristicEstimate = 2;
-			pathFinder.PunishChangeDirection = true;
-			pathFinder.TieBreaker = false;
-			pathFinder.SearchLimit = 50000;
-			pathFinder.DebugProgress = false;
-			pathFinder.DebugFoundPath = false;
+			
 		}
 
 		public override void Update(GameTime gameTime)
@@ -86,8 +79,25 @@ namespace DepthsBelow.Component
 			return (Node)nextNode;
 		}
 
-		public List<AStar.PathFinderNode> FindPath(Point start, Point goal)
+		private List<AStar.PathFinderNode> FindPath(Point start, Point goal, List<Point> appendCollisionMap)
 		{
+			byte[,] mapCollisionMap = Core.Map.GetCollisionMap();
+
+			if (appendCollisionMap != null)
+				foreach (var point in appendCollisionMap)
+					mapCollisionMap[point.X, point.Y] = 0;
+
+			pathFinder = new AStar.PathFinderFast(mapCollisionMap);
+			pathFinder.Formula = AStar.HeuristicFormula.Manhattan;
+			pathFinder.Diagonals = false;
+			pathFinder.HeavyDiagonals = false;
+			pathFinder.HeuristicEstimate = 2;
+			pathFinder.PunishChangeDirection = false;
+			pathFinder.TieBreaker = false;
+			pathFinder.SearchLimit = 50000;
+			pathFinder.DebugProgress = false;
+			pathFinder.DebugFoundPath = false;
+
 			var _start = new System.Drawing.Point(start.X, start.Y);
 			var _goal = new System.Drawing.Point(goal.X, goal.Y);
 			//path = Core.PathFinder.FindPath(_start, _goal);
@@ -95,7 +105,14 @@ namespace DepthsBelow.Component
 			if (path == null)
 				Debug.WriteLine(this.Parent.ToString() + ": Path not found!");
 
+			this.CollisionMap = new byte[100, 100];
+
 			return path;
+		}
+
+		public void RecreatePath(List<Point> appendCollisionMap)
+		{
+			FindPath(this.Parent.GetComponent<Transform>().Grid.Position, this.Goal, appendCollisionMap);
 		}
 	}
 }
