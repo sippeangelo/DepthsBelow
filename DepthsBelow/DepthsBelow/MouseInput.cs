@@ -19,6 +19,11 @@ namespace DepthsBelow
         Rectangle gridRectangle;
         Texture2D gridTexture;
 
+        Vector2 directionStart;
+        Vector2 directionNow;
+
+        bool checkingDirection = false;
+
 		public MouseInput(Core core)
 		{
 			this.core = core;
@@ -82,7 +87,28 @@ namespace DepthsBelow
 				foreach (var unit in core.Squad)
 					if (unit.Selected)
 						unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
+
 			}
+            if (ms.RightButton == ButtonState.Pressed)
+            {
+                foreach (var unit in core.Squad)
+                {
+                    if (unit.Selected)
+                    {
+                        checkingDirection = true;
+                        directionStart = unit.Transform.World + unit.Transform.World.Origin;
+                    }
+                }
+            }
+            if (checkingDirection == true && ms.RightButton == ButtonState.Pressed)
+            {
+                directionNow.X = ms.X;
+                directionNow.Y = ms.Y;
+            }
+            else
+            {
+                checkingDirection = false;
+            }
 
 			// Grid highlighting
 			Point mouseGridPos = Grid.WorldToGrid(mouseWorldPos);
@@ -96,6 +122,24 @@ namespace DepthsBelow
 		{
 			spriteBatch.Draw(selectionTexture, selectionRectangle, Color.Red * 0.5f);
 			spriteBatch.Draw(gridTexture, gridRectangle, Color.Yellow * 0.3f);
+
+            if (checkingDirection == true) 
+            {
+                Texture2D blank = new Texture2D(core.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+                blank.SetData(new[] { Color.White });
+                DrawLine(spriteBatch, blank, 2, Color.White, directionStart, directionNow);
+            }
+
 		}
+
+        void DrawLine(SpriteBatch batch, Texture2D blank, float width, Color color, Vector2 point1, Vector2 point2)
+        {
+            float angle = (float)Math.Atan2(point2.Y - point1.Y, point2.X - point1.X);
+            float length = Vector2.Distance(point1, point2);
+
+            batch.Draw(blank, point1, null, color,
+                       angle, Vector2.Zero, new Vector2(length, width),
+                       SpriteEffects.None, 0);
+        }
 	}
 }
