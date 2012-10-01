@@ -19,13 +19,7 @@ namespace DepthsBelow
         Rectangle gridRectangle;
         Texture2D gridTexture;
 
-		public MouseInput(Core core)
-		{
-			this.core = core;
-
-			selectionRectangle = Rectangle.Empty;
-			gridRectangle = Rectangle.Empty;
-		}
+		
 
 		public void LoadContent()
 		{
