@@ -87,15 +87,17 @@ public MouseInput(Core core)
 			if (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
 			{
 				foreach (var unit in core.Squad)
-					if (unit.Selected)
+                    if (unit.Selected) 
+                    {
 						unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
+                    }
 
 			}
             if (ms.RightButton == ButtonState.Pressed)
             {
                 foreach (var unit in core.Squad)
                 {
-                    if (unit.Selected)
+                    if (unit.Selected && gridRectangle.Intersects(unit.GetComponent<Component.Collision>().Rectangle))
                     {
                         checkingDirection = true;
                         directionStart = unit.Transform.World + unit.Transform.World.Origin;
@@ -104,8 +106,28 @@ public MouseInput(Core core)
             }
             if (checkingDirection == true && ms.RightButton == ButtonState.Pressed)
             {
-                directionNow.X = ms.X;
-                directionNow.Y = ms.Y;
+                foreach (var unit in core.Squad)
+                    if (unit.Selected)
+                    {
+                        directionNow.X = mouseWorldPos.X;
+                        directionNow.Y = mouseWorldPos.Y;
+                        float directionX = mouseWorldPos.X - unit.Transform.World.X;
+                        float directionY = mouseWorldPos.Y - unit.Transform.World.Y;
+                        var mouseDirection = mouseWorldPos;
+                        mouseDirection.Normalize();
+                        //float angle = (float)Math.Acos(Vector2.Dot(new Vector2(0, 1), mouseDirection)) * MathHelper.TwoPi;
+                        /*if (directionX < 0)
+                        {
+                            directionX *= -1;
+                            unit.GetComponent<Component.Transform>().World.Rotation = (float)Math.Atan(directionY / directionX);
+                        }
+                        else
+                        {
+                            */unit.GetComponent<Component.Transform>().World.Rotation = (float)Math.Atan2(mouseWorldPos.Y - unit.Transform.World.Y, mouseWorldPos.X - unit.Transform.World.X);/*
+                        }*/
+                        //Console.WriteLine(angle);
+                        //unit.GetComponent<Component.Transform>().World.Rotation = angle;
+                    }
             }
             else
             {
