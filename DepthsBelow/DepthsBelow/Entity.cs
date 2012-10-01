@@ -29,7 +29,7 @@ namespace DepthsBelow
 			}
 		}
 
-		private Core core;
+		protected Core core;
 
 		public Entity(Core core)
 		{
