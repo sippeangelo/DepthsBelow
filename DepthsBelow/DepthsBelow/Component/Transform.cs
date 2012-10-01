@@ -97,6 +97,12 @@ namespace DepthsBelow.Component
 			}
 
 			public float Rotation;
+
+            public void Rotate(int directionX, int directionY)
+            {
+                Rotation = (float)Math.Atan(directionY/directionX);
+            }
+
 			public Vector2 Origin;
 
 			public static implicit operator Vector2(WorldTransform worldTransform)
