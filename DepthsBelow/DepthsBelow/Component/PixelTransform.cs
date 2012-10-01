@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace DepthsBelow.Component
 {
+	[Obsolete("Deprecated in favour of Component.Transform")]
 	public class PixelTransform : Component
 	{
 		public Vector2 Position;

@@ -3,25 +3,47 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using AStar;
 using Microsoft.Xna.Framework;
 
 namespace DepthsBelow.Component
 {
-	class PathFinder : Component
+	public class PathFinder : Component
 	{
+		public class Node
+		{
+			public Point Position;
+			public int F;
+			public int G;
+
+			public static explicit operator Node(AStar.PathFinderNode aStarNode)
+			{
+				return new Node
+							{
+								Position = new Point(aStarNode.X, aStarNode.Y),
+								F = aStarNode.F,
+								G = aStarNode.G
+							};
+			}
+		}
+
 		public Point Start { get; private set; }
+
+		public byte[,] CollisionMap;
+
+		private Point goal;
 		public Point Goal
 		{
 			get { return goal; }
 			set 
 			{
 				this.goal = value;
-				this.Start = this.Parent.GetComponent<GridTransform>().Position;
-				this.FindPath(this.Start, value);
+				//this.Start = this.Parent.GetComponent<Transform>().Grid.Position;
+				this.FindPath(this.Parent.GetComponent<Transform>().Grid.Position, value, null);
 			}
 		}
-
-		private Point goal;
+		
+		private AStar.PathFinderFast pathFinder;
 		private List<AStar.PathFinderNode> path;
 
 		public PathFinder(Entity parent)
@@ -32,26 +54,45 @@ namespace DepthsBelow.Component
 
 		public override void Update(GameTime gameTime)
 		{
-			if (path != null && path.Count != 0)
+			/*if (path != null && path.Count != 0)
 			{
 				var nextNode = path.Last();
 				var nodePos = new Point(nextNode.X, nextNode.Y);
-				Parent.gridTransform.Position = nodePos;
-				if (Parent.pixelTransform.Position == Parent.gridTransform.ToWorld())
+				Parent.Transform.Grid.Position = nodePos;
+				if (Parent.Transform.World == (Vector2)Parent.Transform.Grid)
 					path.Remove(nextNode);
-			}
+			}*/
 
 			base.Update(gameTime);
 		}
 
-		public void FindPath(Point start, Point goal)
+		public Node Next()
 		{
-			AStar.PathFinderFast pathFinder = new AStar.PathFinderFast(Core.Map.GetCollisionMap());
+			if (path == null)
+				return null;
+
+			if (path.Count == 0)
+				return null;
+
+			var nextNode = path.Last();
+			path.Remove(nextNode);
+			return (Node)nextNode;
+		}
+
+		private List<AStar.PathFinderNode> FindPath(Point start, Point goal, List<Point> appendCollisionMap)
+		{
+			byte[,] mapCollisionMap = Core.Map.GetCollisionMap();
+
+			if (appendCollisionMap != null)
+				foreach (var point in appendCollisionMap)
+					mapCollisionMap[point.X, point.Y] = 0;
+
+			pathFinder = new AStar.PathFinderFast(mapCollisionMap);
 			pathFinder.Formula = AStar.HeuristicFormula.Manhattan;
 			pathFinder.Diagonals = false;
 			pathFinder.HeavyDiagonals = false;
 			pathFinder.HeuristicEstimate = 2;
-			pathFinder.PunishChangeDirection = true;
+			pathFinder.PunishChangeDirection = false;
 			pathFinder.TieBreaker = false;
 			pathFinder.SearchLimit = 50000;
 			pathFinder.DebugProgress = false;
@@ -63,6 +104,15 @@ namespace DepthsBelow.Component
 			path = pathFinder.FindPath(_start, _goal);
 			if (path == null)
 				Debug.WriteLine(this.Parent.ToString() + ": Path not found!");
+
+			this.CollisionMap = new byte[100, 100];
+
+			return path;
+		}
+
+		public void RecreatePath(List<Point> appendCollisionMap)
+		{
+			FindPath(this.Parent.GetComponent<Transform>().Grid.Position, this.Goal, appendCollisionMap);
 		}
 	}
 }

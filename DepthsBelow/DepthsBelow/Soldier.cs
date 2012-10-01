@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DepthsBelow.Component;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,16 +14,18 @@ namespace DepthsBelow
 		public static Point Origin;
 		private bool _selected;
 
-		private KeyboardState lastKeyboardState;
+		public List<Soldier> Squad;
 
-		public Soldier(Core core) : base(core)
+		private PathFinder.Node nextNode;
+
+		public Soldier(Core core, ref List<Soldier> squad) : base(core)
 		{
 			if (Texture == null)
 				LoadContent(core);
 
-			pixelTransform.Origin = new Vector2(16, 16);
-			//gridTransform.Position = new Point(7, 3);
-			//pixelTransform.Position = gridTransform.ToWorld();
+			this.Squad = squad;
+
+			Transform.World.Origin = new Vector2(16, 16);
 
 			this.Color = Color.White;
 			var rc = new SpriteRenderer(this) {Texture = Texture, Color = Color.White};
@@ -53,39 +56,53 @@ namespace DepthsBelow
 		public override void Update(GameTime gameTime)
 		{
 			base.Update(gameTime);
-			KeyboardState ks = Keyboard.GetState();
-			if (ks.IsKeyDown(Keys.Right) && lastKeyboardState.IsKeyUp(Keys.Right))
+
+			float elapsed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+
+			if (nextNode == null)
+				nextNode = GetComponent<PathFinder>().Next();
+
+			if (nextNode != null)
 			{
-				gridTransform.X += 1;
-				pixelTransform.Rotation = (float)0;
+				List<Point> soldierCollisions = new List<Point>();
+
+				foreach (var soldier in Squad)
+				{
+					if (soldier != this)
+					{
+						if (soldier.Transform.Grid == nextNode.Position)
+						{
+							soldierCollisions.Add(soldier.Transform.Grid);
+							GetComponent<PathFinder>().RecreatePath(soldierCollisions);
+							nextNode = GetComponent<PathFinder>().Next();
+							break;
+						}
+					}
+				}
+
+				
+
+				if (nextNode != null)
+				{
+					var nodeWorldPos = Grid.GridToWorld(nextNode.Position);
+					// HACK: Make this work properly with other speeds...
+					float speed = 4f;
+					if (Transform.World.X < nodeWorldPos.X)
+						Transform.World.X += speed;
+					if (Transform.World.X > nodeWorldPos.X)
+						Transform.World.X -= speed;
+					if (Transform.World.Y < nodeWorldPos.Y)
+						Transform.World.Y += speed;
+					if (Transform.World.Y > nodeWorldPos.Y)
+						Transform.World.Y -= speed;
+
+					if (Transform.World == nodeWorldPos)
+						nextNode = GetComponent<PathFinder>().Next();
+				}
+					
 			}
 
-			if (ks.IsKeyDown(Keys.Left) && lastKeyboardState.IsKeyUp(Keys.Left))
-			{
-				gridTransform.X -= 1;
-				pixelTransform.Rotation = (float)Math.PI;
-			}
-			if (ks.IsKeyDown(Keys.Up) && lastKeyboardState.IsKeyUp(Keys.Up))
-			{
-				gridTransform.Y -= 1;
-				pixelTransform.Rotation = (float)(3.0f*Math.PI/2.0f);
-			}
-			if (ks.IsKeyDown(Keys.Down) && lastKeyboardState.IsKeyUp(Keys.Down))
-			{
-				gridTransform.Y += 1;
-				pixelTransform.Rotation = (float)(Math.PI / 2.0f);
-			}
-			lastKeyboardState = ks;
-
-			int speed = 1;
-			if (pixelTransform.X < gridTransform.ToWorld().X)
-				pixelTransform.X += speed;
-			if (pixelTransform.X > gridTransform.ToWorld().X)
-				pixelTransform.X -= speed;
-			if (pixelTransform.Y < gridTransform.ToWorld().Y)
-				pixelTransform.Y += speed;
-			if (pixelTransform.Y > gridTransform.ToWorld().Y)
-				pixelTransform.Y -= speed;
+			/**/
 		}
 	}
 }
