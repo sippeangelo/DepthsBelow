@@ -86,7 +86,9 @@ namespace DepthsBelow
 					{
 						if (mapObject.Type == "SquadStart")
 						{
-						var soldier = new Soldier(core, ref core.Squad);
+							// HACK: Move the entity creation to an entity factory
+							var soldier = new Soldier(core, ref core.Squad);
+							core.KryptonEngine.Lights.Add((Krypton.Lights.Light2D)soldier.GetComponent<Component.Flashlight>());
 							// HACK: For some reason, the tile object coordinates are offset by one tile on the Y-axis in the Tiled map file (https://github.com/bjorn/tiled/issues/91)
 							var mapObjectPos = new Vector2(mapObject.Bounds.X, mapObject.Bounds.Y - Grid.TileSize);
 							var mapObjectGridPos = Grid.WorldToGrid(mapObjectPos);

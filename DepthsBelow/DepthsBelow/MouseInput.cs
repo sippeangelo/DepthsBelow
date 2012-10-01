@@ -36,10 +36,10 @@ namespace DepthsBelow
 
 		public void LoadContent()
 		{
-			selectionTexture = new Texture2D(core.GraphicsDevice, 1, 1);
+			selectionTexture = new Texture2D(Core.GraphicsDevice, 1, 1);
 			selectionTexture.SetData(new Color[] { Color.White });
 
-            gridTexture = new Texture2D(core.GraphicsDevice, 1, 1);
+			gridTexture = new Texture2D(Core.GraphicsDevice, 1, 1);
             gridTexture.SetData(new Color[] { Color.White });
 		}
 
@@ -153,7 +153,7 @@ namespace DepthsBelow
 
             if (checkingDirection == true) 
             {
-                Texture2D blank = new Texture2D(core.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+				Texture2D blank = new Texture2D(Core.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
                 blank.SetData(new[] { Color.White });
                 DrawLine(spriteBatch, blank, 2, Color.White, directionStart, directionNow);
             }

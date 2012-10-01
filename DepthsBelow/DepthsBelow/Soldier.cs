@@ -36,6 +36,12 @@ namespace DepthsBelow
 
 			var pfc = new PathFinder(this);
 			AddComponent(pfc);
+
+			AddComponent(new Flashlight(this)
+				             {
+								 Range = 200,
+					             Fov = MathHelper.PiOver4
+				             });
 		}
 
 		public bool Selected

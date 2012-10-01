@@ -51,12 +51,12 @@ namespace DepthsBelow
 
 			if (ms.X < 20)
 				Position.X += Speed * elapsed;
-			if (ms.X > core.GraphicsDevice.Viewport.Width - 20)
+			if (ms.X > Core.GraphicsDevice.Viewport.Width - 20)
 				Position.X -= Speed * elapsed;
 
 			if (ms.Y < 20)
 				Position.Y += Speed * elapsed;
-			if (ms.Y > core.GraphicsDevice.Viewport.Height - 20)
+			if (ms.Y > Core.GraphicsDevice.Viewport.Height - 20)
 				Position.Y -= Speed * elapsed;
 
 			int scrollChange = ms.ScrollWheelValue - lastMouseState.ScrollWheelValue;

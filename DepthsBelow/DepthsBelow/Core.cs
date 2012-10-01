@@ -17,6 +17,7 @@ namespace DepthsBelow
 	/// </summary>
 	public class Core : Microsoft.Xna.Framework.Game
 	{
+		public static GraphicsDevice GraphicsDevice;
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
@@ -43,7 +44,7 @@ namespace DepthsBelow
 
 			this.IsMouseVisible = true;
 
-			KryptonEngine = new Krypton.KryptonEngine(this, "KryptonEffect");
+			
 		}
 
 		/// <summary>
@@ -54,7 +55,9 @@ namespace DepthsBelow
 		/// </summary>
 		protected override void Initialize()
 		{
-			// TODO: Add your initialization logic here
+			GraphicsDevice = graphics.GraphicsDevice;
+			
+			KryptonEngine = new Krypton.KryptonEngine(this, "KryptonEffect");
 
 			// Initialize lighting engine
 			this.KryptonEngine.Initialize();
@@ -75,16 +78,16 @@ namespace DepthsBelow
 		protected override void LoadContent()
 		{
 			// Create a new SpriteBatch, which can be used to draw textures.
-			spriteBatch = new SpriteBatch(GraphicsDevice);
+			spriteBatch = new SpriteBatch(Core.GraphicsDevice);
 
 			Map = Content.Load<Map>("maps/Cave.Level1");
 			// Load map objects
 			Map.Initialize(this, KryptonEngine);
 
 			// DEBUG: Test lights
-			var light = new Krypton.Lights.Light2D()
+			/*var light = new Krypton.Lights.Light2D()
 				{
-					Texture = Krypton.LightTextureBuilder.CreatePointLight(this.GraphicsDevice, 512),
+					Texture = Krypton.LightTextureBuilder.CreatePointLight(Core.GraphicsDevice, 512),
 					Range = (float)(500),
 					Color = Color.White,
 					Intensity = 1f,
@@ -95,10 +98,10 @@ namespace DepthsBelow
 					IsOn = true,
 					ShadowType = ShadowType.Illuminated
 				};
-			this.KryptonEngine.Lights.Add(light);
-			light = new Krypton.Lights.Light2D()
+			this.KryptonEngine.Lights.Add(light);*/
+			var light = new Krypton.Lights.Light2D()
 			{
-				Texture = Krypton.LightTextureBuilder.CreatePointLight(this.GraphicsDevice, 512),
+				Texture = Krypton.LightTextureBuilder.CreatePointLight(Core.GraphicsDevice, 512),
 				Range = (float)(100),
 				Color = Color.White,
 				Intensity = 1f,
@@ -145,8 +148,8 @@ namespace DepthsBelow
 			foreach (var soldier in Squad)
 				soldier.Update(gameTime);
 
-			foreach (Krypton.Lights.Light2D light in KryptonEngine.Lights)
-				light.Position = Camera.ScreenToWorld(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
+			//foreach (Krypton.Lights.Light2D light in KryptonEngine.Lights)
+			//	light.Position = Camera.ScreenToWorld(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
 
 			base.Update(gameTime);
 		}
