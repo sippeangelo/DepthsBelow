@@ -24,13 +24,15 @@ namespace DepthsBelow
 
         bool checkingDirection = false;
 
-		public MouseInput(Core core)
+		
+public MouseInput(Core core)
 		{
 			this.core = core;
 
 			selectionRectangle = Rectangle.Empty;
 			gridRectangle = Rectangle.Empty;
 		}
+
 
 		public void LoadContent()
 		{
