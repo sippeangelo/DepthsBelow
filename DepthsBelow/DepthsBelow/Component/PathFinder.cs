@@ -42,6 +42,14 @@ namespace DepthsBelow.Component
 				this.FindPath(this.Parent.GetComponent<Transform>().Grid.Position, value, null);
 			}
 		}
+
+		public bool IsMoving
+		{
+			get
+			{
+				return path != null && path.Count() != 0;
+			}
+		}
 		
 		private AStar.PathFinderFast pathFinder;
 		private List<AStar.PathFinderNode> path;
@@ -77,6 +85,11 @@ namespace DepthsBelow.Component
 			var nextNode = path.Last();
 			path.Remove(nextNode);
 			return (Node)nextNode;
+		}
+
+		public void Stop()
+		{
+			path = null;
 		}
 
 		private List<AStar.PathFinderNode> FindPath(Point start, Point goal, List<Point> appendCollisionMap)
