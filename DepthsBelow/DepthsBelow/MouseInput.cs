@@ -23,6 +23,7 @@ namespace DepthsBelow
         Vector2 directionNow;
 
         bool checkingDirection = false;
+        bool readjust = false;
 
 		
 		public MouseInput(Core core)
@@ -52,14 +53,34 @@ namespace DepthsBelow
 			// Selection rectangle
 			if (ms.LeftButton == ButtonState.Pressed)
 			{
+                
 				if (selectionRectangle == Rectangle.Empty)
 				{
+                    directionStart = mouseWorldPos;
 					selectionRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 0, 0);
+                    readjust = false;
 				}
 				else
 				{
-					selectionRectangle.Width = (int)mouseWorldPos.X - selectionRectangle.X;
-					selectionRectangle.Height = (int)mouseWorldPos.Y - selectionRectangle.Y;
+                    if (mouseWorldPos.X > directionStart.X && mouseWorldPos.Y < directionStart.Y || mouseWorldPos.X < directionStart.X && mouseWorldPos.Y > directionStart.Y)
+                    {
+                        int rectangleX = (int)mouseWorldPos.X - ((int)mouseWorldPos.X - (int)directionStart.X);
+                        int rectangleY = (int)mouseWorldPos.Y;
+                        int rectangleWidth = (int)mouseWorldPos.X - (int)directionStart.X;
+                        int rectangleHeight = (int)directionStart.Y - (int)mouseWorldPos.Y;
+                        selectionRectangle = new Rectangle(rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                        readjust = true;
+                    }
+                    else
+                    {
+                        if (readjust == true)
+                        {
+                            selectionRectangle = new Rectangle((int)directionStart.X, (int)directionStart.Y, 0, 0);
+                        }
+                        selectionRectangle.Width = (int)mouseWorldPos.X - selectionRectangle.X;
+                        selectionRectangle.Height = (int)mouseWorldPos.Y - selectionRectangle.Y;
+                        readjust = false;
+                    }
 				}
 			}
 			// When the mouse is released

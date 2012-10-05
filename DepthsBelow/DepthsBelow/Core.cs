@@ -22,7 +22,8 @@ namespace DepthsBelow
 		public Camera Camera;
 
 		public static MouseInput MouseInput;
-		public List<Soldier> Squad; 
+		public List<Soldier> Squad;
+        public List<SmallEnemy> Swarm;
 		public static Map Map;
 
 		public Core()
@@ -52,6 +53,7 @@ namespace DepthsBelow
 			// TODO: Add your initialization logic here
 			Camera = new Camera(this);
 			Squad = new List<Soldier>();
+            Swarm = new List<SmallEnemy>();
 
 			base.Initialize();
 		}
@@ -71,6 +73,7 @@ namespace DepthsBelow
 
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);
+            SmallEnemy.LoadContent(this);
 
 			MouseInput = new MouseInput(this);
 			MouseInput.LoadContent();
@@ -103,6 +106,9 @@ namespace DepthsBelow
 			foreach (var soldier in Squad)
 				soldier.Update(gameTime);
 
+            foreach (var body in Swarm)
+                body.Update(gameTime);
+
 			base.Update(gameTime);
 		}
 
@@ -128,6 +134,12 @@ namespace DepthsBelow
 				if (sr != null)
 					sr.Draw(spriteBatch);
 			}
+            foreach (var body in Swarm)
+            {
+                var sr = body.GetComponent<Component.SpriteRenderer>();
+                if (sr != null)
+                    sr.Draw(spriteBatch);
+            }
 
 			// Draw mouse input visuals
 			MouseInput.Draw(spriteBatch);
