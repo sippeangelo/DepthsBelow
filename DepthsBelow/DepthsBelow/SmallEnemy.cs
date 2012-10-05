@@ -26,7 +26,7 @@ namespace DepthsBelow
 
             this.Swarm = swarm;
 
-            Transform.World.Origin = new Vector2(16, 16);
+            Transform.World.Origin = new Vector2(20, 16);
 
             this.Color = Color.White;
             var rc = new SpriteRenderer(this) { Texture = Texture, Color = Color.White };
@@ -58,7 +58,7 @@ namespace DepthsBelow
         {
             base.Update(gameTime);
 
-            float elapsed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            /*float elapsed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             if (nextNode == null)
                 nextNode = GetComponent<PathFinder>().Next();
@@ -101,9 +101,7 @@ namespace DepthsBelow
                         nextNode = GetComponent<PathFinder>().Next();
                 }
 
-            }
-
-            /**/
+            }*/
         }
     }
 }

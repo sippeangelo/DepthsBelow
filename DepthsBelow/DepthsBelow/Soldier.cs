@@ -17,6 +17,8 @@ namespace DepthsBelow
 		public List<Soldier> Squad;
 
 		private PathFinder.Node nextNode;
+		private PathFinder.Node lastNode;
+		private PathFinder.Node lastLastNode;
 
 		public Soldier(Core core, ref List<Soldier> squad) : base(core)
 		{
@@ -68,9 +70,19 @@ namespace DepthsBelow
 
 				foreach (var soldier in Squad)
 				{
+					if (soldier != this && !soldier.GetComponent<PathFinder>().IsMoving)
+					{
+						soldierCollisions.Add(soldier.Transform.Grid);
+					}
+				}
+
+				foreach (var soldier in Squad)
+				{
 					if (soldier != this)
 					{
-						if (soldier.Transform.Grid == nextNode.Position)
+						var pathFinder = soldier.GetComponent<PathFinder>();
+						var position = nextNode.Position;
+						if (soldier.Transform.Grid == position)
 						{
 							soldierCollisions.Add(soldier.Transform.Grid);
 							GetComponent<PathFinder>().RecreatePath(soldierCollisions);
@@ -79,8 +91,6 @@ namespace DepthsBelow
 						}
 					}
 				}
-
-				
 
 				if (nextNode != null)
 				{
@@ -97,7 +107,11 @@ namespace DepthsBelow
 						Transform.World.Y -= speed;
 
 					if (Transform.World == nodeWorldPos)
+					{
+						lastLastNode = lastNode;
+						lastNode = nextNode;
 						nextNode = GetComponent<PathFinder>().Next();
+					}
 				}
 					
 			}
