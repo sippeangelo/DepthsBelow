@@ -144,7 +144,7 @@ namespace DepthsBelow
                         }
                         else
                         {
-                            */unit.GetComponent<Component.Transform>().World.Rotation = (float)Math.Atan2(mouseWorldPos.Y - unit.Transform.World.Y, mouseWorldPos.X - unit.Transform.World.X);/*
+                            */unit.GetComponent<Component.Transform>().World.Rotation = (float)Math.Atan2(mouseWorldPos.Y - unit.Transform.World.Y - unit.Transform.World.Origin.Y, mouseWorldPos.X - unit.Transform.World.X - unit.Transform.World.Origin.X);/*
                         }*/
                         //Console.WriteLine(angle);
                         //unit.GetComponent<Component.Transform>().World.Rotation = angle;
@@ -170,21 +170,10 @@ namespace DepthsBelow
 
             if (checkingDirection == true) 
             {
-                Texture2D blank = new Texture2D(core.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-                blank.SetData(new[] { Color.White });
-                DrawLine(spriteBatch, blank, 2, Color.White, directionStart, directionNow);
+                RenderHelpers.DrawLine(spriteBatch, Color.White, 2, directionStart, directionNow);
             }
 
 		}
 
-        void DrawLine(SpriteBatch batch, Texture2D blank, float width, Color color, Vector2 point1, Vector2 point2)
-        {
-            float angle = (float)Math.Atan2(point2.Y - point1.Y, point2.X - point1.X);
-            float length = Vector2.Distance(point1, point2);
-
-            batch.Draw(blank, point1, null, color,
-                       angle, Vector2.Zero, new Vector2(length, width),
-                       SpriteEffects.None, 0);
-        }
 	}
 }

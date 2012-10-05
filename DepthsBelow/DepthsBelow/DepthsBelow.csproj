@@ -135,6 +135,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Component\SpriteRenderer.cs" />
+    <Compile Include="RenderHelpers.cs" />
     <Compile Include="SmallEnemy.cs" />
     <Compile Include="Soldier.cs" />
     <Compile Include="Component\PixelTransform.cs" />

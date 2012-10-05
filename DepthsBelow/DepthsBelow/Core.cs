@@ -16,7 +16,7 @@ namespace DepthsBelow
 	/// </summary>
 	public class Core : Microsoft.Xna.Framework.Game
 	{
-		GraphicsDeviceManager graphics;
+		public static GraphicsDeviceManager GraphicsDeviceManager;
 		SpriteBatch spriteBatch;
 
 		public Camera Camera;
@@ -26,18 +26,20 @@ namespace DepthsBelow
         public List<SmallEnemy> Swarm;
 		public static Map Map;
 
+		public SmallEnemy TestMonster;
+
 		public Core()
 		{
-			graphics = new GraphicsDeviceManager(this);
+			GraphicsDeviceManager = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 
-			graphics.PreferredBackBufferWidth = 1280;
-			graphics.PreferredBackBufferHeight = 720;
-			graphics.IsFullScreen = false;
+			GraphicsDeviceManager.PreferredBackBufferWidth = 1280;
+			GraphicsDeviceManager.PreferredBackBufferHeight = 720;
+			GraphicsDeviceManager.IsFullScreen = false;
 
 			//graphics.SynchronizeWithVerticalRetrace = false;
 			this.IsFixedTimeStep = false;
-			graphics.ApplyChanges();
+			GraphicsDeviceManager.ApplyChanges();
 
 			this.IsMouseVisible = true;
 		}
@@ -54,6 +56,8 @@ namespace DepthsBelow
 			Camera = new Camera(this);
 			Squad = new List<Soldier>();
             Swarm = new List<SmallEnemy>();
+
+			TestMonster = new SmallEnemy(this, ref Swarm);
 
 			base.Initialize();
 		}
@@ -143,6 +147,8 @@ namespace DepthsBelow
 
 			// Draw mouse input visuals
 			MouseInput.Draw(spriteBatch);
+
+			TestMonster.GetComponent<Component.SpriteRenderer>().Draw(spriteBatch);
 
 			spriteBatch.End();
 
