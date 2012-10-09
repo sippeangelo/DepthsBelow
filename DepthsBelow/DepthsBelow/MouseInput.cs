@@ -49,112 +49,117 @@ namespace DepthsBelow
 			MouseState ms = Mouse.GetState();
 			Vector2 mouseWorldPos = core.Camera.ScreenToWorld(new Vector2(ms.X, ms.Y));
 			KeyboardState ks = Keyboard.GetState();
+            if (core.PlayerTurn == true)
+            {
+                // Selection rectangle
+                if (ms.LeftButton == ButtonState.Pressed)
+                {
 
-			// Selection rectangle
-			if (ms.LeftButton == ButtonState.Pressed)
-			{
-                
-				if (selectionRectangle == Rectangle.Empty)
-				{
-                    directionStart = mouseWorldPos;
-					selectionRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 0, 0);
-                    readjust = false;
-				}
-				else
-				{
-                    if (mouseWorldPos.X > directionStart.X && mouseWorldPos.Y < directionStart.Y || mouseWorldPos.X < directionStart.X && mouseWorldPos.Y > directionStart.Y)
+                    if (selectionRectangle == Rectangle.Empty)
                     {
-                        int rectangleX = (int)mouseWorldPos.X - ((int)mouseWorldPos.X - (int)directionStart.X);
-                        int rectangleY = (int)mouseWorldPos.Y;
-                        int rectangleWidth = (int)mouseWorldPos.X - (int)directionStart.X;
-                        int rectangleHeight = (int)directionStart.Y - (int)mouseWorldPos.Y;
-                        selectionRectangle = new Rectangle(rectangleX, rectangleY, rectangleWidth, rectangleHeight);
-                        readjust = true;
+                        directionStart = mouseWorldPos;
+                        selectionRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 0, 0);
+                        readjust = false;
                     }
                     else
                     {
-                        if (readjust == true)
+                        if (mouseWorldPos.X > directionStart.X && mouseWorldPos.Y < directionStart.Y || mouseWorldPos.X < directionStart.X && mouseWorldPos.Y > directionStart.Y)
                         {
-                            selectionRectangle = new Rectangle((int)directionStart.X, (int)directionStart.Y, 0, 0);
-                        }
-                        selectionRectangle.Width = (int)mouseWorldPos.X - selectionRectangle.X;
-                        selectionRectangle.Height = (int)mouseWorldPos.Y - selectionRectangle.Y;
-                        readjust = false;
-                    }
-				}
-			}
-			// When the mouse is released
-			if (ms.LeftButton == ButtonState.Released && selectionRectangle != Rectangle.Empty)
-			{
-				// Deselect all units
-				if (!ks.IsKeyDown(Keys.LeftControl))
-				{
-					foreach (var unit in core.Squad)
-						unit.Selected = false;
-				}
-
-				// Select all units in the rectangle
-				foreach (var unit in core.Squad)
-				{
-					if (selectionRectangle.Intersects(unit.GetComponent<Component.Collision>().Rectangle))
-						unit.Selected = true;
-				}
-
-				// Hide the selection rectangle
-				selectionRectangle = Rectangle.Empty;
-			}
-
-			// Send orders with right click
-			if (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
-			{
-				foreach (var unit in core.Squad)
-                    if (unit.Selected) 
-                    {
-						unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
-                    }
-
-			}
-            if (ms.RightButton == ButtonState.Pressed)
-            {
-                foreach (var unit in core.Squad)
-                {
-                    if (unit.Selected && gridRectangle.Intersects(unit.GetComponent<Component.Collision>().Rectangle))
-                    {
-                        checkingDirection = true;
-                        directionStart = unit.Transform.World + unit.Transform.World.Origin;
-                    }
-                }
-            }
-            if (checkingDirection == true && ms.RightButton == ButtonState.Pressed)
-            {
-                foreach (var unit in core.Squad)
-                    if (unit.Selected)
-                    {
-                        directionNow.X = mouseWorldPos.X;
-                        directionNow.Y = mouseWorldPos.Y;
-                        float directionX = mouseWorldPos.X - unit.Transform.World.X;
-                        float directionY = mouseWorldPos.Y - unit.Transform.World.Y;
-                        var mouseDirection = mouseWorldPos;
-                        mouseDirection.Normalize();
-                        //float angle = (float)Math.Acos(Vector2.Dot(new Vector2(0, 1), mouseDirection)) * MathHelper.TwoPi;
-                        /*if (directionX < 0)
-                        {
-                            directionX *= -1;
-                            unit.GetComponent<Component.Transform>().World.Rotation = (float)Math.Atan(directionY / directionX);
+                            int rectangleX = (int)mouseWorldPos.X - ((int)mouseWorldPos.X - (int)directionStart.X);
+                            int rectangleY = (int)mouseWorldPos.Y;
+                            int rectangleWidth = (int)mouseWorldPos.X - (int)directionStart.X;
+                            int rectangleHeight = (int)directionStart.Y - (int)mouseWorldPos.Y;
+                            selectionRectangle = new Rectangle(rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                            readjust = true;
                         }
                         else
                         {
-                            */unit.GetComponent<Component.Transform>().World.Rotation = (float)Math.Atan2(mouseWorldPos.Y - unit.Transform.World.Y - unit.Transform.World.Origin.Y, mouseWorldPos.X - unit.Transform.World.X - unit.Transform.World.Origin.X);/*
-                        }*/
-                        //Console.WriteLine(angle);
-                        //unit.GetComponent<Component.Transform>().World.Rotation = angle;
+                            if (readjust == true)
+                            {
+                                selectionRectangle = new Rectangle((int)directionStart.X, (int)directionStart.Y, 0, 0);
+                            }
+                            selectionRectangle.Width = (int)mouseWorldPos.X - selectionRectangle.X;
+                            selectionRectangle.Height = (int)mouseWorldPos.Y - selectionRectangle.Y;
+                            readjust = false;
+                        }
                     }
-            }
-            else
-            {
-                checkingDirection = false;
-            }
+                }
+                // When the mouse is released
+                if (ms.LeftButton == ButtonState.Released && selectionRectangle != Rectangle.Empty)
+                {
+                    // Deselect all units
+                    if (!ks.IsKeyDown(Keys.LeftControl))
+                    {
+                        foreach (var unit in core.Squad)
+                            unit.Selected = false;
+                    }
 
+                    // Select all units in the rectangle
+                    foreach (var unit in core.Squad)
+                    {
+                        if (selectionRectangle.Intersects(unit.GetComponent<Component.Collision>().Rectangle))
+                            unit.Selected = true;
+                    }
+
+                    // Hide the selection rectangle
+                    selectionRectangle = Rectangle.Empty;
+                }
+
+                // Send orders with right click
+                if (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
+                {
+                    if (checkingDirection == false)
+                    {
+                        foreach (var unit in core.Squad)
+                            if (unit.Selected)
+                            {
+                                unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
+                            }
+                    }
+
+                }
+                if (ms.RightButton == ButtonState.Pressed)
+                {
+                    foreach (var unit in core.Squad)
+                    {
+                        if (unit.Selected && gridRectangle.Intersects(unit.GetComponent<Component.Collision>().Rectangle))
+                        {
+                            checkingDirection = true;
+                            directionStart = unit.Transform.World + unit.Transform.World.Origin;
+                        }
+                    }
+                }
+                if (checkingDirection == true && ms.RightButton == ButtonState.Pressed)
+                {
+                    foreach (var unit in core.Squad)
+                        if (unit.Selected)
+                        {
+                            directionNow.X = mouseWorldPos.X;
+                            directionNow.Y = mouseWorldPos.Y;
+                            float directionX = mouseWorldPos.X - unit.Transform.World.X;
+                            float directionY = mouseWorldPos.Y - unit.Transform.World.Y;
+                            var mouseDirection = mouseWorldPos;
+                            mouseDirection.Normalize();
+                            //float angle = (float)Math.Acos(Vector2.Dot(new Vector2(0, 1), mouseDirection)) * MathHelper.TwoPi;
+                            /*if (directionX < 0)
+                            {
+                                directionX *= -1;
+                                unit.GetComponent<Component.Transform>().World.Rotation = (float)Math.Atan(directionY / directionX);
+                            }
+                            else
+                            {
+                                */
+                            unit.GetComponent<Component.Transform>().World.Rotation = (float)Math.Atan2(mouseWorldPos.Y - unit.Transform.World.Y - unit.Transform.World.Origin.Y, mouseWorldPos.X - unit.Transform.World.X - unit.Transform.World.Origin.X);/*
+                        }*/
+                            //Console.WriteLine(angle);
+                            //unit.GetComponent<Component.Transform>().World.Rotation = angle;
+                        }
+                }
+                else
+                {
+                    checkingDirection = false;
+                }
+            }
 			// Grid highlighting
 			Point mouseGridPos = Grid.WorldToGrid(mouseWorldPos);
 			Vector2 rectWorldPos = Grid.GridToWorld(mouseGridPos);

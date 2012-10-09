@@ -18,6 +18,18 @@ namespace DepthsBelow
 
         private PathFinder.Node nextNode;
 
+        public int numberOfSteps = 5;
+        public int currentStep = 0;
+
+        public int step
+        {
+            get { return currentStep; }
+            set
+            {
+                currentStep = value;
+            }
+        }
+
         public SmallEnemy(Core core, ref List<SmallEnemy> swarm)
             : base(core)
         {
@@ -58,7 +70,7 @@ namespace DepthsBelow
         {
             base.Update(gameTime);
 
-            /*float elapsed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            float elapsed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             if (nextNode == null)
                 nextNode = GetComponent<PathFinder>().Next();
@@ -81,7 +93,18 @@ namespace DepthsBelow
                     }
                 }
 
-
+                foreach (var soldier in core.Squad)
+                {
+                    var pathFinder = soldier.GetComponent<PathFinder>();
+                    var position = nextNode.Position;
+                    if (soldier.Transform.Grid == position)
+                    {
+                        soldierCollisions.Add(soldier.Transform.Grid);
+                        GetComponent<PathFinder>().RecreatePath(soldierCollisions);
+                        nextNode = GetComponent<PathFinder>().Next();
+                        break;
+                    }
+                }
 
                 if (nextNode != null)
                 {
@@ -98,10 +121,22 @@ namespace DepthsBelow
                         Transform.World.Y -= speed;
 
                     if (Transform.World == nodeWorldPos)
-                        nextNode = GetComponent<PathFinder>().Next();
+                    {
+                        if (currentStep < numberOfSteps)
+                        {
+                            currentStep++;
+                            //lastLastNode = lastNode;
+                            //lastNode = nextNode;
+                            nextNode = GetComponent<PathFinder>().Next();
+                        }
+                        else
+                        {
+                            GetComponent<PathFinder>().Stop();
+                        }
+                    }
                 }
 
-            }*/
+            }
         }
     }
 }
