@@ -107,13 +107,14 @@ namespace DepthsBelow
 			// Send orders with right click
 			if (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
 			{
-				foreach (var unit in core.Squad)
-                    if (unit.Selected) 
-                    {
-                        if (checkingDirection == false) {
-						    unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
+                if (checkingDirection == false)
+                {
+                    foreach (var unit in core.Squad)
+                        if (unit.Selected)
+                        {
+                            unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
                         }
-                    }
+                }
 
 			}
             if (ms.RightButton == ButtonState.Pressed)
