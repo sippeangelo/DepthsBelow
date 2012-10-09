@@ -58,7 +58,7 @@ namespace DepthsBelow
         {
             base.Update(gameTime);
 
-            /*float elapsed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
+            float elapsed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
 
             if (nextNode == null)
                 nextNode = GetComponent<PathFinder>().Next();
@@ -81,8 +81,6 @@ namespace DepthsBelow
                     }
                 }
 
-
-
                 if (nextNode != null)
                 {
                     var nodeWorldPos = Grid.GridToWorld(nextNode.Position);
@@ -101,7 +99,7 @@ namespace DepthsBelow
                         nextNode = GetComponent<PathFinder>().Next();
                 }
 
-            }*/
+            }
         }
     }
 }

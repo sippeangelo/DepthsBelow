@@ -21,6 +21,7 @@ namespace DepthsBelow
 
 		public Camera Camera;
 
+        public bool PlayerTurn = true;
 		public static MouseInput MouseInput;
         public static KeyboardInput KeyboardInput;
 		public List<Soldier> Squad;
@@ -83,6 +84,9 @@ namespace DepthsBelow
 			MouseInput = new MouseInput(this);
 			MouseInput.LoadContent();
             KeyboardInput = new KeyboardInput(this);
+
+            TestMonster.X = 12;
+            TestMonster.Y = 4;
 		}
 
 		/// <summary>
@@ -116,8 +120,22 @@ namespace DepthsBelow
             foreach (var body in Swarm)
                 body.Update(gameTime);
 
+            TestMonster.Update(gameTime);
+
 			base.Update(gameTime);
 		}
+
+        public int FindDistance(Vector2 target, Vector2 start)
+        {
+            Vector2 combine = new Vector2(target.X - start.X, target.Y - start.Y);
+            
+            int result = 0;
+            int firstRestult = (int)Math.Sqrt((int)combine.X^2 + (int)combine.Y^2);
+
+            result = (int)Vector2.Distance(target, start);
+
+            return result;
+        }
 
 		/// <summary>
 		/// This is called when the game should draw itself.

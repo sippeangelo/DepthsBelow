@@ -25,10 +25,7 @@ namespace DepthsBelow
 
         public int step 
         {
-            get
-            {
-                return currentStep;
-            }
+            get { return currentStep; }
             set 
             {
                 currentStep = value;
@@ -75,7 +72,7 @@ namespace DepthsBelow
 			base.Update(gameTime);
 
 			float elapsed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
-
+            
 			if (nextNode == null)
 				nextNode = GetComponent<PathFinder>().Next();
 
