@@ -110,7 +110,9 @@ namespace DepthsBelow
 				foreach (var unit in core.Squad)
                     if (unit.Selected) 
                     {
-						unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
+                        if (checkingDirection == false) {
+						    unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
+                        }
                     }
 
 			}
