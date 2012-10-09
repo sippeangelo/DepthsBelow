@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="KeyboardInput.cs" />
     <Compile Include="Component\PathFinder.cs" />
     <Compile Include="Component\Transform.cs" />
     <Compile Include="Grid.cs" />

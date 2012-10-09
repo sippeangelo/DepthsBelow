@@ -20,6 +20,21 @@ namespace DepthsBelow
 		private PathFinder.Node lastNode;
 		private PathFinder.Node lastLastNode;
 
+        public int numberOfSteps = 14;
+        public int currentStep = 0;
+
+        public int step 
+        {
+            get
+            {
+                return currentStep;
+            }
+            set 
+            {
+                currentStep = value;
+            }
+        }
+
 		public Soldier(Core core, ref List<Soldier> squad) : base(core)
 		{
 			if (Texture == null)
@@ -108,9 +123,17 @@ namespace DepthsBelow
 
 					if (Transform.World == nodeWorldPos)
 					{
-						lastLastNode = lastNode;
-						lastNode = nextNode;
-						nextNode = GetComponent<PathFinder>().Next();
+                        if (currentStep < numberOfSteps)
+                        {
+                            currentStep++;
+                            lastLastNode = lastNode;
+                            lastNode = nextNode;
+                            nextNode = GetComponent<PathFinder>().Next();
+                        }
+                        else
+                        {
+                            GetComponent<PathFinder>().Stop();
+                        }
 					}
 				}
 					

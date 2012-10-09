@@ -22,6 +22,7 @@ namespace DepthsBelow
 		public Camera Camera;
 
 		public static MouseInput MouseInput;
+        public static KeyboardInput KeyboardInput;
 		public List<Soldier> Squad;
         public List<SmallEnemy> Swarm;
 		public static Map Map;
@@ -81,6 +82,7 @@ namespace DepthsBelow
 
 			MouseInput = new MouseInput(this);
 			MouseInput.LoadContent();
+            KeyboardInput = new KeyboardInput(this);
 		}
 
 		/// <summary>
@@ -105,6 +107,7 @@ namespace DepthsBelow
 
 			Camera.Update(gameTime);
 			MouseInput.Update(gameTime);
+            KeyboardInput.Update(gameTime);
 
 			// Update soldiers in squad
 			foreach (var soldier in Squad)
