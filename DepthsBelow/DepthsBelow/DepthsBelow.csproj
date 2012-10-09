@@ -122,6 +122,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="GUIManager.cs" />
+    <Compile Include="GUI\Button.cs" />
+    <Compile Include="GUI\Frame.cs" />
+    <Compile Include="GUI\Text.cs" />
     <Compile Include="KeyboardInput.cs" />
     <Compile Include="Component\PathFinder.cs" />
     <Compile Include="Component\Transform.cs" />
@@ -186,6 +190,7 @@
   <ItemGroup>
     <None Include="DepthsBelow_TemporaryKey.pfx" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

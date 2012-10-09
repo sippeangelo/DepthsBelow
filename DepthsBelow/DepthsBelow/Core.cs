@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using DepthsBelow.GUI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -83,6 +85,22 @@ namespace DepthsBelow
 			MouseInput = new MouseInput(this);
 			MouseInput.LoadContent();
             KeyboardInput = new KeyboardInput(this);
+
+			// Test GUI frames
+			var frame = new GUI.Button()
+				            {
+								X = 100,
+					            Width = 48,
+								Height = 23,
+								Texture = Content.Load<Texture2D>("images/Enter"),
+								OnClick = delegate(Point clickPos)
+									          {
+												  Debug.WriteLine("That ugly button was clicked at (" + clickPos.X + "," + clickPos.Y + ")");
+									          }
+				            };
+			var text = new GUI.Text(Content.Load<SpriteFont>("Arial"));
+			text.Value = "Hello world!";
+			frame.Add(text);
 		}
 
 		/// <summary>
@@ -115,6 +133,8 @@ namespace DepthsBelow
 
             foreach (var body in Swarm)
                 body.Update(gameTime);
+
+			GUIManager.Update(gameTime);
 
 			base.Update(gameTime);
 		}
@@ -153,6 +173,11 @@ namespace DepthsBelow
 
 			TestMonster.GetComponent<Component.SpriteRenderer>().Draw(spriteBatch);
 
+			spriteBatch.End();
+
+			// Start drawing GUI components
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, null, null, null, Matrix.Identity);
+			GUIManager.Draw(spriteBatch);
 			spriteBatch.End();
 
 			base.Draw(gameTime);
