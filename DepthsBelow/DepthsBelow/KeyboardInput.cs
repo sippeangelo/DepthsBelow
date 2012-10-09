@@ -43,6 +43,7 @@ namespace DepthsBelow
                 }
                 else
                 {
+                    core.TestMonster.step = 0;
                     core.PlayerTurn = false;
                     Point target = Point.Zero;
                     int distance = 7000;
