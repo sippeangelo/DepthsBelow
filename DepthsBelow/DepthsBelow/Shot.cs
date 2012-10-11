@@ -17,7 +17,6 @@ namespace DepthsBelow
 
         public List<Shot> Volley;
 
-        private PathFinder.Node nextNode;
         public Vector2 direction = Vector2.Zero;
 
         public Shot(Core core)

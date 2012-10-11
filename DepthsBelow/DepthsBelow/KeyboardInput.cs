@@ -75,7 +75,20 @@ namespace DepthsBelow
             }
             if (ks.IsKeyDown(Keys.S)) 
             {
-
+                foreach (var soldier in core.Squad) 
+                {
+                    core.Volley.Add(new Shot(core));
+                    foreach (var shot in core.Volley)
+                    {
+                        if (shot.direction == Vector2.Zero)
+                        {
+                            double directionX = Math.Cos(soldier.GetComponent<Component.Transform>().World.Rotation);
+                            double directionY = Math.Sin(soldier.GetComponent<Component.Transform>().World.Rotation);
+                            shot.direction = new Vector2((float)directionX, (float)directionY);
+                            
+                        }
+                    }
+                }
             }
         }
     }
