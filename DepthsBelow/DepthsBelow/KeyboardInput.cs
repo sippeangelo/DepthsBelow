@@ -73,6 +73,10 @@ namespace DepthsBelow
                 core.TestMonster.X = 12;
                 core.TestMonster.Y = 4;
             }
+            if (ks.IsKeyDown(Keys.S)) 
+            {
+
+            }
         }
     }
 }

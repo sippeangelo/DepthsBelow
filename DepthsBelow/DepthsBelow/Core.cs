@@ -28,6 +28,7 @@ namespace DepthsBelow
         public static KeyboardInput KeyboardInput;
 		public List<Soldier> Squad;
         public List<SmallEnemy> Swarm;
+        public List<Shot> Volley;
 		public static Map Map;
 
 		public SmallEnemy TestMonster;
@@ -60,6 +61,7 @@ namespace DepthsBelow
 			Camera = new Camera(this);
 			Squad = new List<Soldier>();
             Swarm = new List<SmallEnemy>();
+            Volley = new List<Shot>();
 
 			TestMonster = new SmallEnemy(this, ref Swarm);
 
@@ -82,7 +84,8 @@ namespace DepthsBelow
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent(this);
             SmallEnemy.LoadContent(this);
-
+            Shot.LoadContent(this);
+            
 			MouseInput = new MouseInput(this);
 			MouseInput.LoadContent();
             KeyboardInput = new KeyboardInput(this);
@@ -180,6 +183,12 @@ namespace DepthsBelow
             foreach (var body in Swarm)
             {
                 var sr = body.GetComponent<Component.SpriteRenderer>();
+                if (sr != null)
+                    sr.Draw(spriteBatch);
+            }
+            foreach (var bullet in Volley)
+            {
+                var sr = bullet.GetComponent<Component.SpriteRenderer>();
                 if (sr != null)
                     sr.Draw(spriteBatch);
             }
