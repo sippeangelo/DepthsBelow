@@ -73,6 +73,13 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="lua51">
+      <HintPath>..\..\LuaInterface\lua51.dll</HintPath>
+    </Reference>
+    <Reference Include="LuaInterface, Version=2.0.0.16708, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\..\LuaInterface\LuaInterface.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
@@ -123,6 +130,7 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Interface.cs" />
+    <Compile Include="Lua.cs" />
     <Compile Include="Shot.cs" />
     <Compile Include="Component\Shooting.cs" />
     <Compile Include="GUIManager.cs" />
@@ -191,6 +199,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="DepthsBelow_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup />

@@ -57,6 +57,9 @@ namespace DepthsBelow
 		/// </summary>
 		protected override void Initialize()
 		{
+			// TEST LUA
+			new Lua();
+
 			// TODO: Add your initialization logic here
 			Camera = new Camera(this);
 			Squad = new List<Soldier>();
