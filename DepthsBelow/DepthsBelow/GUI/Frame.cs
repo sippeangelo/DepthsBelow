@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DepthsBelow.GUI
@@ -84,6 +85,11 @@ namespace DepthsBelow.GUI
 				Parent.Remove(this);
 
 			GUIManager.Remove(this);
+		}
+
+		public void SetTexture(string fileName)
+		{
+			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>(fileName);
 		}
 
 		public virtual void Update(GameTime gameTime)
