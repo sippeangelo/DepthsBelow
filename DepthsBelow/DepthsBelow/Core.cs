@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using DepthsBelow.GUI;
 using Microsoft.Xna.Framework;
@@ -20,6 +21,8 @@ namespace DepthsBelow
 	{
 		public static GraphicsDeviceManager GraphicsDeviceManager;
 		SpriteBatch spriteBatch;
+
+		public Lua Lua;
 
 		public Camera Camera;
 
@@ -47,6 +50,9 @@ namespace DepthsBelow
 			GraphicsDeviceManager.ApplyChanges();
 
 			this.IsMouseVisible = true;
+
+			GameServices.AddService<GraphicsDevice>(GraphicsDevice);
+			GameServices.AddService<ContentManager>(Content);
 		}
 
 		/// <summary>
@@ -64,6 +70,10 @@ namespace DepthsBelow
             Volley = new List<Shot>();
 
 			TestMonster = new SmallEnemy(this, ref Swarm);
+
+			// Run scripts after everything is initialized
+			Lua = new Lua();
+			Lua.LoadScripts();
 
 			base.Initialize();
 		}
@@ -197,5 +207,7 @@ namespace DepthsBelow
 
 			base.Draw(gameTime);
 		}
+
+
 	}
 }
