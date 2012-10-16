@@ -15,6 +15,7 @@ namespace DepthsBelow
         Core core;
         bool Enter = false;
         bool turn;
+        int checkerSpeed = 1;
 
         public KeyboardInput(Core core)
         {
@@ -100,6 +101,63 @@ namespace DepthsBelow
                                 shot.Transform.World.Rotation = soldier.Transform.World.Rotation;
                             }
                         }
+                    }
+                }
+            }
+            if (ks.IsKeyDown(Keys.C)) 
+            {
+                foreach (var soldier in core.Squad)
+                {
+                    if (soldier.Selected == true && soldier.Fired == false)
+                    {
+                        Point checker = Point.Zero;
+                        double directionX = Math.Cos(soldier.GetComponent<Component.Transform>().World.Rotation);
+                        double directionY = Math.Sin(soldier.GetComponent<Component.Transform>().World.Rotation);
+                        Vector2 direction = new Vector2((int)directionX, (int)directionY);
+                        int range = 120;
+                        int current = 0;
+                        bool hit = false;
+                        checker = new Point((int)soldier.Transform.World.Origin.X, (int)soldier.Transform.World.Origin.Y);
+                        do
+                        {
+                            checker.X += (int)direction.X * checkerSpeed;
+                            checker.Y += (int)direction.Y * checkerSpeed;
+                            foreach (var creature in core.Swarm) 
+                            {
+                                if (creature.GetComponent<Component.Collision>().Rectangle.Contains(checker)) 
+                                {
+                                    hit = true;
+                                }
+                            }
+                            if (core.TestMonster.GetComponent<Component.Collision>().Rectangle.Contains(checker)) 
+                            {
+
+                            }
+                            current++;
+                        } while (hit == false && current < range);
+                        current = 0;
+                        if (soldier.Selected == true && soldier.Fired == false && hit == true)
+                        {
+                            core.Volley.Add(new Shot(core));
+                            soldier.Fired = true;
+                            foreach (var shot in core.Volley)
+                            {
+                                if (shot.select == false)
+                                {
+                                    shot.select = true;
+                                    shot.X = soldier.X;
+                                    shot.Y = soldier.Y;
+                                    //shot.Transform.World.X += Grid.TileSize / 2;
+                                    //shot.Transform.World.Y += Grid.TileSize / 2;
+                                }
+                                if (shot.direction == Vector2.Zero)
+                                {
+                                    shot.direction = new Vector2((float)directionX, (float)directionY);
+                                    shot.Transform.World.Rotation = soldier.Transform.World.Rotation;
+                                }
+                            }
+                        }
+                        hit = false;
                     }
                 }
             }

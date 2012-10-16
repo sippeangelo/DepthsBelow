@@ -21,6 +21,11 @@ namespace DepthsBelow.Component
 
         }
 
+        public bool targetInSight()
+        {
+            return false;
+        }
+
         public int CalculateChance()
         {
             int baseHitChance = soldierAim + weaponAccuracy;
