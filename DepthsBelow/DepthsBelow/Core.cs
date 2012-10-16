@@ -92,21 +92,8 @@ namespace DepthsBelow
 
             TestMonster.X = 12;
             TestMonster.Y = 4;
-			// Test GUI frames
-			var frame = new GUI.Button()
-				            {
-								X = 100,
-					            Width = 48,
-								Height = 23,
-								Texture = Content.Load<Texture2D>("images/Enter"),
-								OnClick = delegate(Point clickPos)
-									          {
-												  Debug.WriteLine("That ugly button was clicked at (" + clickPos.X + "," + clickPos.Y + ")");
-									          }
-				            };
-			var text = new GUI.Text(Content.Load<SpriteFont>("Arial"));
-			text.Value = "Hello world!";
-			frame.Add(text);
+			
+			//frame.Add(text);
 		}
 
 		/// <summary>

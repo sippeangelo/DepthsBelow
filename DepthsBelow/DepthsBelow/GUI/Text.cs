@@ -20,6 +20,11 @@ namespace DepthsBelow.GUI
 			this.Color = Color.Black;
 		}
 
+		public Text(Frame parent, SpriteFont font) : this(font) 
+		{
+			this.Parent = parent;
+		}
+
 		public override void Draw(SpriteBatch spriteBatch)
 		{
 			base.Draw(spriteBatch);

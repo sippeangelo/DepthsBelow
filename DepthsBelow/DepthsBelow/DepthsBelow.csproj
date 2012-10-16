@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Interface.cs" />
     <Compile Include="Shot.cs" />
     <Compile Include="Component\Shooting.cs" />
     <Compile Include="GUIManager.cs" />

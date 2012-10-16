@@ -31,6 +31,16 @@ namespace DepthsBelow.GUI
 		}
 
 		public Rectangle Rectangle;
+		public Rectangle AbsoluteRectangle
+		{
+			get
+			{
+				if (Parent != null)
+					return new Rectangle(Parent.Rectangle.X + Rectangle.X, Parent.Rectangle.Y + Rectangle.Y, Rectangle.Width, Rectangle.Height);
+				else
+					return Rectangle;
+			}
+		}
 		public Texture2D Texture;
 		public Color Color;
 		public bool Visible = true;
@@ -47,6 +57,12 @@ namespace DepthsBelow.GUI
 			this.Children = new List<Frame>();
 
 			GUIManager.Add(this);
+		}
+
+		public Frame(Frame parentFrame)
+			: this()
+		{
+			this.Parent = parentFrame;
 		}
 
 		public void Add(Frame childFrame)
@@ -79,9 +95,9 @@ namespace DepthsBelow.GUI
 		public virtual void Draw(SpriteBatch spriteBatch)
 		{
 			if (Visible)
-			{
+			{	
 				if (Texture != null)
-					spriteBatch.Draw(Texture, Rectangle, Color);
+					spriteBatch.Draw(Texture, AbsoluteRectangle, Color);
 
 				foreach (var child in Children)
 					child.Draw(spriteBatch);

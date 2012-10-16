@@ -17,15 +17,22 @@ namespace DepthsBelow.GUI
 
 		private MouseState lastMouseState;
 
-		public Button()
-		{
-			
-		}
-
 		/*public void OnClick(Point pos)
 		{
 			Debug.WriteLine(this + " was clicked at (" + pos.X + "," + pos.Y + ")");
 		}*/
+
+		public Button()
+			: base()
+		{
+
+		}
+
+		public Button(Frame parent) 
+			: this() 
+		{
+			this.Parent = parent;
+		}
 
 		public override void Update(GameTime gameTime)
 		{
@@ -37,14 +44,14 @@ namespace DepthsBelow.GUI
 			{
 				// HACK: This should be handled globally somewhere else to prevent event bubbling
 				if (
-					ms.X >= Rectangle.Left
-					&& ms.X < Rectangle.Right
-					&& ms.Y >= Rectangle.Top
-					&& ms.Y < Rectangle.Bottom)
+					ms.X >= AbsoluteRectangle.Left
+					&& ms.X < AbsoluteRectangle.Right
+					&& ms.Y >= AbsoluteRectangle.Top
+					&& ms.Y < AbsoluteRectangle.Bottom)
 				{
 					if (OnClick != null)
 					{
-						var clickPos = new Point(ms.X - Rectangle.X, ms.Y - Rectangle.Y);
+						var clickPos = new Point(ms.X - AbsoluteRectangle.X, ms.Y - AbsoluteRectangle.Y);
 						OnClick(clickPos);
 					}
 				}
