@@ -121,7 +121,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="images\Shot.bmp">
+    <Compile Include="images\Shot2.bmp">
+      <Name>Shot2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="images\FireBall.PNG">
       <Name>Shot</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>

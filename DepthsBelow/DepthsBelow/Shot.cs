@@ -13,7 +13,16 @@ namespace DepthsBelow
         public Color Color;
         public static Point Origin;
 
-        private bool _selected; //I guess as in "currently doing something"
+        private bool _selected = false; //I guess as in "currently doing something"
+
+        public bool select
+        {
+            get { return _selected; }
+            set
+            {
+                _selected = value;
+            }
+        }
 
         public List<Shot> Volley;
 

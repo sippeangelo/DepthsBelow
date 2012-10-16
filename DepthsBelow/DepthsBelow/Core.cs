@@ -127,6 +127,9 @@ namespace DepthsBelow
             foreach (var body in Swarm)
                 body.Update(gameTime);
 
+            foreach (var bullet in Volley)
+                bullet.Update(gameTime);
+
             TestMonster.Update(gameTime);
 			GUIManager.Update(gameTime);
 

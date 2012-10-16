@@ -39,6 +39,7 @@ namespace DepthsBelow
                     foreach (var unit in core.Squad)
                     {
                         unit.step = 0;
+                        unit.Fired = false;
                     }
                 }
                 else
@@ -77,15 +78,27 @@ namespace DepthsBelow
             {
                 foreach (var soldier in core.Squad) 
                 {
-                    core.Volley.Add(new Shot(core));
-                    foreach (var shot in core.Volley)
+                    if (soldier.Selected == true && soldier.Fired == false)
                     {
-                        if (shot.direction == Vector2.Zero)
+                        core.Volley.Add(new Shot(core));
+                        soldier.Fired = true;
+                        foreach (var shot in core.Volley)
                         {
-                            double directionX = Math.Cos(soldier.GetComponent<Component.Transform>().World.Rotation);
-                            double directionY = Math.Sin(soldier.GetComponent<Component.Transform>().World.Rotation);
-                            shot.direction = new Vector2((float)directionX, (float)directionY);
-                            
+                            if (shot.select == false)
+                            {
+                                shot.select = true;
+                                shot.X = soldier.X;
+                                shot.Y = soldier.Y;
+                                //shot.Transform.World.X += Grid.TileSize / 2;
+                                //shot.Transform.World.Y += Grid.TileSize / 2;
+                            }
+                            if (shot.direction == Vector2.Zero)
+                            {
+                                double directionX = Math.Cos(soldier.GetComponent<Component.Transform>().World.Rotation);
+                                double directionY = Math.Sin(soldier.GetComponent<Component.Transform>().World.Rotation);
+                                shot.direction = new Vector2((float)directionX, (float)directionY);
+                                shot.Transform.World.Rotation = soldier.Transform.World.Rotation;
+                            }
                         }
                     }
                 }

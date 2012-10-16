@@ -20,6 +20,17 @@ namespace DepthsBelow
 		private PathFinder.Node lastNode;
 		private PathFinder.Node lastLastNode;
 
+        private bool hasFiredAlready = false;
+
+        public bool Fired
+        {
+            get { return hasFiredAlready; }
+            set
+            {
+                hasFiredAlready = value;
+            }
+        }
+
         public int numberOfSteps = 14;
         public int currentStep = 0;
 
