@@ -6,8 +6,17 @@ using Microsoft.Xna.Framework;
 
 namespace DepthsBelow
 {
+	/// <summary>
+	/// Various global utility functions.
+	/// </summary>
     static class Utility
     {
+		/// <summary>
+		/// Calculate the chance of an entity with a Stat component to hit another unit.
+		/// </summary>
+		/// <param name="attacker">The attacking unit.</param>
+		/// <param name="defender">The recieving unit.</param>
+		/// <returns>Returns a hit chance percentage.</returns>
         public static int CalculateHitChance(Entity attacker, Entity defender)
         {
             Component.Stat shooting = attacker.GetComponent<Component.Stat>();
@@ -23,7 +32,7 @@ namespace DepthsBelow
             //Console.WriteLine(chanceToHit);
             return chanceToHit;
         }
-        public static bool HitTest(Entity attacker, Entity defender, int chanceToHit)
+        /*public static bool HitTest(Entity attacker, Entity defender, int chanceToHit)
         {
             Component.Stat shooting = attacker.GetComponent<Component.Stat>();
             Component.Stat dodging = defender.GetComponent<Component.Stat>();
@@ -34,6 +43,6 @@ namespace DepthsBelow
                 return true;
             }
             return false;
-        }
+        }*/
     }
 }

@@ -8,14 +8,34 @@ using Microsoft.Xna.Framework;
 
 namespace DepthsBelow.Component
 {
+	/// <summary>
+	/// Component that handles pathfinding.
+	/// </summary>
 	public class PathFinder : Component
 	{
+		/// <summary>
+		/// A pathfinder node.
+		/// </summary>
 		public class Node
 		{
+			/// <summary>
+			/// Grid position of the node.
+			/// </summary>
 			public Point Position;
+			/// <summary>
+			/// A* F-score
+			/// </summary>
 			public int F;
+			/// <summary>
+			/// A* G-score
+			/// </summary>
 			public int G;
 
+			/// <summary>
+			/// Explicit conversion between A* library node and Node object.
+			/// </summary>
+			/// <param name="aStarNode"></param>
+			/// <returns></returns>
 			public static explicit operator Node(AStar.PathFinderNode aStarNode)
 			{
 				return new Node
@@ -27,22 +47,36 @@ namespace DepthsBelow.Component
 			}
 		}
 
+		/// <summary>
+		/// Start position of the path.
+		/// </summary>
 		public Point Start { get; private set; }
 
+		/// <summary>
+		/// A collision bytemap.
+		/// 0 = unwalkable node
+		/// 1 = walkable node
+		/// </summary>
 		public byte[,] CollisionMap;
 
 		private Point goal;
+		/// <summary>
+		/// Sets a goal point and finds a path to it.
+		/// After a path is created, call Next() go get the next node in the path.
+		/// </summary>
 		public Point Goal
 		{
 			get { return goal; }
 			set 
 			{
 				this.goal = value;
-				//this.Start = this.Parent.GetComponent<Transform>().Grid.Position;
 				this.FindPath(this.Parent.GetComponent<Transform>().Grid.Position, value, null);
 			}
 		}
 
+		/// <summary>
+		/// Is a path in progress?
+		/// </summary>
 		public bool IsMoving
 		{
 			get
@@ -74,6 +108,10 @@ namespace DepthsBelow.Component
 			base.Update(gameTime);
 		}
 
+		/// <summary>
+		/// Gets the next node of the current path.
+		/// </summary>
+		/// <returns>The next node in the path.</returns>
 		public Node Next()
 		{
 			if (path == null)
@@ -87,11 +125,21 @@ namespace DepthsBelow.Component
 			return (Node)nextNode;
 		}
 
+		/// <summary>
+		/// Cancels the current path in memory.
+		/// </summary>
 		public void Stop()
 		{
 			path = null;
 		}
 
+		/// <summary>
+		/// Finds a path between two points.
+		/// </summary>
+		/// <param name="start">The start point.</param>
+		/// <param name="goal">The goal point.</param>
+		/// <param name="appendCollisionMap">A list of unwalkable points that will be joined with the original collision map.</param>
+		/// <returns></returns>
 		private List<AStar.PathFinderNode> FindPath(Point start, Point goal, List<Point> appendCollisionMap)
 		{
 			byte[,] mapCollisionMap = Core.Map.GetCollisionMap();
@@ -123,6 +171,10 @@ namespace DepthsBelow.Component
 			return path;
 		}
 
+		/// <summary>
+		/// Recreate the current path in memory with a list of unwalkable points that will be joined with the original collision map.
+		/// </summary>
+		/// <param name="appendCollisionMap">A list of unwalkable points that will be joined with the collision map.</param>
 		public void RecreatePath(List<Point> appendCollisionMap)
 		{
 			FindPath(this.Parent.GetComponent<Transform>().Grid.Position, this.Goal, appendCollisionMap);

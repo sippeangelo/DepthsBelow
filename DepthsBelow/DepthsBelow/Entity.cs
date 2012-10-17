@@ -6,30 +6,49 @@ using Microsoft.Xna.Framework;
 
 namespace DepthsBelow
 {
+	/// <summary>
+	/// Game object.
+	/// </summary>
 	public class Entity : IDisposable
 	{
 		List<Component.Component> Components;
+
+		/// <summary>
+		/// Shorthand for transform component.
+		/// </summary>
 		public Component.Transform Transform;
-        
-		public int X
-		{
-			get { return this.Transform.Grid.X; }
-			set 
-			{
-				this.Transform.Grid.X = value;
-			}
-		}
-		public int Y
-		{
-			get { return this.Transform.Grid.Y; }
-			set
-			{
-				this.Transform.Grid.Y = value;
-			}
-		}
 
 		private EntityManager entityManager;
 
+		/// <summary>
+		/// Shorthand to the grid transform position.
+		/// </summary>
+		public Point Position
+		{
+			get { return this.Transform.Grid.Position; }
+			set { this.Transform.Grid.Position = value; }
+		}
+		/// <summary>
+		/// Shorthand to the grid transform x-position.
+		/// </summary>
+		public int X
+		{
+			get { return this.Transform.Grid.X; }
+			set { this.Transform.Grid.X = value; }
+		}
+		/// <summary>
+		/// Shorthand to the grid transform y-position.
+		/// </summary>
+		public int Y
+		{
+			get { return this.Transform.Grid.Y; }
+			set { this.Transform.Grid.Y = value; }
+		}
+
+		/// <summary>
+		/// Creates a game object and adds it to the referenced entity manager.
+		/// </summary>
+		/// <param name="entityManager">An instance of EntityManager to add the entity to.</param>
 		public Entity(EntityManager entityManager)
 		{
 			this.entityManager = entityManager;
@@ -41,22 +60,30 @@ namespace DepthsBelow
 			AddComponent(Transform);
 		}
 
+		/// <summary>
+		/// Implementation of IDisposable.
+		/// Dispose of any unmanaged resources.
+		/// </summary>
 		public virtual void Dispose()
 		{
 			
 		}
 
+		/// <summary>
+		/// Removes the entity from the game world and disposes 
+		/// potential unmanaged resources.
+		/// </summary>
 		public virtual void Remove()
 		{
 			entityManager.Remove(this);
 			Dispose();
 		}
 
-		public virtual void Kill()
-		{
-			Remove();
-		}
-
+		/// <summary>
+		/// Get the reference to a component contained in the entity.
+		/// </summary>
+		/// <typeparam name="T">The component type.</typeparam>
+		/// <returns>Returns the component of requested type.</returns>
 		public T GetComponent<T>() where T : Component.Component
 		{
 			foreach (Component.Component c in Components)
@@ -68,11 +95,19 @@ namespace DepthsBelow
 			return null;
 		}
 
+		/// <summary>
+		/// Add a component to the entity.
+		/// </summary>
+		/// <param name="c">the component to add</param>
 		public void AddComponent(Component.Component c)
 		{
 			Components.Add(c);
 		}
 
+		/// <summary>
+		/// Update the entity and all child components.
+		/// </summary>
+		/// <param name="gameTime"></param>
 		public virtual void Update(GameTime gameTime)
 		{
 			// Update components

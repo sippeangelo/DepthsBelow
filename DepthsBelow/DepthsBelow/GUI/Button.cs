@@ -9,18 +9,19 @@ using Microsoft.Xna.Framework.Input;
 
 namespace DepthsBelow.GUI
 {
+	/// <summary>
+	/// A button frame which can handle clicks.
+	/// </summary>
 	public class Button : Frame
 	{
 		public delegate void OnClickHandler(Point pos);
 
+		/// <summary>
+		/// Handler of OnClick events.
+		/// </summary>
 		public OnClickHandler OnClick;
 
 		private MouseState lastMouseState;
-
-		/*public void OnClick(Point pos)
-		{
-			Debug.WriteLine(this + " was clicked at (" + pos.X + "," + pos.Y + ")");
-		}*/
 
 		public Button()
 			: base()
@@ -29,7 +30,7 @@ namespace DepthsBelow.GUI
 		}
 
 		public Button(Frame parent) 
-			: this() 
+			: this()
 		{
 			this.Parent = parent;
 		}
@@ -58,13 +59,6 @@ namespace DepthsBelow.GUI
 			}
 
 			lastMouseState = ms;
-		}
-
-		public override void Draw(SpriteBatch spriteBatch)
-		{
-			//spriteBatch.DrawString(Font, Value, new Vector2(Rectangle.X + Parent.Rectangle.X, Rectangle.Y + Parent.Rectangle.Y), Color);
-
-			base.Draw(spriteBatch);
 		}
 	}
 }

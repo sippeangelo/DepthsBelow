@@ -8,9 +8,18 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DepthsBelow.GUI
 {
+	/// <summary>
+	/// A basic text control.
+	/// </summary>
 	class Text : Frame
 	{
+		/// <summary>
+		/// Text to display.
+		/// </summary>
 		public String Value;
+		/// <summary>
+		/// Font to use while rendering.
+		/// </summary>
 		public SpriteFont Font;
 
 		public Text()
@@ -25,6 +34,10 @@ namespace DepthsBelow.GUI
 			this.Parent = parent;
 		}
 
+		/// <summary>
+		/// Set the font to use while rendering.
+		/// </summary>
+		/// <param name="spriteFontName">Filename of the font.</param>
 		public void SetFont(string spriteFontName)
 		{
 			Font = GameServices.GetService<ContentManager>().Load<SpriteFont>(spriteFontName);
