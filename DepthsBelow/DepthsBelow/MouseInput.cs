@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -24,7 +25,6 @@ namespace DepthsBelow
 
         bool checkingDirection = false;
         bool readjust = false;
-
 		
 		public MouseInput(Core core)
 		{
@@ -33,7 +33,6 @@ namespace DepthsBelow
 			selectionRectangle = Rectangle.Empty;
 			gridRectangle = Rectangle.Empty;
 		}
-
 
 		public void LoadContent()
 		{
@@ -48,7 +47,34 @@ namespace DepthsBelow
 		{
 			MouseState ms = Mouse.GetState();
 			Vector2 mouseWorldPos = core.Camera.ScreenToWorld(new Vector2(ms.X, ms.Y));
+			Rectangle mouseWorldRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 1, 1);
 			KeyboardState ks = Keyboard.GetState();
+
+			// Tooltip stuff
+			var tooltip = core.Lua.GetObject<GUI.Frame>("ToolTip");
+			if (tooltip != null)
+			{
+				tooltip.Visible = false;
+				foreach(var entity in core.Squad)
+				{
+					if (mouseWorldRectangle.Intersects(entity.GetComponent<Component.Collision>().Rectangle))
+					{
+						tooltip.Visible = true;
+						break;
+					}
+				}
+
+				if (tooltip.Visible)
+				{
+					tooltip.X = ms.X + 10;
+					tooltip.Y = ms.Y + 15;
+				}
+			}
+			else
+			{
+				throw new Exception("Tooltip is null D:");
+			}
+
             if (core.PlayerTurn == true)
             {
                 // Selection rectangle

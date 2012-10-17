@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DepthsBelow.GUI;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 
@@ -27,6 +28,24 @@ namespace DepthsBelow
 		public static GUI.Button CreateButton(GUI.Frame parent)
 		{
 			return new GUI.Button(parent);
+		}
+
+		public static GUI.Text CreateText()
+		{
+			return new Text();
+		}
+		public static GUI.Text CreateText(GUI.Frame parent)
+		{
+			return new GUI.Text(parent);
+		}
+	}
+
+	static class LuaMouse
+	{
+		public static Point GetPos()
+		{
+			var ms = Mouse.GetState();
+			return new Point(ms.X, ms.Y);
 		}
 	}
 
@@ -58,11 +77,17 @@ namespace DepthsBelow
 			lua.RegisterFunction("Console.Write", null, typeof(System.Console).GetMethod("Write", new Type[] { typeof(string) }));
 			lua.RegisterFunction("Console.WriteLine", null, typeof(System.Console).GetMethod("WriteLine", new Type[] { typeof(string) }));
 
+			lua.NewTable("Mouse");
+			lua.RegisterFunction("Mouse.GetPos", null, typeof(LuaMouse).GetMethod("GetPos"));
+
 			// Register GUI creation functions
 			lua.RegisterFunction("_CreateFrame", null, typeof(LuaGUI).GetMethod("CreateFrame", new Type[] { }));
 			lua.RegisterFunction("_CreateFrameAsChild", null, typeof(LuaGUI).GetMethod("CreateFrame", new Type[] { typeof(GUI.Frame) }));
 			lua.RegisterFunction("_CreateButton", null, typeof(LuaGUI).GetMethod("CreateButton", new Type[] { }));
 			lua.RegisterFunction("_CreateButtonAsChild", null, typeof(LuaGUI).GetMethod("CreateButton", new Type[] { typeof(GUI.Frame) }));
+			lua.RegisterFunction("_CreateText", null, typeof(LuaGUI).GetMethod("CreateText", new Type[] { }));
+			lua.RegisterFunction("_CreateTextAsChild", null, typeof(LuaGUI).GetMethod("CreateText", new Type[] { typeof(GUI.Frame) }));
+
 			lua.NewTable("GUI");
 			/*
 			 *	Because Lua can't dynamically call overloads of registered functions, a generic Lua function needs to do the decision making.
@@ -106,6 +131,11 @@ namespace DepthsBelow
 				}
 				
 			}
+		}
+
+		public T GetObject<T>(string obj)
+		{
+			return (T)lua[obj];
 		}
 	}
 }

@@ -17,7 +17,7 @@ namespace DepthsBelow
 			this.core = core;
 
 			// Test GUI frames
-			var frame = new GUI.Frame()
+			/*var frame = new GUI.Frame()
 			{
 				Y = 100
 			};
@@ -33,8 +33,9 @@ namespace DepthsBelow
 				}
 			};
 
-			var text = new GUI.Text(frame, core.Content.Load<SpriteFont>("Arial"));
-			text.Value = "Hello world!";
+			var text = new GUI.Text(frame);
+			text.SetFont("Arial");
+			text.Value = "Hello world!";*/
 		}
 	}
 }

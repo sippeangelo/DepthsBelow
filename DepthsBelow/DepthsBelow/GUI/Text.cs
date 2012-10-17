@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace DepthsBelow.GUI
@@ -11,25 +12,30 @@ namespace DepthsBelow.GUI
 	{
 		public String Value;
 		public SpriteFont Font;
-		public Color Color;
 
-		public Text(SpriteFont font)
+		public Text()
 			: base()
 		{
-			this.Font = font;
-			this.Color = Color.Black;
+			this.Color = Color.White;
 		}
 
-		public Text(Frame parent, SpriteFont font) : this(font) 
+		public Text(Frame parent)
+			: this()
 		{
 			this.Parent = parent;
+		}
+
+		public void SetFont(string spriteFontName)
+		{
+			Font = GameServices.GetService<ContentManager>().Load<SpriteFont>(spriteFontName);
 		}
 
 		public override void Draw(SpriteBatch spriteBatch)
 		{
 			base.Draw(spriteBatch);
 
-			spriteBatch.DrawString(Font, Value, new Vector2(Rectangle.X + Parent.Rectangle.X, Rectangle.Y + Parent.Rectangle.Y), Color);
+			if (Parent.Visible && this.Visible && Font != null)
+				spriteBatch.DrawString(Font, Value, new Vector2(Rectangle.X + Parent.Rectangle.X, Rectangle.Y + Parent.Rectangle.Y), Color);
 		}
 	}
 }
