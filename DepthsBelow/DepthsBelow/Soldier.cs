@@ -65,7 +65,7 @@ namespace DepthsBelow
             stat.Life = 10;
             stat.Defence = 10;
             stat.Strength = 10;
-            stat.GetAim = 100;
+            stat.GetAim = 10;
             stat.GetDodge = 20;
 		}
 

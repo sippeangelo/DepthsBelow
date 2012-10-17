@@ -52,9 +52,9 @@ namespace DepthsBelow
 
             stat.Life = 2;
             stat.Defence = 0;
-            stat.Strength = 5;
+            stat.Strength = 5000;
             stat.GetAim = 100;
-            stat.GetDodge = 10;
+            stat.GetDodge = 50;
         }
 
         public bool Selected
@@ -110,6 +110,7 @@ namespace DepthsBelow
                         nextNode = GetComponent<PathFinder>().Next();
                         break;
                     }
+                    Utility.HitTest(this, soldier, Utility.CalculateHitChance(this, soldier));
                 }
 
                 if (nextNode != null)

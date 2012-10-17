@@ -20,6 +20,7 @@ namespace DepthsBelow
             int baseDodgeChance = dodging.GetDodge;
             int basePenalty = shooting.Penalty((int)Vector2.Distance(attacker.GetComponent<Component.Transform>().World.Position, defender.GetComponent<Component.Transform>().World.Position) / Grid.TileSize);
             int chanceToHit = baseHitChance - baseDodgeChance - basePenalty;
+            //Console.WriteLine(chanceToHit);
             return chanceToHit;
         }
         public static bool HitTest(Entity attacker, Entity defender, int chanceToHit)

@@ -57,6 +57,7 @@ namespace DepthsBelow.Component
         public void Kill()
         {
             hp = 0;
+            //Console.WriteLine("Blargh! I am dead!");
         }
 
         public int Penalty(int distance)
