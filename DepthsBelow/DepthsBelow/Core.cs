@@ -105,7 +105,7 @@ namespace DepthsBelow
             TestMonster.X = 12;
             TestMonster.Y = 4;
 
-			//frame.Add(text);
+			//frame.AddChild(text);
 		}
 
 		/// <summary>

@@ -10,6 +10,7 @@ namespace DepthsBelow.GUI
 {
 	public class Frame
 	{
+		public string Name;
 		public int Width
 		{
 			get { return this.Rectangle.Width; }
@@ -66,14 +67,14 @@ namespace DepthsBelow.GUI
 			this.Parent = parentFrame;
 		}
 
-		public void Add(Frame childFrame)
+		public void AddChild(Frame childFrame)
 		{
 			childFrame.Parent = this;
 			if (!Children.Contains(childFrame))
 				Children.Add(childFrame);
 		}
 
-		public void Remove(Frame childFrame)
+		public void RemoveChild(Frame childFrame)
 		{
 			if (Children.Contains(childFrame))
 				Children.Remove(childFrame);
@@ -82,7 +83,7 @@ namespace DepthsBelow.GUI
 		public void Destroy()
 		{
 			if (Parent != null)
-				Parent.Remove(this);
+				Parent.RemoveChild(this);
 
 			GUIManager.Remove(this);
 		}

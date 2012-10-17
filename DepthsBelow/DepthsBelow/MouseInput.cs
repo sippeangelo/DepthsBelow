@@ -70,10 +70,6 @@ namespace DepthsBelow
 					tooltip.Y = ms.Y + 15;
 				}
 			}
-			else
-			{
-				throw new Exception("Tooltip is null D:");
-			}
 
             if (core.PlayerTurn == true)
             {
