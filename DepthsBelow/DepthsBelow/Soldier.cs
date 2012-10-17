@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DepthsBelow.Component;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -43,10 +44,11 @@ namespace DepthsBelow
             }
         }
 
-		public Soldier(Core core, ref List<Soldier> squad) : base(core)
+		public Soldier(EntityManager entityManager, ref List<Soldier> squad)
+			: base(entityManager)
 		{
 			if (Texture == null)
-				LoadContent(core);
+				LoadContent();
 
 			this.Squad = squad;
 
@@ -62,11 +64,15 @@ namespace DepthsBelow
 			var pfc = new PathFinder(this);
 			AddComponent(pfc);
 
-            stat.Life = 10;
-            stat.Defence = 10;
-            stat.Strength = 10;
-            stat.GetAim = 10;
-            stat.GetDodge = 20;
+			var stat = new Component.Stat(this)
+				           {
+					           Life = 10, 
+							   Defence = 10, 
+							   Strength = 10, 
+							   GetAim = 10, 
+							   GetDodge = 20
+				           };
+			AddComponent(stat);
 		}
 
 		public bool Selected
@@ -79,9 +85,9 @@ namespace DepthsBelow
 			}
 		}
 
-		public static void LoadContent(Core core)
+		public static void LoadContent()
 		{
-			Texture = core.Content.Load<Texture2D>("images/soldier2");
+			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/soldier2");
 		}
 
 		public override void Update(GameTime gameTime)
@@ -97,6 +103,7 @@ namespace DepthsBelow
 			{
 				List<Point> soldierCollisions = new List<Point>();
 
+				// Collision with units at a standstill
 				foreach (var soldier in Squad)
 				{
 					if (soldier != this && !soldier.GetComponent<PathFinder>().IsMoving)
@@ -104,14 +111,8 @@ namespace DepthsBelow
 						soldierCollisions.Add(soldier.Transform.Grid);
 					}
 				}
-                foreach (var enemy in core.Swarm)
-                {
-                    if (!enemy.GetComponent<PathFinder>().IsMoving)
-                    {
-                        soldierCollisions.Add(enemy.Transform.Grid);
-                    }
-                }
 
+				// Collision with moving units
 				foreach (var soldier in Squad)
 				{
 					if (soldier != this)
@@ -127,18 +128,6 @@ namespace DepthsBelow
 						}
 					}
 				}
-                foreach (var enemy in core.Swarm)
-                {
-                    var pathFinder = enemy.GetComponent<PathFinder>();
-                    var position = nextNode.Position;
-                    if (enemy.Transform.Grid == position)
-                    {
-                        soldierCollisions.Add(enemy.Transform.Grid);
-                        GetComponent<PathFinder>().RecreatePath(soldierCollisions);
-                        nextNode = GetComponent<PathFinder>().Next();
-                        break;
-                    }
-                }
 
 				if (nextNode != null)
 				{
@@ -169,10 +158,7 @@ namespace DepthsBelow
                         }
 					}
 				}
-					
 			}
-
-			/**/
 		}
 	}
 }

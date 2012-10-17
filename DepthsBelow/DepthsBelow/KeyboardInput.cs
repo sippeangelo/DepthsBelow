@@ -82,7 +82,7 @@ namespace DepthsBelow
                 {
                     if (soldier.Selected == true && soldier.Fired == false)
                     {
-                        core.Volley.Add(new Shot(core));
+                        core.Volley.Add(new Shot(core.EntityManager));
                         soldier.Fired = true;
                         foreach (var shot in core.Volley)
                         {
@@ -139,7 +139,7 @@ namespace DepthsBelow
                         current = 0;
                         if (soldier.Selected == true && soldier.Fired == false && hit == true)
                         {
-                            core.Volley.Add(new Shot(core));
+                            core.Volley.Add(new Shot(core.EntityManager));
                             soldier.Fired = true;
                             foreach (var shot in core.Volley)
                             {

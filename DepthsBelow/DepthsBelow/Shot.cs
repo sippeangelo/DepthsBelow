@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DepthsBelow.Component;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -28,11 +29,11 @@ namespace DepthsBelow
 
         public Vector2 direction = Vector2.Zero;
 
-        public Shot(Core core)
-            : base(core)
+        public Shot(EntityManager entityManager)
+			: base(entityManager)
         {
             if (Texture == null)
-                LoadContent(core);
+                LoadContent();
 
             Transform.World.Origin = new Vector2(16, 16);
 
@@ -44,9 +45,9 @@ namespace DepthsBelow
             AddComponent(cc);
 
         }
-        public static void LoadContent(Core core)
+        public static void LoadContent()
         {
-            Texture = core.Content.Load<Texture2D>("images/Shot");
+			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/Shot");
         }
         public override void Update(GameTime gameTime)
         {
@@ -55,21 +56,6 @@ namespace DepthsBelow
             float elapsed = gameTime.ElapsedGameTime.Milliseconds / 1000.0f;
             List<Point> soldierCollisions = new List<Point>();
 
-            foreach (var body in core.Swarm)
-            {
-                if (this.GetComponent<Collision>().Rectangle.Intersects(body.GetComponent<Collision>().Rectangle))
-                {
-
-                }
-            }
-
-            foreach (var soldier in core.Squad)
-            {
-                if (this.GetComponent<Collision>().Rectangle.Intersects(soldier.GetComponent<Collision>().Rectangle))
-                {
-
-                }
-            }
             // HACK: Make this work properly with other speeds...
             float speed = 4f;
             Transform.World.Position += speed * direction;

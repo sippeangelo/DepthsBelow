@@ -6,13 +6,11 @@ using Microsoft.Xna.Framework;
 
 namespace DepthsBelow
 {
-	public class Entity
+	public class Entity : IDisposable
 	{
 		List<Component.Component> Components;
 		public Component.Transform Transform;
-		public Component.PixelTransform pixelTransform;
-		public Component.GridTransform gridTransform;
-        public Component.Stat stat;
+        
 		public int X
 		{
 			get { return this.Transform.Grid.X; }
@@ -30,21 +28,33 @@ namespace DepthsBelow
 			}
 		}
 
-		protected Core core;
+		private EntityManager entityManager;
 
-		public Entity(Core core)
+		public Entity(EntityManager entityManager)
 		{
-			this.core = core;
-
+			this.entityManager = entityManager;
+			entityManager.Add(this);
+			
 			Components = new List<Component.Component>();
+
 			Transform = new Component.Transform(this);
 			AddComponent(Transform);
-			pixelTransform = new Component.PixelTransform(this);
-			AddComponent(pixelTransform);
-			gridTransform = new Component.GridTransform(this);
-			AddComponent(gridTransform);
-            stat = new Component.Stat(this);
-            AddComponent(stat);
+		}
+
+		public virtual void Dispose()
+		{
+			
+		}
+
+		public virtual void Remove()
+		{
+			entityManager.Remove(this);
+			Dispose();
+		}
+
+		public virtual void Kill()
+		{
+			Remove();
 		}
 
 		public T GetComponent<T>() where T : Component.Component

@@ -24,6 +24,8 @@ namespace DepthsBelow
 
 		public Lua Lua;
 
+		public EntityManager EntityManager;
+
 		public Camera Camera;
 
         public bool PlayerTurn = true;
@@ -64,12 +66,11 @@ namespace DepthsBelow
 		protected override void Initialize()
 		{
 			// TODO: Add your initialization logic here
+			EntityManager = new EntityManager();
 			Camera = new Camera(this);
 			Squad = new List<Soldier>();
             Swarm = new List<SmallEnemy>();
             Volley = new List<Shot>();
-
-			TestMonster = new SmallEnemy(this, ref Swarm);
 
 			// Run scripts after everything is initialized
 			Lua = new Lua();
@@ -92,20 +93,18 @@ namespace DepthsBelow
 			Map.ParseObjects(this);
 
 			// TODO: use this.Content to load your game content here
-			Soldier.LoadContent(this);
-            SmallEnemy.LoadContent(this);
-            Shot.LoadContent(this);
+			Soldier.LoadContent();
+            SmallEnemy.LoadContent();
+            Shot.LoadContent();
             
 			MouseInput = new MouseInput(this);
 			MouseInput.LoadContent();
             KeyboardInput = new KeyboardInput(this);
 
+			TestMonster = new SmallEnemy(EntityManager, ref Swarm);
+			TestMonster.X = 12;
+			TestMonster.Y = 4;
             Swarm.Add(TestMonster);
-
-            TestMonster.X = 12;
-            TestMonster.Y = 4;
-
-			//frame.AddChild(text);
 		}
 
 		/// <summary>
@@ -132,17 +131,8 @@ namespace DepthsBelow
 			MouseInput.Update(gameTime);
             KeyboardInput.Update(gameTime);
 
-			// Update soldiers in squad
-			foreach (var soldier in Squad)
-				soldier.Update(gameTime);
+			EntityManager.Update(gameTime);
 
-            foreach (var body in Swarm)
-                body.Update(gameTime);
-
-            foreach (var bullet in Volley)
-                bullet.Update(gameTime);
-
-            TestMonster.Update(gameTime);
 			GUIManager.Update(gameTime);
             
 			base.Update(gameTime);
@@ -163,25 +153,8 @@ namespace DepthsBelow
 			// Draw the level
 			Map.Draw(spriteBatch);
 
-			// Draw units
-			foreach (var soldier in Squad)
-			{
-				var sr = soldier.GetComponent<Component.SpriteRenderer>();
-				if (sr != null)
-					sr.Draw(spriteBatch);
-			}
-            foreach (var body in Swarm)
-            {
-                var sr = body.GetComponent<Component.SpriteRenderer>();
-                if (sr != null)
-                    sr.Draw(spriteBatch);
-            }
-            foreach (var bullet in Volley)
-            {
-                var sr = bullet.GetComponent<Component.SpriteRenderer>();
-                if (sr != null)
-                    sr.Draw(spriteBatch);
-            }
+			// Draw entities
+			EntityManager.Draw(spriteBatch);
 
 			// Draw mouse input visuals
 			MouseInput.Draw(spriteBatch);
@@ -197,7 +170,5 @@ namespace DepthsBelow
 
 			base.Draw(gameTime);
 		}
-
-
 	}
 }

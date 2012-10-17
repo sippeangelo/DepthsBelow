@@ -121,6 +121,7 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="CustomExtensions.cs" />
+    <Compile Include="EntityManager.cs" />
     <Compile Include="GameServices.cs" />
     <Compile Include="Interface.cs" />
     <Compile Include="Lua.cs" />
@@ -136,7 +137,6 @@
     <Compile Include="Grid.cs" />
     <Compile Include="Component\Collision.cs" />
     <Compile Include="Component\Component.cs" />
-    <Compile Include="Component\GridTransform.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Map.cs" />
@@ -147,7 +147,6 @@
     <Compile Include="RenderHelpers.cs" />
     <Compile Include="SmallEnemy.cs" />
     <Compile Include="Soldier.cs" />
-    <Compile Include="Component\PixelTransform.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
