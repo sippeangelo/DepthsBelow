@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DepthsBelow.Component
 {
-    class Shooting : Component
+    public class Stat : Component
     {
         protected int stepsTaken = 0;
         protected int distanceToTarget = 0;
@@ -16,7 +16,22 @@ namespace DepthsBelow.Component
 
         protected int penaltyRange = 5;
 
-        public Shooting(Entity parent) : base (parent)
+        public int GetAim()
+        {
+            return (soldierAim + weaponAccuracy);
+        }
+
+        public int GetDodge()
+        {
+            return enemyDodge;
+        }
+
+        public int Penalty(int distance)
+        {
+            return panic + GetPenalty(stepsTaken) + (int)(GetPenalty(distance) / 2);
+        }
+
+        public Stat(Entity parent) : base (parent)
         {
 
         }
@@ -26,16 +41,7 @@ namespace DepthsBelow.Component
             return false;
         }
 
-        public int CalculateChance()
-        {
-            int baseHitChance = soldierAim + weaponAccuracy;
-            int baseDodgeChance = panic + enemyDodge;
-            int basePenalty = ReturnPenalty(stepsTaken) + (int)(ReturnPenalty(distanceToTarget) / 2);
-            int chanceToHit = baseHitChance - baseDodgeChance - basePenalty;
-            return chanceToHit;
-        }
-
-        public int ReturnPenalty(int distance)
+        public int GetPenalty(int distance)
         {
             int penalty = 0;
             if (distance >= penaltyRange * 3)

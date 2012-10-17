@@ -15,7 +15,7 @@ namespace DepthsBelow
         Core core;
         bool Enter = false;
         bool turn;
-        int checkerSpeed = 1;
+        int checkerSpeed = 2;
 
         public KeyboardInput(Core core)
         {
@@ -48,13 +48,14 @@ namespace DepthsBelow
                     core.TestMonster.step = 0;
                     core.PlayerTurn = false;
                     Point target = Point.Zero;
-                    int distance = 7000;
+                    float distance = 7000;
                     foreach (var unit in core.Squad)
                     {
                         Vector2 soldier = new Vector2(unit.Transform.Grid.X, unit.Transform.Grid.Y);
                         Vector2 monster = new Vector2(core.TestMonster.Transform.Grid.X, core.TestMonster.Transform.Grid.Y);
 
-                        int newDistance = core.FindDistance(soldier, monster);
+                        float newDistance = Vector2.Distance(soldier, monster);
+
                         if (newDistance < distance)
                         {
                             target = unit.Transform.Grid;
