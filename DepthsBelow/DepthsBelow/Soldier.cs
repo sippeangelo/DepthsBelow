@@ -61,6 +61,12 @@ namespace DepthsBelow
 
 			var pfc = new PathFinder(this);
 			AddComponent(pfc);
+
+            stat.Life = 10;
+            stat.Defence = 10;
+            stat.Strength = 10;
+            stat.GetAim = 100;
+            stat.GetDodge = 20;
 		}
 
 		public bool Selected
@@ -98,6 +104,13 @@ namespace DepthsBelow
 						soldierCollisions.Add(soldier.Transform.Grid);
 					}
 				}
+                foreach (var enemy in core.Swarm)
+                {
+                    if (!enemy.GetComponent<PathFinder>().IsMoving)
+                    {
+                        soldierCollisions.Add(enemy.Transform.Grid);
+                    }
+                }
 
 				foreach (var soldier in Squad)
 				{
@@ -114,6 +127,18 @@ namespace DepthsBelow
 						}
 					}
 				}
+                foreach (var enemy in core.Swarm)
+                {
+                    var pathFinder = enemy.GetComponent<PathFinder>();
+                    var position = nextNode.Position;
+                    if (enemy.Transform.Grid == position)
+                    {
+                        soldierCollisions.Add(enemy.Transform.Grid);
+                        GetComponent<PathFinder>().RecreatePath(soldierCollisions);
+                        nextNode = GetComponent<PathFinder>().Next();
+                        break;
+                    }
+                }
 
 				if (nextNode != null)
 				{

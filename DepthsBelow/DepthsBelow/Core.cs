@@ -100,9 +100,11 @@ namespace DepthsBelow
 			MouseInput.LoadContent();
             KeyboardInput = new KeyboardInput(this);
 
+            Swarm.Add(TestMonster);
+
             TestMonster.X = 12;
             TestMonster.Y = 4;
-			
+
 			//frame.Add(text);
 		}
 
@@ -142,21 +144,9 @@ namespace DepthsBelow
 
             TestMonster.Update(gameTime);
 			GUIManager.Update(gameTime);
-
+            
 			base.Update(gameTime);
 		}
-
-        public int FindDistance(Vector2 target, Vector2 start)
-        {
-            Vector2 combine = new Vector2(target.X - start.X, target.Y - start.Y);
-            
-            int result = 0;
-            int firstRestult = (int)Math.Sqrt((int)combine.X^2 + (int)combine.Y^2);
-
-            result = (int)Vector2.Distance(target, start);
-
-            return result;
-        }
 
 		/// <summary>
 		/// This is called when the game should draw itself.

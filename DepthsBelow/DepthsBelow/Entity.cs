@@ -12,6 +12,7 @@ namespace DepthsBelow
 		public Component.Transform Transform;
 		public Component.PixelTransform pixelTransform;
 		public Component.GridTransform gridTransform;
+        public Component.Stat stat;
 		public int X
 		{
 			get { return this.Transform.Grid.X; }
@@ -42,6 +43,8 @@ namespace DepthsBelow
 			AddComponent(pixelTransform);
 			gridTransform = new Component.GridTransform(this);
 			AddComponent(gridTransform);
+            stat = new Component.Stat(this);
+            AddComponent(stat);
 		}
 
 		public T GetComponent<T>() where T : Component.Component
