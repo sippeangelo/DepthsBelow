@@ -16,11 +16,23 @@ namespace DepthsBelow
             {
                 return 0;
             }
-            int baseHitChance = shooting.GetAim();
-            int baseDodgeChance = dodging.GetDodge();
+            int baseHitChance = shooting.GetAim;
+            int baseDodgeChance = dodging.GetDodge;
             int basePenalty = shooting.Penalty((int)Vector2.Distance(attacker.GetComponent<Component.Transform>().World.Position, defender.GetComponent<Component.Transform>().World.Position) / Grid.TileSize);
             int chanceToHit = baseHitChance - baseDodgeChance - basePenalty;
             return chanceToHit;
+        }
+        public static bool HitTest(Entity attacker, Entity defender, int chanceToHit)
+        {
+            Component.Stat shooting = attacker.GetComponent<Component.Stat>();
+            Component.Stat dodging = defender.GetComponent<Component.Stat>();
+            Random rand = new Random();
+            if (rand.Next(0, 100) < chanceToHit) 
+            {
+                dodging.Life -= shooting.Strength - dodging.Defence / 2;
+                return true;
+            }
+            return false;
         }
     }
 }

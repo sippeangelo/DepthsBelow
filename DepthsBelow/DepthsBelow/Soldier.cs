@@ -61,6 +61,12 @@ namespace DepthsBelow
 
 			var pfc = new PathFinder(this);
 			AddComponent(pfc);
+
+            stat.Life = 10;
+            stat.Defence = 10;
+            stat.Strength = 10;
+            stat.GetAim = 100;
+            stat.GetDodge = 20;
 		}
 
 		public bool Selected

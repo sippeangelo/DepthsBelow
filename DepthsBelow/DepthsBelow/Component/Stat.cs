@@ -7,23 +7,56 @@ namespace DepthsBelow.Component
 {
     public class Stat : Component
     {
+        protected int hp = 0;
+        protected int defence = 0;
         protected int stepsTaken = 0;
         protected int distanceToTarget = 0;
         protected int panic = 0;
-        protected int soldierAim = 0;
+        protected int soldierAim = 100;
         protected int weaponAccuracy = 0;
+        protected int weaponStrength = 0;
+        protected int ammo = 0;
         protected int enemyDodge = 0;
 
         protected int penaltyRange = 5;
 
-        public int GetAim()
+        public int GetAim
         {
-            return (soldierAim + weaponAccuracy);
+            get { return soldierAim + weaponAccuracy; }
+            set { soldierAim = value; }
         }
 
-        public int GetDodge()
+        public int GetDodge
         {
-            return enemyDodge;
+            get { return enemyDodge; }
+            set { enemyDodge = value; }
+        }
+        public int Life
+        {
+            get { return hp; }
+            set 
+            { 
+                hp = value;
+                if (hp <= 0) {
+                    //If you kill me, I will become stronger than you can ever imagine.
+                    Kill();
+                }
+            }
+        }
+        public int Defence
+        {
+            get { return defence; }
+            set { defence = value; }
+        }
+        public int Strength
+        {
+            get { return weaponStrength; }
+            set { weaponStrength = value; }
+        }
+
+        public void Kill()
+        {
+            hp = 0;
         }
 
         public int Penalty(int distance)
