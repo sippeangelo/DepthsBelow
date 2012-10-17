@@ -104,6 +104,13 @@ namespace DepthsBelow
 						soldierCollisions.Add(soldier.Transform.Grid);
 					}
 				}
+                foreach (var enemy in core.Swarm)
+                {
+                    if (!enemy.GetComponent<PathFinder>().IsMoving)
+                    {
+                        soldierCollisions.Add(enemy.Transform.Grid);
+                    }
+                }
 
 				foreach (var soldier in Squad)
 				{
@@ -120,6 +127,18 @@ namespace DepthsBelow
 						}
 					}
 				}
+                foreach (var enemy in core.Swarm)
+                {
+                    var pathFinder = enemy.GetComponent<PathFinder>();
+                    var position = nextNode.Position;
+                    if (enemy.Transform.Grid == position)
+                    {
+                        soldierCollisions.Add(enemy.Transform.Grid);
+                        GetComponent<PathFinder>().RecreatePath(soldierCollisions);
+                        nextNode = GetComponent<PathFinder>().Next();
+                        break;
+                    }
+                }
 
 				if (nextNode != null)
 				{

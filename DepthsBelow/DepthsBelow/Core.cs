@@ -100,6 +100,8 @@ namespace DepthsBelow
 			MouseInput.LoadContent();
             KeyboardInput = new KeyboardInput(this);
 
+            Swarm.Add(TestMonster);
+
             TestMonster.X = 12;
             TestMonster.Y = 4;
 
