@@ -13,8 +13,8 @@ namespace DepthsBelow
     public class KeyboardInput
     {
         Core core;
-        bool Enter = false;
-        bool turn;
+	    private KeyboardState lastKeyboardState;
+
         int checkerSpeed = 2;
 
         public KeyboardInput(Core core)
@@ -26,27 +26,22 @@ namespace DepthsBelow
         {
             KeyboardState ks = Keyboard.GetState();
 
-            if (ks.IsKeyUp(Keys.Enter) && Enter == true) 
+            if (ks.IsKeyDown(Keys.Enter) && lastKeyboardState.IsKeyUp(Keys.Enter)) 
             {
-                Enter = false;
-            }
-
-            if (ks.IsKeyDown(Keys.Enter) && Enter == false) 
-            {
-                Enter = true;
-                if (core.PlayerTurn == false)
+				if (core.TurnManager.CurrentTurn == core.TurnManager["Player"])
                 {
-                    core.PlayerTurn = true;
                     foreach (var unit in core.Squad)
                     {
                         unit.step = 0;
                         unit.Fired = false;
                     }
+
+					core.TurnManager.EndTurn();
                 }
-                else
+                
+				if (core.TurnManager.CurrentTurn == core.TurnManager["Computer"])
                 {
                     core.TestMonster.step = 0;
-                    core.PlayerTurn = false;
                     Point target = Point.Zero;
                     float distance = 7000;
                     foreach (var unit in core.Squad)
@@ -64,6 +59,8 @@ namespace DepthsBelow
                     }
                     core.TestMonster.GetComponent<Component.PathFinder>().Goal = target;
                     distance = 7000;
+
+					core.TurnManager.EndTurn();
                 }
             }
             if (ks.IsKeyDown(Keys.A)) 
@@ -162,6 +159,8 @@ namespace DepthsBelow
                     }
                 }
             }
+
+	        lastKeyboardState = ks;
         }
     }
 }

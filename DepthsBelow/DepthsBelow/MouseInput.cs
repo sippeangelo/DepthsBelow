@@ -71,7 +71,7 @@ namespace DepthsBelow
 				}
 			}
 
-            if (core.PlayerTurn == true)
+            if (core.TurnManager.CurrentTurn == core.TurnManager["Player"])
             {
                 // Selection rectangle
                 if (ms.LeftButton == ButtonState.Pressed)

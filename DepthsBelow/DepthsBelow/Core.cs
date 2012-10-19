@@ -25,10 +25,10 @@ namespace DepthsBelow
 		public Lua Lua;
 
 		public EntityManager EntityManager;
+		public TurnManager TurnManager;
 
 		public Camera Camera;
 
-        public bool PlayerTurn = true;
 		public static MouseInput MouseInput;
         public static KeyboardInput KeyboardInput;
 		public List<Soldier> Squad;
@@ -65,16 +65,22 @@ namespace DepthsBelow
 		/// </summary>
 		protected override void Initialize()
 		{
+			Lua = new Lua();
+
 			// TODO: Add your initialization logic here
 			EntityManager = new EntityManager();
+
+			TurnManager = new TurnManager(new string[] { "Player", "Computer" });
+			Console.WriteLine("Current turn: " + TurnManager.CurrentTurn.Name);
+			TurnManager.EndTurn();
+			Console.WriteLine("Current turn: " + TurnManager.CurrentTurn.Name);
+			TurnManager.EndTurn();
+			Console.WriteLine("Current turn: " + TurnManager.CurrentTurn.Name);
+
 			Camera = new Camera(this);
 			Squad = new List<Soldier>();
             Swarm = new List<SmallEnemy>();
             Volley = new List<Shot>();
-
-			// Run scripts after everything is initialized
-			Lua = new Lua();
-			Lua.LoadScripts();
 
 			base.Initialize();
 		}
@@ -105,6 +111,9 @@ namespace DepthsBelow
 			TestMonster.X = 12;
 			TestMonster.Y = 4;
             Swarm.Add(TestMonster);
+
+			// Load Lua scripts after everything is created
+			Lua.LoadScripts();
 		}
 
 		/// <summary>
@@ -158,8 +167,6 @@ namespace DepthsBelow
 
 			// Draw mouse input visuals
 			MouseInput.Draw(spriteBatch);
-
-			TestMonster.GetComponent<Component.SpriteRenderer>().Draw(spriteBatch);
 
 			spriteBatch.End();
 
