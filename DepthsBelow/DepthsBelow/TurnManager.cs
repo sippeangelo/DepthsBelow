@@ -22,7 +22,6 @@ namespace DepthsBelow
 			public string Name { get; private set; }
 			private TurnManager turnManager;
 
-
 			/// <summary>
 			/// Initializes a new instance of the <see cref="Token" /> class.
 			/// Preferably use <see cref="TurnManager.CreateToken" /> instead.

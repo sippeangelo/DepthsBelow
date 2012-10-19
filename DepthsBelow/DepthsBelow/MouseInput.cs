@@ -197,7 +197,7 @@ namespace DepthsBelow
 
             if (checkingDirection == true) 
             {
-                RenderHelpers.DrawLine(spriteBatch, Color.White, 2, directionStart, directionNow);
+                Utility.DrawLine(spriteBatch, Color.White, 2, directionStart, directionNow);
             }
 
 		}

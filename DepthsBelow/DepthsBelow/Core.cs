@@ -69,13 +69,7 @@ namespace DepthsBelow
 
 			// TODO: Add your initialization logic here
 			EntityManager = new EntityManager();
-
 			TurnManager = new TurnManager(new string[] { "Player", "Computer" });
-			Console.WriteLine("Current turn: " + TurnManager.CurrentTurn.Name);
-			TurnManager.EndTurn();
-			Console.WriteLine("Current turn: " + TurnManager.CurrentTurn.Name);
-			TurnManager.EndTurn();
-			Console.WriteLine("Current turn: " + TurnManager.CurrentTurn.Name);
 
 			Camera = new Camera(this);
 			Squad = new List<Soldier>();

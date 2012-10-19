@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DepthsBelow.Component;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace DepthsBelow
 {
@@ -19,15 +21,15 @@ namespace DepthsBelow
 		/// <returns>Returns a hit chance percentage.</returns>
         public static int CalculateHitChance(Entity attacker, Entity defender)
         {
-            Component.Stat shooting = attacker.GetComponent<Component.Stat>();
-            Component.Stat dodging = defender.GetComponent<Component.Stat>();
+            Stat shooting = attacker.GetComponent<Stat>();
+            Stat dodging = defender.GetComponent<Stat>();
             if (shooting == null || dodging == null) 
             {
                 return 0;
             }
             int baseHitChance = shooting.GetAim;
             int baseDodgeChance = dodging.GetDodge;
-            int basePenalty = shooting.Penalty((int)Vector2.Distance(attacker.GetComponent<Component.Transform>().World.Position, defender.GetComponent<Component.Transform>().World.Position) / Grid.TileSize);
+            int basePenalty = shooting.Penalty((int)Vector2.Distance(attacker.GetComponent<Transform>().World.Position, defender.GetComponent<Transform>().World.Position) / Grid.TileSize);
             int chanceToHit = baseHitChance - baseDodgeChance - basePenalty;
             //Console.WriteLine(chanceToHit);
             return chanceToHit;
@@ -44,5 +46,22 @@ namespace DepthsBelow
             }
             return false;
         }*/
+		private static Texture2D blank;
+
+		public static void DrawLine(SpriteBatch batch, Color color, float width, Vector2 start, Vector2 end)
+		{
+			if (blank == null)
+			{
+				blank = new Texture2D(Core.GraphicsDeviceManager.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+				blank.SetData(new[] { color });
+			}
+
+			float angle = (float)Math.Atan2(end.Y - start.Y, end.X - start.X);
+			float length = Vector2.Distance(start, end);
+
+			batch.Draw(blank, start, null, color,
+			           angle, Vector2.Zero, new Vector2(length, width),
+			           SpriteEffects.None, 0);
+		}
     }
 }
