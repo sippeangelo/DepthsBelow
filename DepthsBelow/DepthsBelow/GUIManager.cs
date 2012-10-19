@@ -29,14 +29,9 @@ namespace DepthsBelow
 		{
 			var clickRectangle = new Rectangle(position.X, position.Y, 1, 1);
 
-			var intersections = new List<Frame>();
-
-			foreach (var frame in Frames)
-			{
-				if (clickRectangle.Intersects(frame.AbsoluteRectangle))
-					intersections.Add(frame);
-			}
-
+			// Create a list of all frames which have an OnClick handler and intersects with the click position
+			var intersections = Frames.Where(frame => frame.OnClickCount > 0).Where(frame => clickRectangle.Intersects(frame.AbsoluteRectangle)).ToList();
+			// Get the topmost frame of that list
 			var topFrame = GetTopFrame(intersections);
 
 			if (topFrame != null)

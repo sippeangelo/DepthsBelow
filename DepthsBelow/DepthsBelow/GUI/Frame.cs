@@ -138,6 +138,13 @@ namespace DepthsBelow.GUI
 		/// </summary>
 		public event OnClickHandler OnClick;
 		/// <summary>
+		/// Gets the number of subscribers to the <see cref="OnClickHandler" /> event.
+		/// </summary>
+		public int OnClickCount
+		{
+			get { return (OnClick != null) ? OnClick.GetInvocationList().Length : 0; }
+		}
+		/// <summary>
 		/// <see cref="OnClickHandler" /> event arguments.
 		/// </summary>
 		public class OnClickArgs : EventArgs
