@@ -53,10 +53,12 @@ namespace DepthsBelow
 	{
 		private LuaInterface.Lua lua;
 
+		private List<string> filesToRun;
+
 		public Lua()
 		{
-			ResetContext();
-			ExposeLibraries();
+			filesToRun = new List<string>();
+			Initialize();
 
 			/*lua.DoString(@"
 				local frame = CreateFrame('Frame');
@@ -69,6 +71,15 @@ namespace DepthsBelow
 					Console.WriteLine(clickPos.X .. ' ' .. clickPos.Y); 
 				end
 			");*/
+		}
+
+		private void Initialize()
+		{
+			if (lua == null)
+			{
+				lua = new LuaInterface.Lua();
+				ExposeLibraries();
+			}
 		}
 
 		public void ExposeLibraries()
@@ -120,7 +131,13 @@ namespace DepthsBelow
 			if (lua != null)
 				lua.Dispose();
 
-			lua = new LuaInterface.Lua();
+			Initialize();
+		}
+
+		public void Reload()
+		{
+			ResetContext();
+			LoadScripts();
 		}
 
 		public void LoadScripts()
@@ -128,7 +145,7 @@ namespace DepthsBelow
 			// Load scripts from script folder
 			// HACK: This needs to load files on the fly instead of loading precompiled files by the content manager.
 			// http://xbox.create.msdn.com/en-US/education/catalog/sample/winforms_series_2 maybe?
-			var scripts = GameServices.GetService<ContentManager>().LoadContent<string>("scripts");
+			/*var scripts = GameServices.GetService<ContentManager>().LoadContent<string>("scripts");
 			foreach (var script in scripts)
 			{
 				try
@@ -140,7 +157,17 @@ namespace DepthsBelow
 					Console.WriteLine("Lua error: " + e.Message);
 				}
 				
+			}*/
+
+			foreach (var fileName in filesToRun)
+			{
+				lua.DoFile(GameServices.GetService<ContentManager>().RootDirectory + "/" + fileName);
 			}
+		}
+
+		public void AddFile(string fileName)
+		{
+			filesToRun.Add(fileName);
 		}
 
 		public T GetObject<T>(string obj)

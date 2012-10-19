@@ -139,16 +139,48 @@
     <Compile Include="scripts\gui.lua">
       <Name>gui</Name>
       <Importer>LuaImporter</Importer>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
     <Compile Include="scripts\test.lua">
       <Name>test</Name>
       <Importer>LuaImporter</Importer>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="scripts\tooltip.lua">
       <Name>tooltip</Name>
       <Importer>LuaImporter</Importer>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="images\GUI\bar_solid.png">
+      <Name>bar_solid</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\GUI\bar_transparent.png">
+      <Name>bar_transparent</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\GUI\health_background.png">
+      <Name>health_background</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\GUI\unit_background.png">
+      <Name>unit_background</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="fonts\UnitName.spritefont">
+      <Name>UnitName</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

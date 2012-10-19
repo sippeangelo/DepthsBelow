@@ -14,12 +14,12 @@ namespace DepthsBelow.GUI
 	/// </summary>
 	public class Button : Frame
 	{
-		public delegate void OnClickHandler(Point pos);
+		//public delegate void OnClickHandler(Point pos);
 
 		/// <summary>
 		/// Handler of OnClick events.
 		/// </summary>
-		public OnClickHandler OnClick;
+		//public OnClickHandler OnClick;
 
 		private MouseState lastMouseState;
 
@@ -39,7 +39,7 @@ namespace DepthsBelow.GUI
 		{
 			base.Update(gameTime);
 
-			MouseState ms = Mouse.GetState();
+			/*MouseState ms = Mouse.GetState();
 
 			if (ms.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
 			{
@@ -58,7 +58,7 @@ namespace DepthsBelow.GUI
 				}
 			}
 
-			lastMouseState = ms;
+			lastMouseState = ms;*/
 		}
 	}
 }

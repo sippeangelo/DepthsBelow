@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace DepthsBelow.GUI
 {
@@ -46,6 +47,34 @@ namespace DepthsBelow.GUI
 			get { return this.Rectangle.Y; }
 			set { this.Rectangle.Y = value; }
 		}
+		/// <summary>
+		/// The x-coordinate of the left side of the frame.
+		/// </summary>
+		public int Left
+		{
+			get { return this.Rectangle.Left; }
+		}
+		/// <summary>
+		/// The y-coordinate of the top side of the frame.
+		/// </summary>
+		public int Top
+		{
+			get { return this.Rectangle.Top; }
+		}
+		/// <summary>
+		/// The x-coordinate of the right side of the frame.
+		/// </summary>
+		public int Right
+		{
+			get { return this.Rectangle.Right; }
+		}
+		/// <summary>
+		/// The y-coordinate of the bottom side of the frame.
+		/// </summary>
+		public int Bottom
+		{
+			get { return this.Rectangle.Bottom; }
+		}
 
 		/// <summary>
 		/// Rectangle of the frame.
@@ -78,13 +107,69 @@ namespace DepthsBelow.GUI
 		public bool Visible = true;
 
 		/// <summary>
+		/// The layer of the frame. 
+		/// Bigger number means closer to the screen.
+		/// </summary>
+		public int Layer = 0;
+		/// <summary>
+		/// Gets the sum of this frame and all parent layers.
+		/// </summary>
+		public int LayerSum
+		{
+			get { return (Parent != null) ? this.Layer + Parent.LayerSum : this.Layer; }
+		}
+
+		/// <summary>
+		/// The unique identifier of the frame.
+		/// </summary>
+		public int UID { get; private set; }
+		/// <summary>
 		/// Potential parent frame.
 		/// </summary>
 		public Frame Parent;
 		/// <summary>
 		/// Potential children frames.
 		/// </summary>
-		public List<Frame> Children; 
+		public List<Frame> Children;
+
+		#region Events
+		/// <summary>
+		/// Occurs when the frame is clicked inside it's bounding rectangle.
+		/// </summary>
+		public event OnClickHandler OnClick;
+		/// <summary>
+		/// <see cref="OnClickHandler" /> event arguments.
+		/// </summary>
+		public class OnClickArgs : EventArgs
+		{
+			/// <summary>
+			/// The position of the click relative to the frame position.
+			/// </summary>
+			public Point Position;
+
+			/// <summary>
+			/// The time of the click, since the start of the program.
+			/// </summary>
+			public TimeSpan Time;
+		}
+		/// <summary>
+		/// Handler for click events.
+		/// </summary>
+		/// <param name="frame">The clicked frame.</param>
+		/// <param name="e">The <see cref="OnClickArgs" /> instance containing the event data.</param>
+		public delegate void OnClickHandler(Frame frame, OnClickArgs e);
+		/// <summary>
+		/// Raise an <see cref="OnClick" /> event on the frame.
+		/// </summary>
+		/// <param name="e">The <see cref="OnClickArgs" /> instance containing the event data.</param>
+		public void Click(OnClickArgs e)
+		{
+			if (OnClick != null)
+				OnClick(this, e);
+		}
+		#endregion
+
+		private MouseState lastMouseState;
 
 		/// <summary>
 		/// Create a blank frame.
@@ -97,7 +182,7 @@ namespace DepthsBelow.GUI
 
 			this.Children = new List<Frame>();
 
-			GUIManager.Add(this);
+			UID = GUIManager.Add(this);
 		}
 
 		/// <summary>
@@ -153,6 +238,31 @@ namespace DepthsBelow.GUI
 
 		public virtual void Update(GameTime gameTime)
 		{
+			/*MouseState ms = Mouse.GetState();
+
+			if (ms.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
+			{
+				// HACK: This should be handled globally somewhere else to prevent event bubbling
+				if (
+					ms.X >= AbsoluteRectangle.Left
+					&& ms.X < AbsoluteRectangle.Right
+					&& ms.Y >= AbsoluteRectangle.Top
+					&& ms.Y < AbsoluteRectangle.Bottom)
+				{
+					if (OnClick != null)
+					{
+						var args = new OnClickArgs()
+							           {
+										   Position = new Point(ms.X - AbsoluteRectangle.X, ms.Y - AbsoluteRectangle.Y),
+										   Time = gameTime.TotalGameTime
+							           };
+						OnClick(this, args);
+					}
+				}
+			}
+
+			lastMouseState = ms;*/
+
 			foreach (var child in Children)
 				child.Update(gameTime);
 		}

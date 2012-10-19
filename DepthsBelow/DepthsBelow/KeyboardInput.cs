@@ -26,6 +26,13 @@ namespace DepthsBelow
         {
             KeyboardState ks = Keyboard.GetState();
 
+			// Lua reload scripts
+			if (ks.IsKeyUp(Keys.R) && lastKeyboardState.IsKeyDown(Keys.R))
+			{
+				core.Lua.Reload();
+			}
+
+			// Next turn
             if (ks.IsKeyDown(Keys.Enter) && lastKeyboardState.IsKeyUp(Keys.Enter)) 
             {
 				if (core.TurnManager.CurrentTurn == core.TurnManager["Player"])

@@ -28,6 +28,7 @@ namespace DepthsBelow
 		public TurnManager TurnManager;
 
 		public Camera Camera;
+		public Interface Interface;
 
 		public static MouseInput MouseInput;
         public static KeyboardInput KeyboardInput;
@@ -72,6 +73,8 @@ namespace DepthsBelow
 			TurnManager = new TurnManager(new string[] { "Player", "Computer" });
 
 			Camera = new Camera(this);
+			Interface = new Interface(this);
+
 			Squad = new List<Soldier>();
             Swarm = new List<SmallEnemy>();
             Volley = new List<Shot>();

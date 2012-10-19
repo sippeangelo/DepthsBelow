@@ -43,12 +43,25 @@ namespace DepthsBelow
             gridTexture.SetData(new Color[] { Color.White });
 		}
 
+		public void OnClick(MouseState ms, GameTime gameTime)
+		{
+			GUIManager.Click(new Point(ms.X, ms.Y), gameTime.TotalGameTime);
+		}
+
 		public void Update(GameTime gameTime)
 		{
 			MouseState ms = Mouse.GetState();
 			Vector2 mouseWorldPos = core.Camera.ScreenToWorld(new Vector2(ms.X, ms.Y));
 			Rectangle mouseWorldRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 1, 1);
 			KeyboardState ks = Keyboard.GetState();
+
+			// OnClick event
+			if (
+				(ms.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
+				|| (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
+			)
+				OnClick(ms, gameTime);
+				
 
 			// Tooltip stuff
 			var tooltip = core.Lua.GetObject<GUI.Frame>("ToolTip");
