@@ -105,6 +105,16 @@ namespace DepthsBelow
 			");
 		}
 
+		public LuaInterface.LuaFunction Expose(string path, object target, System.Reflection.MethodBase function)
+		{
+			return lua.RegisterFunction(path, target, function);
+		}
+
+		public void Expose(string path, object obj)
+		{
+			lua[path] = obj;
+		}
+
 		public void ResetContext()
 		{
 			if (lua != null)
