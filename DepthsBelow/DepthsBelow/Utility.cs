@@ -30,7 +30,7 @@ namespace DepthsBelow
             int baseHitChance = shooting.GetAim;
             int baseDodgeChance = dodging.GetDodge;
             int distance = (int)Vector2.Distance(attacker.GetComponent<Transform>().World.Position, defender.GetComponent<Transform>().World.Position);
-            int basePenalty = shooting.Penalty(distance / (Grid.TileSize / 2));
+            int basePenalty = shooting.Penalty(distance / (Grid.TileSize));
             Console.WriteLine("Penalty = " + basePenalty);
             int chanceToHit = baseHitChance - baseDodgeChance - basePenalty;
             //Console.WriteLine(chanceToHit);

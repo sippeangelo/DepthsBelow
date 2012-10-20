@@ -26,6 +26,12 @@ namespace DepthsBelow.Component
             set { weaponAccuracy = value; }
         }
 
+        public int GetStep
+        {
+            get { return stepsTaken; }
+            set { stepsTaken = value; }
+        }
+
         public int GetDodge
         {
             get { return enemyDodge; }
@@ -80,7 +86,8 @@ namespace DepthsBelow.Component
             int penalty = 0;
             if (distance >= penaltyRange * 3)
             {
-                penalty = 100;
+                distance -= penaltyRange * 3;
+                penalty = penaltyRange + penaltyRange * 3 + penaltyRange * 5 + distance * 10;
             }
             else if (distance >= penaltyRange * 2)
             {
