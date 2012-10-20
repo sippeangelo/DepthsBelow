@@ -118,6 +118,20 @@ namespace DepthsBelow
                             readjust = false;
                         }
                     }
+                    //Calculating chance to hit if holding cursor over enemy
+                    foreach (var unit in core.Squad)
+                    {
+                        if (unit.Selected == true && unit.Fired == false) 
+                        {
+                            foreach (var enemy in core.Swarm)
+                            {
+                                if (gridRectangle.Intersects(enemy.GetComponent<Component.Collision>().Rectangle)) 
+                                {
+                                    Utility.CalculateHitChance(unit, enemy);
+                                }
+                            }
+                        }
+                    }
                 }
                 // When the mouse is released
                 if (ms.LeftButton == ButtonState.Released && selectionRectangle != Rectangle.Empty)
