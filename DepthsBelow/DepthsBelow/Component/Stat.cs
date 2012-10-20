@@ -23,7 +23,7 @@ namespace DepthsBelow.Component
         public int GetAim
         {
             get { return soldierAim + weaponAccuracy; }
-            set { soldierAim = value; }
+            set { weaponAccuracy = value; }
         }
 
         public int GetDodge
