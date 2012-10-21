@@ -14,6 +14,14 @@ namespace DepthsBelow
         public Color Color;
         public static Point Origin;
 
+        Stat soldierStat;
+
+        public Stat Stat
+        {
+            get { return soldierStat; }
+            set { soldierStat = value; }
+        }
+
         private bool _selected = false; //I guess as in "currently doing something"
 
         public bool select
@@ -29,13 +37,15 @@ namespace DepthsBelow
 
         public Vector2 direction = Vector2.Zero;
 
-        public Shot(EntityManager entityManager)
+        public Shot(EntityManager entityManager, Stat _soldierStat)
 			: base(entityManager)
         {
             if (Texture == null)
                 LoadContent();
 
             Transform.World.Origin = new Vector2(16, 16);
+
+            Stat = _soldierStat;
 
             this.Color = Color.White;
             var rc = new SpriteRenderer(this) { Texture = Texture, Color = Color.White };

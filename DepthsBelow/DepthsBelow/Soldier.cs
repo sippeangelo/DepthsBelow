@@ -33,7 +33,7 @@ namespace DepthsBelow
         }
 
         public int numberOfSteps = 14;
-        public int currentStep = 0;
+        int currentStep = 0;
 
         public int step 
         {
@@ -41,6 +41,7 @@ namespace DepthsBelow
             set 
             {
                 currentStep = value;
+                GetComponent<Component.Stat>().GetStep = currentStep;
             }
         }
 
@@ -70,7 +71,7 @@ namespace DepthsBelow
 					           //Life = 10, 
 							   Defence = 10, 
 							   Strength = 10, 
-							   GetAim = 10, 
+							   GetAim = 40, 
 							   GetDodge = 20
 				           };
 			AddComponent(stat);
@@ -146,9 +147,9 @@ namespace DepthsBelow
 
 					if (Transform.World == nodeWorldPos)
 					{
-                        if (currentStep < numberOfSteps)
+                        if (step < numberOfSteps)
                         {
-                            currentStep++;
+                            step++;
                             lastLastNode = lastNode;
                             lastNode = nextNode;
                             nextNode = GetComponent<PathFinder>().Next();
