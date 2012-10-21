@@ -25,6 +25,8 @@ namespace DepthsBelow
 
         bool checkingDirection = false;
         bool readjust = false;
+
+		private Point pressLocation;
 		
 		public MouseInput(Core core)
 		{
@@ -43,9 +45,50 @@ namespace DepthsBelow
             gridTexture.SetData(new Color[] { Color.White });
 		}
 
+		public void OnPress(MouseState ms, GameTime gameTime)
+		{
+			pressLocation = new Point(ms.X, ms.Y);
+			var mouseEvent = new GUIManager.MouseEventArgs()
+			{
+				MouseState = ms,
+				Time = gameTime.TotalGameTime
+			};
+			bool handledByUI = GUIManager.RaiseAt("OnPress", mouseEvent, pressLocation);
+
+			if (handledByUI)
+				return;
+
+			// If the mouse event is above a GUI frame that handles mouse events, do nothing
+			//if (GUIManager.FramesIntersectingPoint(mousePos).Any(frame => frame.MouseEnabled))
+			//	return;
+		}
+
+		public void OnRelease(MouseState ms, GameTime gameTime)
+		{
+			var mouseEvent = new GUIManager.MouseEventArgs()
+			{
+				MouseState = ms,
+				Time = gameTime.TotalGameTime
+			};
+
+			bool handledByUI = GUIManager.RaiseAt("OnRelease", mouseEvent, pressLocation);
+
+			if (handledByUI)
+				return;
+		}
+
 		public void OnClick(MouseState ms, GameTime gameTime)
 		{
-			GUIManager.Click(new Point(ms.X, ms.Y), gameTime.TotalGameTime);
+			var mouseEvent = new GUIManager.MouseEventArgs()
+			{
+				MouseState = ms,
+				Time = gameTime.TotalGameTime
+			};
+
+			bool handledByUI = GUIManager.RaiseAt("OnClick", mouseEvent, new Point(ms.X, ms.Y));
+
+			if (handledByUI)
+				return;
 		}
 
 		public void Update(GameTime gameTime)
@@ -54,14 +97,24 @@ namespace DepthsBelow
 			Vector2 mouseWorldPos = core.Camera.ScreenToWorld(new Vector2(ms.X, ms.Y));
 			Rectangle mouseWorldRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 1, 1);
 			KeyboardState ks = Keyboard.GetState();
+			
+			// OnPress event
+			if (
+				(ms.LeftButton == ButtonState.Pressed && lastMouseState.LeftButton == ButtonState.Released)
+				|| (ms.RightButton == ButtonState.Pressed && lastMouseState.RightButton == ButtonState.Released)
+			)
+				OnPress(ms, gameTime);
 
-			// OnClick event
+			// OnRelease event
 			if (
 				(ms.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
 				|| (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
 			)
+			{
 				OnClick(ms, gameTime);
-				
+				OnRelease(ms, gameTime);
+			}
+
 
 			// Tooltip stuff
 			var tooltip = core.Lua.GetObject<GUI.Frame>("ToolTip");
@@ -87,7 +140,7 @@ namespace DepthsBelow
             if (core.TurnManager.CurrentTurn == core.TurnManager["Player"])
             {
                 // Selection rectangle
-                if (ms.LeftButton == ButtonState.Pressed)
+                /*if (ms.LeftButton == ButtonState.Pressed)
                 {
 
                     if (selectionRectangle == Rectangle.Empty)
@@ -118,9 +171,10 @@ namespace DepthsBelow
                             readjust = false;
                         }
                     }
-                }
+                }*/
+
                 // When the mouse is released
-                if (ms.LeftButton == ButtonState.Released && selectionRectangle != Rectangle.Empty)
+                /*if (ms.LeftButton == ButtonState.Released && selectionRectangle != Rectangle.Empty)
                 {
                     // Deselect all units
                     if (!ks.IsKeyDown(Keys.LeftControl))
@@ -138,7 +192,7 @@ namespace DepthsBelow
 
                     // Hide the selection rectangle
                     selectionRectangle = Rectangle.Empty;
-                }
+                }*/
 
                 // Send orders with right click
                 if (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)

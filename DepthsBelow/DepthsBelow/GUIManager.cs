@@ -6,18 +6,35 @@ using System.Text;
 using DepthsBelow.GUI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace DepthsBelow
 {
-	static class GUIManager
+	public static class GUIManager
 	{
+		/// <summary>
+		/// GUI mouse event arguments.
+		/// </summary>
+		public class MouseEventArgs : EventArgs
+		{
+			/// <summary>
+			/// The XNA mouse state.
+			/// </summary>
+			public MouseState MouseState;
+
+			/// <summary>
+			/// The time of the click, since the start of the program.
+			/// </summary>
+			public TimeSpan Time;
+		}
+
 		public static List<Frame> Frames = new List<Frame>();
 		private static int uidIndex = 0;
 
 		public static int Add(Frame frame)
 		{
 			Frames.Add(frame);
-			return uidIndex++;
+			return CreateUID();
 		}
 
 		public static void Remove(Frame frame)
@@ -25,24 +42,35 @@ namespace DepthsBelow
 			Frames.Remove(frame);
 		}
 
-		public static void Click(Point position, TimeSpan time)
+		public static int CreateUID()
 		{
-			var clickRectangle = new Rectangle(position.X, position.Y, 1, 1);
+			return uidIndex++;
+		}
 
-			// Create a list of all frames which have an OnClick handler and intersects with the click position
-			var intersections = Frames.Where(frame => frame.OnClickCount > 0).Where(frame => clickRectangle.Intersects(frame.AbsoluteRectangle)).ToList();
+		/// <summary>
+		/// Calculates which frames are intersecting a point.
+		/// </summary>
+		/// <param name="point">A point on the screen.</param>
+		/// <returns>Returns a list of frames intersecting the point.</returns>
+		public static List<Frame> FramesIntersectingPoint(Point point)
+		{
+			var rect = new Rectangle(point.X, point.Y, 1, 1);
+			return Frames.Where(frame => rect.Intersects(frame.AbsoluteRectangle)).ToList();
+		}
+
+		public static bool RaiseAt(string eventName, EventArgs eventArgs, Point position)
+		{
+			// Create a list of all frames which intersects with the click position
+			var intersections = FramesIntersectingPoint(position);
+			// Filter it by event
+			intersections = intersections.Where(frame => frame.GetSubscriberCount(eventName) > 0).ToList();
 			// Get the topmost frame of that list
 			var topFrame = GetTopFrame(intersections);
 
 			if (topFrame != null)
-			{
-				var e = new Frame.OnClickArgs()
-					        {
-						        Position = position,
-						        Time = time
-					        };
-				topFrame.Click(e);
-			}
+				return topFrame.Raise(eventName, eventArgs);
+			else
+				return false;
 		}
 
 		/// <summary>

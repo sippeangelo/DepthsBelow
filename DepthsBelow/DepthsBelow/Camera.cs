@@ -35,9 +35,25 @@ namespace DepthsBelow
 			return Vector2.Transform(screenPos, Matrix.Invert(Transform));
 		}
 
+		public Rectangle ScreenToWorld(Rectangle screenRectangle)
+		{
+			var pos = ScreenToWorld(new Vector2(screenRectangle.X, screenRectangle.Y));
+			screenRectangle.X = (int)pos.X;
+			screenRectangle.Y = (int)pos.Y;
+			return screenRectangle;
+		}
+
 		public Vector2 WorldToScreen(Vector2 worldPos)
 		{
 			return Vector2.Transform(worldPos, Transform);
+		}
+
+		public Rectangle WorldToScreen(Rectangle screenRectangle)
+		{
+			var pos = WorldToScreen(new Vector2(screenRectangle.X, screenRectangle.Y));
+			screenRectangle.X = (int)pos.X;
+			screenRectangle.Y = (int)pos.Y;
+			return screenRectangle;
 		}
 
 		public void Update(GameTime gameTime)
@@ -84,6 +100,11 @@ namespace DepthsBelow
 				Position += change;
 				Transform *= Matrix.CreateTranslation(new Vector3(change.X, change.Y, 0));
 			}
+
+			Transform = Matrix.Identity
+						* Matrix.CreateRotationZ(Rotation)
+						* Matrix.CreateScale(Zoom)
+						* Matrix.CreateTranslation(new Vector3(Position.X, Position.Y, 0));
 
 			lastMouseState = ms;
 		}

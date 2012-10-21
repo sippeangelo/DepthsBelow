@@ -29,10 +29,10 @@ namespace DepthsBelow.GUI
 
 		}
 
-		public Button(Frame parent) 
-			: this()
+		public Button(Frame parent)
+			: base(parent)
 		{
-			this.Parent = parent;
+			
 		}
 
 		public override void Update(GameTime gameTime)

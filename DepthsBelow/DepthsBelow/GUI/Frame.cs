@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -81,16 +83,17 @@ namespace DepthsBelow.GUI
 		/// </summary>
 		public Rectangle Rectangle;
 		/// <summary>
-		/// Absolute rectangle of the frame. Takes parent frame positions in consideration.
+		/// Absolute rectangle of the frame. 
+		/// Takes parent frame positions in consideration and converts negative widths and heights.
 		/// </summary>
 		public Rectangle AbsoluteRectangle
 		{
 			get
 			{
 				if (Parent != null)
-					return new Rectangle(Parent.AbsoluteRectangle.X + Rectangle.X, Parent.AbsoluteRectangle.Y + Rectangle.Y, Rectangle.Width, Rectangle.Height);
+					return Utility.MakeRectanglePositive(new Rectangle(Parent.AbsoluteRectangle.X + Rectangle.X, Parent.AbsoluteRectangle.Y + Rectangle.Y, Rectangle.Width, Rectangle.Height));
 				else
-					return Rectangle;
+					return Utility.MakeRectanglePositive(Rectangle);
 			}
 		}
 		/// <summary>
@@ -101,10 +104,16 @@ namespace DepthsBelow.GUI
 		/// Texture color tint.
 		/// </summary>
 		public Color Color;
+
+		public bool _Visible = true;
 		/// <summary>
 		/// If the frame is visible or not.
 		/// </summary>
-		public bool Visible = true;
+		public bool Visible
+		{
+			get { return (Parent != null) ? _Visible && Parent.Visible : _Visible; }
+			set { _Visible = value; }
+		}
 
 		/// <summary>
 		/// The layer of the frame. 
@@ -132,47 +141,142 @@ namespace DepthsBelow.GUI
 		/// </summary>
 		public List<Frame> Children;
 
+		/// <summary>
+		/// Storage for property data
+		/// </summary>
+		public Dictionary<string, object> Properties = new Dictionary<string, object>();
+		/// <summary>
+		/// Shorthand for frame properties.
+		/// </summary>
+		public object this[string key]
+		{
+			get { return Properties[key]; }
+			set { Properties[key] = value; }
+		}
+
+		/// <summary>
+		/// Controls whether mouse events can be handled by the frame.
+		/// </summary>
+		public bool MouseEnabled = false;
+
 		#region Events
+
+		/// <summary>
+		/// Handler for click events.
+		/// </summary>
+		/// <param name="frame">The frame.</param>
+		/// <param name="args">The <see cref="GUIManager.MouseEventArgs" /> instance containing the event data.</param>
+		public delegate void OnClickHandler(Frame frame, GUIManager.MouseEventArgs args);
 		/// <summary>
 		/// Occurs when the frame is clicked inside it's bounding rectangle.
 		/// </summary>
 		public event OnClickHandler OnClick;
-		/// <summary>
-		/// Gets the number of subscribers to the <see cref="OnClickHandler" /> event.
-		/// </summary>
-		public int OnClickCount
-		{
-			get { return (OnClick != null) ? OnClick.GetInvocationList().Length : 0; }
-		}
-		/// <summary>
-		/// <see cref="OnClickHandler" /> event arguments.
-		/// </summary>
-		public class OnClickArgs : EventArgs
-		{
-			/// <summary>
-			/// The position of the click relative to the frame position.
-			/// </summary>
-			public Point Position;
 
-			/// <summary>
-			/// The time of the click, since the start of the program.
-			/// </summary>
-			public TimeSpan Time;
-		}
 		/// <summary>
-		/// Handler for click events.
+		/// Handler for press events.
 		/// </summary>
-		/// <param name="frame">The clicked frame.</param>
-		/// <param name="e">The <see cref="OnClickArgs" /> instance containing the event data.</param>
-		public delegate void OnClickHandler(Frame frame, OnClickArgs e);
+		/// <param name="frame">The frame.</param>
+		/// <param name="args">The <see cref="GUIManager.MouseEventArgs" /> instance containing the event data.</param>
+		public delegate void OnPressHandler(Frame frame, GUIManager.MouseEventArgs args);
 		/// <summary>
-		/// Raise an <see cref="OnClick" /> event on the frame.
+		/// Occurs when the frame is clicked inside it's bounding rectangle.
 		/// </summary>
-		/// <param name="e">The <see cref="OnClickArgs" /> instance containing the event data.</param>
-		public void Click(OnClickArgs e)
+		public event OnPressHandler OnPress;
+
+		/// <summary>
+		/// Handler for release events.
+		/// </summary>
+		/// <param name="frame">The frame.</param>
+		/// <param name="args">The <see cref="GUIManager.MouseEventArgs" /> instance containing the event data.</param>
+		public delegate void OnReleaseHandler(Frame frame, GUIManager.MouseEventArgs args);
+		/// <summary>
+		/// Occurs when the frame is clicked inside it's bounding rectangle.
+		/// </summary>
+		public event OnReleaseHandler OnRelease;
+
+		/// <summary>
+		/// Handler for mouse over events.
+		/// </summary>
+		/// <param name="frame">The frame.</param>
+		/// <param name="args">The <see cref="GUIManager.MouseEventArgs" /> instance containing the event data.</param>
+		public delegate void OnMouseOverHandler(Frame frame, GUIManager.MouseEventArgs args);
+		/// <summary>
+		/// Occurs when the frame is clicked inside it's bounding rectangle.
+		/// </summary>
+		public event OnMouseOverHandler OnMouseOver;
+
+		/// <summary>
+		/// Handler for mouse out events.
+		/// </summary>
+		/// <param name="frame">The frame.</param>
+		/// <param name="args">The <see cref="GUIManager.MouseEventArgs" /> instance containing the event data.</param>
+		public delegate void OnMouseOutHandler(Frame frame, GUIManager.MouseEventArgs args);
+		/// <summary>
+		/// Occurs when the frame is clicked inside it's bounding rectangle.
+		/// </summary>
+		public event OnMouseOutHandler OnMouseOut;
+
+
+		/// <summary>
+		/// Raises the specified event by name.
+		/// </summary>
+		/// <param name="eventName">Name of the event.</param>
+		/// <param name="eventArgs">The <see cref="EventArgs" /> instance containing the event data.</param>
+		/// <returns>Returns true if any event was raised.</returns>
+		public bool Raise(string eventName, EventArgs eventArgs)
 		{
-			if (OnClick != null)
-				OnClick(this, e);
+			// Get the event field info
+			var fieldInfo = this.GetType().GetField(eventName, BindingFlags.NonPublic | BindingFlags.Instance);
+			// If the event exists
+			if (fieldInfo != null)
+			{
+				var eventDelegate = (MulticastDelegate)fieldInfo.GetValue(this);
+				// If there's any subscribed events...
+				if (eventDelegate != null)
+				{
+					// Invoke their raise methods
+					foreach (var handler in eventDelegate.GetInvocationList())
+					{
+						try
+						{
+							handler.Method.Invoke(handler.Target, new object[] { this, eventArgs });
+						}
+						catch (Exception)
+						{
+							return false;
+						}
+					}
+
+					return true;
+				}
+
+				return false;
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Gets the subscriber count for a specific event.
+		/// </summary>
+		/// <param name="eventName">Name of the event.</param>
+		/// <returns>Returns the number of subscribers of the event.</returns>
+		public int GetSubscriberCount(string eventName)
+		{
+			// Get the event field info
+			var fieldInfo = this.GetType().GetField(eventName, BindingFlags.NonPublic | BindingFlags.Instance);
+			// If the event exists
+			if (fieldInfo != null)
+			{
+				var eventDelegate = (MulticastDelegate)fieldInfo.GetValue(this);
+				// If there's any subscribed events...
+				if (eventDelegate != null)
+					return eventDelegate.GetInvocationList().Length;
+
+				return 0;
+			}
+
+			return 0;
 		}
 		#endregion
 
@@ -189,7 +293,7 @@ namespace DepthsBelow.GUI
 
 			this.Children = new List<Frame>();
 
-			UID = GUIManager.Add(this);
+			this.UID = GUIManager.Add(this);
 		}
 
 		/// <summary>
@@ -258,7 +362,7 @@ namespace DepthsBelow.GUI
 				{
 					if (OnClick != null)
 					{
-						var args = new OnClickArgs()
+						var args = new MouseEventArgs()
 							           {
 										   Position = new Point(ms.X - AbsoluteRectangle.X, ms.Y - AbsoluteRectangle.Y),
 										   Time = gameTime.TotalGameTime
@@ -270,19 +374,19 @@ namespace DepthsBelow.GUI
 
 			lastMouseState = ms;*/
 
-			foreach (var child in Children)
-				child.Update(gameTime);
+			/*foreach (var child in Children)
+				child.Update(gameTime);*/
 		}
 
 		public virtual void Draw(SpriteBatch spriteBatch)
 		{
 			if (Visible)
-			{	
+			{
 				if (Texture != null)
 					spriteBatch.Draw(Texture, AbsoluteRectangle, Color);
 
-				foreach (var child in Children)
-					child.Draw(spriteBatch);
+				/*foreach (var child in Children)
+					child.Draw(spriteBatch);*/
 			}
 		}
 	}

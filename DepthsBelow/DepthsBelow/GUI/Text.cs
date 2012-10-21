@@ -29,9 +29,9 @@ namespace DepthsBelow.GUI
 		}
 
 		public Text(Frame parent)
-			: this()
+			: base(parent)
 		{
-			this.Parent = parent;
+			this.Color = Color.White;
 		}
 
 		/// <summary>
@@ -47,8 +47,8 @@ namespace DepthsBelow.GUI
 		{
 			base.Draw(spriteBatch);
 
-			if (Parent.Visible && this.Visible && Font != null)
-				spriteBatch.DrawString(Font, Value, new Vector2(Rectangle.X + Parent.Rectangle.X, Rectangle.Y + Parent.Rectangle.Y), Color);
+			if (Visible && Font != null)
+				spriteBatch.DrawString(Font, Value, new Vector2(Rectangle.X + Parent.AbsoluteRectangle.X, Rectangle.Y + Parent.AbsoluteRectangle.Y), Color);
 		}
 	}
 }

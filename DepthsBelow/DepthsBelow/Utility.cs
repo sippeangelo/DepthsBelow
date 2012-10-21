@@ -63,5 +63,43 @@ namespace DepthsBelow
 			           angle, Vector2.Zero, new Vector2(length, width),
 			           SpriteEffects.None, 0);
 		}
+
+		private static Texture2D solidTexture = null;
+		/// <summary>
+		/// Creates a 1x1 solid white XNA texture.
+		/// </summary>
+		/// <returns>Returns a 1x1 solid white Texture2D object.</returns>
+		public static Texture2D GetSolidTexture()
+		{
+			if (solidTexture == null)
+			{
+				solidTexture = new Texture2D(GameServices.GetService<GraphicsDevice>(), 1, 1);
+				solidTexture.SetData(new Color[] { Color.White });
+			}
+
+			return solidTexture;
+		}
+
+		/// <summary>
+		/// Converts rectangles with negative sizes to positive sizes with its position offset.
+		/// </summary>
+		/// <param name="rect">The rectangle with potentially negative sizes.</param>
+		/// <returns>Returns a rectangle with positive sizes.</returns>
+		public static Rectangle MakeRectanglePositive(Rectangle rect)
+		{
+			if (rect.Width < 0)
+			{
+				rect.X += rect.Width;
+				rect.Width = -rect.Width;
+			}
+
+			if (rect.Height < 0)
+			{
+				rect.Y += rect.Height;
+				rect.Height = -rect.Height;
+			}
+
+			return rect;
+		}
     }
 }

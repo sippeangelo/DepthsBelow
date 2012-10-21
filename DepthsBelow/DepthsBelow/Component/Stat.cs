@@ -7,7 +7,26 @@ namespace DepthsBelow.Component
 {
     public class Stat : Component
     {
-        protected int hp = 0;
+		/// <summary>
+		/// The current health points of the unit
+		/// </summary>
+	    public float HP = 0;
+	    public float _MaxHP = 100;
+		/// <summary>
+		/// Gets or sets the max HP.
+		/// </summary>
+	    public float MaxHP
+	    {
+		    get { return _MaxHP; }
+			set
+			{
+				_MaxHP = value;
+				if (HP == 0)
+					HP = value;
+			}
+	    }
+		
+		protected int hp = 0;
         protected int defence = 0;
         protected int stepsTaken = 0;
         protected int distanceToTarget = 0;
@@ -65,7 +84,8 @@ namespace DepthsBelow.Component
             return panic + GetPenalty(stepsTaken) + (int)(GetPenalty(distance) / 2);
         }
 
-        public Stat(Entity parent) : base (parent)
+        public Stat(Entity parent) 
+			: base (parent)
         {
 
         }

@@ -46,6 +46,19 @@ namespace DepthsBelow
 		}
 
 		/// <summary>
+		/// Storage for property data
+		/// </summary>
+		public Dictionary<string, object> Properties = new Dictionary<string, object>();
+		/// <summary>
+		/// Shorthand for frame properties.
+		/// </summary>
+		public object this[string key]
+		{
+			get { return Properties[key]; }
+			set { Properties[key] = value; }
+		}
+
+		/// <summary>
 		/// Creates a game object and adds it to the referenced entity manager.
 		/// </summary>
 		/// <param name="entityManager">An instance of EntityManager to add the entity to.</param>

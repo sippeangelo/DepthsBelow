@@ -33,6 +33,7 @@ namespace DepthsBelow
 		public static MouseInput MouseInput;
         public static KeyboardInput KeyboardInput;
 		public List<Soldier> Squad;
+		public DynamicGroupManager GroupManager;
         public List<SmallEnemy> Swarm;
         public List<Shot> Volley;
 		public static Map Map;
@@ -42,20 +43,16 @@ namespace DepthsBelow
 		public Core()
 		{
 			GraphicsDeviceManager = new GraphicsDeviceManager(this);
-			Content.RootDirectory = "Content";
-
 			GraphicsDeviceManager.PreferredBackBufferWidth = 1280;
 			GraphicsDeviceManager.PreferredBackBufferHeight = 720;
 			GraphicsDeviceManager.IsFullScreen = false;
-
 			//graphics.SynchronizeWithVerticalRetrace = false;
-			this.IsFixedTimeStep = false;
 			GraphicsDeviceManager.ApplyChanges();
 
+			this.IsFixedTimeStep = false;
 			this.IsMouseVisible = true;
 
-			GameServices.AddService<GraphicsDevice>(GraphicsDevice);
-			GameServices.AddService<ContentManager>(Content);
+			Content.RootDirectory = "Content";
 		}
 
 		/// <summary>
@@ -66,9 +63,11 @@ namespace DepthsBelow
 		/// </summary>
 		protected override void Initialize()
 		{
+			GameServices.AddService<GraphicsDevice>(GraphicsDevice);
+			GameServices.AddService<ContentManager>(Content);
+
 			Lua = new Lua();
 
-			// TODO: Add your initialization logic here
 			EntityManager = new EntityManager();
 			TurnManager = new TurnManager(new string[] { "Player", "Computer" });
 
@@ -76,8 +75,8 @@ namespace DepthsBelow
 			Interface = new Interface(this);
 
 			Squad = new List<Soldier>();
-            Swarm = new List<SmallEnemy>();
-            Volley = new List<Shot>();
+			Swarm = new List<SmallEnemy>();
+			Volley = new List<Shot>();
 
 			base.Initialize();
 		}
@@ -94,6 +93,8 @@ namespace DepthsBelow
 			Map = Content.Load<Map>("maps/Cave.Level1");
 			// Load map objects
 			Map.ParseObjects(this);
+			GroupManager = new DynamicGroupManager(Squad.Cast<Entity>().ToList(), (float)Grid.TileSize * 1.5f);
+			Interface.CreateUnitFrames(Squad);
 
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent();
@@ -139,6 +140,7 @@ namespace DepthsBelow
 
 			EntityManager.Update(gameTime);
 
+			Interface.Update(gameTime);
 			GUIManager.Update(gameTime);
             
 			base.Update(gameTime);

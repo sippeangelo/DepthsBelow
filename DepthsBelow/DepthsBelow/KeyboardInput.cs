@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -22,7 +23,85 @@ namespace DepthsBelow
             this.core = core;
         }
 
-        public void Update(GameTime gameTime)
+		/*public List<List<Soldier>> GetGroups(List<Soldier> soldiers)
+		{
+			var ungrouped = soldiers.ToList();
+			var groups = new List<List<Soldier>>();
+
+			for (int index = 0; index < soldiers.Count; index++)
+			{
+				var checkingSoldier = soldiers[index];
+				var group = new List<Soldier>();
+
+				for (int i = 0; i < soldiers.Count; i++)
+				{
+					var soldier = soldiers[i];
+					if (ungrouped.Contains(soldier))
+					{
+						float distance = Vector2.Distance(checkingSoldier.Transform.World + checkingSoldier.Transform.World.Origin,
+						                                  soldier.Transform.World + soldier.Transform.World.Origin);
+						if (distance <= ((float) Grid.TileSize * 1f))
+						{
+							ungrouped.Remove(soldier);
+							group.Add(soldier);
+						}
+					}
+				}
+
+				if (group.Count > 0)
+					groups.Add(group);
+			}
+
+			return groups;
+		}*/
+
+		// Get a list of dynamic soldier groups
+		public List<List<Soldier>> GetGroups(List<Soldier> soldiers, float maxRange)
+		{
+			var alreadyGrouped = new List<Soldier>();
+			var groups = new List<List<Soldier>>();
+
+			for (int index = 0; index < soldiers.Count; index++)
+			{
+				var soldier = soldiers[index];
+
+				if (!alreadyGrouped.Contains(soldier))
+				{
+					var group = new List<Soldier>();
+					GetNearChain(ref group, soldiers, soldier, maxRange);
+					alreadyGrouped.AddRange(group);
+
+					if (group.Count > 0)
+						groups.Add(group);
+				}
+			}
+
+			return groups;
+		}
+
+		// Get all soldiers who are close to each other in a chain
+		public void GetNearChain(ref List<Soldier> group, List<Soldier> soldiers, Soldier soldier, float maxRange)
+		{
+			for (int index = 0; index < soldiers.Count; index++)
+			{
+				var nearSoldier = soldiers[index];
+
+				if (!group.Contains(nearSoldier))
+				{
+					float distance = Vector2.Distance(nearSoldier.Transform.World + nearSoldier.Transform.World.Origin,
+						                                  soldier.Transform.World + soldier.Transform.World.Origin);
+					if (distance <= maxRange)
+					{
+						group.Add(nearSoldier);
+						GetNearChain(ref group, soldiers, nearSoldier, maxRange);
+					}
+				}
+			}
+		}
+
+	    private DynamicGroupManager groupManager;
+
+	    public void Update(GameTime gameTime)
         {
             KeyboardState ks = Keyboard.GetState();
 
@@ -30,6 +109,25 @@ namespace DepthsBelow
 			if (ks.IsKeyUp(Keys.R) && lastKeyboardState.IsKeyDown(Keys.R))
 			{
 				core.Lua.Reload();
+			}
+
+			// Debug test: grouping
+			if (ks.IsKeyUp(Keys.K) && lastKeyboardState.IsKeyDown(Keys.K))
+			{
+				if (groupManager == null)
+					groupManager = new DynamicGroupManager(core.Squad.Cast<Entity>().ToList(), Grid.TileSize * 1.5f);
+				groupManager.UpdateGroups();
+				//var groups = GetGroups(core.Squad, (float)Grid.TileSize * 1.5f);
+				var groups = groupManager.Groups;
+				foreach (var group in groups)
+				{
+					Debug.WriteLine("Group #" + groups.IndexOf(group) + " Panic: " + group.Panic);
+					foreach (var entity in group.Entities)
+					{
+						var soldier = (Soldier)entity;
+						Debug.WriteLine(soldier.Name + " " + soldier.GetHashCode());
+					}
+				}
 			}
 
 			// Next turn

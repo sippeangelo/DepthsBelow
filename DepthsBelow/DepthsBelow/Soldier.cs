@@ -12,7 +12,7 @@ namespace DepthsBelow
 	{
 		public static Texture2D Texture;
 		public Color Color;
-		public static Point Origin;
+		public string Name;
 		private bool _selected;
 
 		public List<Soldier> Squad;
@@ -66,7 +66,8 @@ namespace DepthsBelow
 
 			var stat = new Component.Stat(this)
 				           {
-					           Life = 10, 
+							   MaxHP = 100,
+					           //Life = 10, 
 							   Defence = 10, 
 							   Strength = 10, 
 							   GetAim = 10, 
