@@ -82,6 +82,14 @@ namespace DepthsBelow
 	
 						core.Squad.Add(soldier);
 					}
+                    if (mapObject.Type == "MonsterSpawn")
+                    {
+                        var enemy = new MonsterSpawn(core.EntityManager, ref core.Swarm);
+                        var mapObjectPos = new Vector2(mapObject.Bounds.X, mapObject.Bounds.Y - Grid.TileSize);
+                        var mapObjectGridPos = Grid.WorldToGrid(mapObjectPos);
+                        enemy.X = mapObjectGridPos.X;
+                        enemy.Y = mapObjectGridPos.Y;
+                    }
 				}
 			}
 		}

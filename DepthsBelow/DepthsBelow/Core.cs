@@ -36,6 +36,9 @@ namespace DepthsBelow
 		public DynamicGroupManager GroupManager;
         public List<SmallEnemy> Swarm;
         public List<Shot> Volley;
+
+        public List<MonsterSpawn> Spawn;
+
 		public static Map Map;
 
 		public SmallEnemy TestMonster;
@@ -77,6 +80,8 @@ namespace DepthsBelow
 			Squad = new List<Soldier>();
 			Swarm = new List<SmallEnemy>();
 			Volley = new List<Shot>();
+
+            Spawn = new List<MonsterSpawn>();
 
 			base.Initialize();
 		}

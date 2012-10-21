@@ -14,6 +14,11 @@ namespace DepthsBelow
 	{
 		private List<Entity> entities;
 
+        public List<Entity> Entities
+        {
+            get { return entities; }
+        }
+
 		public EntityManager()
 		{
 			entities = new List<Entity>();
