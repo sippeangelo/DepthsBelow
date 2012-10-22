@@ -123,6 +123,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Component\Flashlight.cs" />
     <Compile Include="DynamicGroupManager.cs" />
+    <Compile Include="MonsterSpawn.cs" />
     <Compile Include="TurnManager.cs" />
     <Compile Include="CustomExtensions.cs" />
     <Compile Include="EntityManager.cs" />

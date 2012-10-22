@@ -18,7 +18,7 @@ namespace DepthsBelow
 		/// </summary>
 		public Component.Transform Transform;
 
-		private EntityManager entityManager;
+		protected EntityManager entityManager;
 
 		/// <summary>
 		/// Shorthand to the grid transform position.
