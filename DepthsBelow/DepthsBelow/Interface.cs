@@ -52,37 +52,41 @@ namespace DepthsBelow
 				var mouseWorldPos = core.Camera.ScreenToWorld(new Vector2(mousePos.X, mousePos.Y));
 				var mouseWorldRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 1, 1);
 
-				// Deselect all units
-				if (!ks.IsKeyDown(Keys.LeftControl))
+				if (args.LeftButton == ButtonState.Pressed)
 				{
-					foreach (var unit in core.Squad)
-						unit.Selected = false;
-
-					foreach (var unitFrame in UnitFrames)
-						unitFrame.Color = Color.Black;
-				}
-
-				// Select all units in the rectangle
-				foreach (var soldier in core.Squad)
-				{
-					if (mouseWorldRectangle.Intersects(soldier.GetComponent<Component.Collision>().Rectangle))
+					// Deselect all units
+					if (!ks.IsKeyDown(Keys.LeftControl))
 					{
-						soldier.Selected = true;
+						foreach (var unit in core.Squad)
+							unit.Selected = false;
 
 						foreach (var unitFrame in UnitFrames)
+							unitFrame.Color = Color.Black;
+					}
+
+					// Select all units in the rectangle
+					foreach (var soldier in core.Squad)
+					{
+						if (mouseWorldRectangle.Intersects(soldier.GetComponent<Component.Collision>().Rectangle))
 						{
-							if (unitFrame["soldier"] == soldier)
-								unitFrame.Color = Color.Blue;
+							soldier.Selected = true;
+
+							foreach (var unitFrame in UnitFrames)
+							{
+								if (unitFrame["soldier"] == soldier)
+									unitFrame.Color = Color.Blue;
+							}
 						}
 					}
 				}
 
 				// Send orders with right click
-				if (ks.IsKeyDown(Keys.LeftControl))
+				if (args.RightButton == ButtonState.Pressed)
+				{
 					foreach (var unit in core.Squad)
 						if (unit.Selected)
 							unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
-
+				}
 
 				// Hide the selection rectangle
 				//selectionRectangle = Rectangle.Empty;

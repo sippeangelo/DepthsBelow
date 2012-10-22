@@ -22,6 +22,11 @@ namespace DepthsBelow
 			/// </summary>
 			public MouseState MouseState;
 
+			public ButtonState LeftButton;
+			public ButtonState MiddleButton;
+			public ButtonState RightButton;
+			public int ScrollWheelValue;
+
 			/// <summary>
 			/// The time of the click, since the start of the program.
 			/// </summary>

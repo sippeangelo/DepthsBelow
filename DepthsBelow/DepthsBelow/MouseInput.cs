@@ -98,23 +98,56 @@ namespace DepthsBelow
 			Rectangle mouseWorldRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 1, 1);
 			KeyboardState ks = Keyboard.GetState();
 			
-			// OnPress event
-			if (
-				(ms.LeftButton == ButtonState.Pressed && lastMouseState.LeftButton == ButtonState.Released)
-				|| (ms.RightButton == ButtonState.Pressed && lastMouseState.RightButton == ButtonState.Released)
-			)
+			// OnPress events
+			if (ms.LeftButton == ButtonState.Pressed && lastMouseState.LeftButton == ButtonState.Released)
+			{
+				var mouseEvent = new GUIManager.MouseEventArgs()
+				{
+					MouseState = ms,
+					Time = gameTime.TotalGameTime,
+					LeftButton = ButtonState.Pressed
+				};
 				OnPress(ms, gameTime);
+			}
+			if (ms.MiddleButton == ButtonState.Pressed && lastMouseState.MiddleButton == ButtonState.Released)
+			{
+				var mouseEvent = new GUIManager.MouseEventArgs()
+				{
+					MouseState = ms,
+					Time = gameTime.TotalGameTime,
+					MiddleButton = ButtonState.Pressed
+				};
+				OnPress(ms, gameTime);
+			}
+			if (ms.RightButton == ButtonState.Pressed && lastMouseState.RightButton == ButtonState.Released)
+			{
+				var mouseEvent = new GUIManager.MouseEventArgs()
+				{
+					MouseState = ms,
+					Time = gameTime.TotalGameTime,
+					RightButton = ButtonState.Pressed
+				};
+				OnPress(ms, gameTime);
+			}
 
-			// OnRelease event
-			if (
-				(ms.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
-				|| (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
-			)
+			// OnRelease events
+			if (ms.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
+			{
+				OnClick(ms, gameTime);
+				OnRelease(ms, gameTime);
+			}
+			if (ms.MiddleButton == ButtonState.Released && lastMouseState.MiddleButton == ButtonState.Pressed)
+			{
+				OnClick(ms, gameTime);
+				OnRelease(ms, gameTime);
+			}
+			if (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
 			{
 				OnClick(ms, gameTime);
 				OnRelease(ms, gameTime);
 			}
 
+			// TODO: OnClick events
 
 			// Tooltip stuff
 			var tooltip = core.Lua.GetObject<GUI.Frame>("ToolTip");
