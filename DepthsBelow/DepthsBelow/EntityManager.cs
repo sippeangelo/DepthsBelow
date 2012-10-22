@@ -12,11 +12,11 @@ namespace DepthsBelow
 	/// </summary>
 	public class EntityManager : IDisposable
 	{
-		private List<Entity> entities;
+		public List<Entity> Entities;
 
 		public EntityManager()
 		{
-			entities = new List<Entity>();
+			Entities = new List<Entity>();
 		}
 
 		/// <summary>
@@ -25,10 +25,10 @@ namespace DepthsBelow
 		/// </summary>
 		public void Dispose()
 		{
-			foreach (var entity in entities)
+			foreach (var entity in Entities)
 				entity.Dispose();
 
-			entities = null;
+			Entities = null;
 		}
 
 		/// <summary>
@@ -37,7 +37,7 @@ namespace DepthsBelow
 		/// <param name="entity">The entity to add.</param>
 		public void Add(Entity entity)
 		{
-			entities.Add(entity);
+			Entities.Add(entity);
 		}
 
 		/// <summary>
@@ -46,7 +46,7 @@ namespace DepthsBelow
 		/// <param name="entity">The entity to remove.</param>
 		public void Remove(Entity entity)
 		{
-			entities.Remove(entity);
+			Entities.Remove(entity);
 		}
 
 		/// <summary>
@@ -54,10 +54,29 @@ namespace DepthsBelow
 		/// </summary>
 		public void Reset()
 		{
-			foreach (var entity in entities)
+			foreach (var entity in Entities)
 				entity.Dispose();
 
-			entities.Clear();
+			Entities.Clear();
+		}
+
+		/// <summary>
+		/// Get the reference to a component contained in the entity.
+		/// </summary>
+		/// <typeparam name="T">The component type.</typeparam>
+		/// <returns>Returns the component of requested type.</returns>
+		public List<T> GetComponents<T>() where T : Component.Component
+		{
+			List<T> components = new List<T>();
+
+			foreach (var entity in Entities)
+			{
+				var component = entity.GetComponent<T>();
+				if (component != null)
+					components.Add(component);
+			}
+
+			return components;
 		}
 
 		/// <summary>
@@ -66,7 +85,7 @@ namespace DepthsBelow
 		/// <param name="gameTime"></param>
 		public void Update(GameTime gameTime)
 		{
-			foreach (var entity in entities)
+			foreach (var entity in Entities)
 				entity.Update(gameTime);
 		}
 
@@ -76,8 +95,10 @@ namespace DepthsBelow
 		/// <param name="spriteBatch"></param>
 		public void Draw(SpriteBatch spriteBatch)
 		{
-			foreach (var entity in entities)
+			foreach (var entity in Entities)
+			{
 				entity.GetComponent<Component.SpriteRenderer>().Draw(spriteBatch);
+			}
 		}
 	}
 }

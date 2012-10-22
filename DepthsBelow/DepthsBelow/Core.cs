@@ -20,7 +20,10 @@ namespace DepthsBelow
 	public class Core : Microsoft.Xna.Framework.Game
 	{
 		public static GraphicsDeviceManager GraphicsDeviceManager;
-		SpriteBatch spriteBatch;
+		private SpriteBatch spriteBatch;
+		private Effect lightShader;
+		private RenderTarget2D lightRenderTarget;
+		private RenderTarget2D sceneRenderTarget;
 
 		public Lua Lua;
 
@@ -89,6 +92,9 @@ namespace DepthsBelow
 		{
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
+			lightShader = Content.Load<Effect>("shaders/LightEffect");
+			lightRenderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+			sceneRenderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
 			Map = Content.Load<Map>("maps/Cave.Level1");
 			// Load map objects
@@ -152,8 +158,45 @@ namespace DepthsBelow
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear(Color.Black);
+			MouseState ms = Mouse.GetState();
 
+			// Draw to the lighting render target
+			GraphicsDevice.SetRenderTarget(lightRenderTarget);
+			GraphicsDevice.Clear(new Color(20, 20, 20));
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null,
+							  Camera.Transform);
+			/*foreach (var @group in GroupManager.Groups)
+			{
+				List<Vector2> vectors = new List<Vector2>();
+				foreach (var entity in group.Entities)
+				{
+					vectors.Add(entity.Transform.World);
+				}
+
+				float xMean = 0;
+				float yMean = 0;
+				foreach (var vector2 in vectors)
+				{
+					xMean += vector2.X;
+					yMean += vector2.Y;
+				}
+				xMean /= vectors.Count;
+				yMean /= vectors.Count;
+
+				var texture = Content.Load<Texture2D>("images/lights/point");
+				spriteBatch.Draw(texture, new Vector2(xMean, yMean) + new Vector2(Grid.TileSize /2, Grid.TileSize / 2), null, Color.White, 0, new Vector2(texture.Width / 2f, texture.Height / 2f), 0.5f + (0.5f * (group.Entities.Count / 5f)), SpriteEffects.None, 0);
+			}*/
+
+			// Draw flashlight
+			foreach (var light in EntityManager.GetComponents<Component.Flashlight>())
+					light.Draw(spriteBatch);
+
+			spriteBatch.End();
+			GraphicsDevice.SetRenderTarget(null);
+
+			// Draw the scene to a render target
+			GraphicsDevice.SetRenderTarget(sceneRenderTarget);
+			GraphicsDevice.Clear(Color.Black);
 			// Start drawing using the Camera transform
 			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null,
 			                  Camera.Transform);
@@ -162,14 +205,24 @@ namespace DepthsBelow
 			Map.Draw(spriteBatch);
 
 			// Draw entities
-			EntityManager.Draw(spriteBatch);
+			foreach (var spriteRenderer in EntityManager.GetComponents<Component.SpriteRenderer>())
+				spriteRenderer.Draw(spriteBatch);
 
 			// Draw mouse input visuals
 			MouseInput.Draw(spriteBatch);
 
 			spriteBatch.End();
+			GraphicsDevice.SetRenderTarget(null);
 
-			// Start drawing GUI components
+			// Draw the scene from the render target with the light shader
+			lightShader.Parameters["LightsTexture"].SetValue(lightRenderTarget);
+			lightShader.CurrentTechnique.Passes[0].Apply();
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, lightShader,
+							  Matrix.Identity);
+			spriteBatch.Draw(sceneRenderTarget, Vector2.Zero, Color.White);
+			spriteBatch.End();
+
+			// Draw GUI components
 			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, null, null, null, Matrix.Identity);
 			GUIManager.Draw(spriteBatch);
 			spriteBatch.End();

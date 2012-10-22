@@ -65,6 +65,9 @@ namespace DepthsBelow
 			var pfc = new PathFinder(this);
 			AddComponent(pfc);
 
+			var flashlight = new Flashlight(this);
+			AddComponent(flashlight);
+
 			var stat = new Component.Stat(this)
 				           {
 							   MaxHP = 100,
