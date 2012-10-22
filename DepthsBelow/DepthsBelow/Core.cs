@@ -101,7 +101,7 @@ namespace DepthsBelow
 			lightRenderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
 			sceneRenderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
-			Map = Content.Load<Map>("maps/Cave.Level1");
+			Map = Content.Load<Map>("maps/Aztek.Test");
 			// Load map objects
 			Map.ParseObjects(this);
 			GroupManager = new DynamicGroupManager(Squad.Cast<Entity>().ToList(), (float)Grid.TileSize * 1.5f);
@@ -167,32 +167,11 @@ namespace DepthsBelow
 
 			// Draw to the lighting render target
 			GraphicsDevice.SetRenderTarget(lightRenderTarget);
-			GraphicsDevice.Clear(new Color(20, 20, 20));
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null,
+			GraphicsDevice.Clear(new Color(10, 10, 10));
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, null, null,
 							  Camera.Transform);
-			/*foreach (var @group in GroupManager.Groups)
-			{
-				List<Vector2> vectors = new List<Vector2>();
-				foreach (var entity in group.Entities)
-				{
-					vectors.Add(entity.Transform.World);
-				}
 
-				float xMean = 0;
-				float yMean = 0;
-				foreach (var vector2 in vectors)
-				{
-					xMean += vector2.X;
-					yMean += vector2.Y;
-				}
-				xMean /= vectors.Count;
-				yMean /= vectors.Count;
-
-				var texture = Content.Load<Texture2D>("images/lights/point");
-				spriteBatch.Draw(texture, new Vector2(xMean, yMean) + new Vector2(Grid.TileSize /2, Grid.TileSize / 2), null, Color.White, 0, new Vector2(texture.Width / 2f, texture.Height / 2f), 0.5f + (0.5f * (group.Entities.Count / 5f)), SpriteEffects.None, 0);
-			}*/
-
-			// Draw flashlight
+			// Draw flashlights
 			foreach (var light in EntityManager.GetComponents<Component.Flashlight>())
 					light.Draw(spriteBatch);
 
@@ -203,7 +182,7 @@ namespace DepthsBelow
 			GraphicsDevice.SetRenderTarget(sceneRenderTarget);
 			GraphicsDevice.Clear(Color.Black);
 			// Start drawing using the Camera transform
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null,
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.PointClamp, null, null, null,
 			                  Camera.Transform);
 
 			// Draw the level
@@ -211,7 +190,23 @@ namespace DepthsBelow
 
 			// Draw entities
 			foreach (var spriteRenderer in EntityManager.GetComponents<Component.SpriteRenderer>())
-				spriteRenderer.Draw(spriteBatch);
+			{
+				// Only render illuminated entities
+				var position = Camera.WorldToScreen(spriteRenderer.Parent.Transform.World + spriteRenderer.Parent.Transform.World.Origin);
+				var sourceRect = new Rectangle((int)position.X, (int)position.Y, 1, 1);
+				if (
+					sourceRect.X >= 0 
+					&& sourceRect.Y >= 0 
+					&& sourceRect.X < lightRenderTarget.Width 
+					&& sourceRect.Y < lightRenderTarget.Height
+				)
+				{
+					var lightData = new Color[1];
+					lightRenderTarget.GetData<Color>(0, sourceRect, lightData, 0, 1);
+					if (lightData[0] != new Color(10, 10, 10))
+						spriteRenderer.Draw(spriteBatch);
+				}
+			}
 
 			// Draw mouse input visuals
 			MouseInput.Draw(spriteBatch);
@@ -222,7 +217,7 @@ namespace DepthsBelow
 			// Draw the scene from the render target with the light shader
 			lightShader.Parameters["LightsTexture"].SetValue(lightRenderTarget);
 			lightShader.CurrentTechnique.Passes[0].Apply();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, lightShader,
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque, SamplerState.PointClamp, null, null, lightShader,
 							  Matrix.Identity);
 			spriteBatch.Draw(sceneRenderTarget, Vector2.Zero, Color.White);
 			spriteBatch.End();

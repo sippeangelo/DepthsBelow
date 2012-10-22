@@ -92,7 +92,7 @@ namespace DepthsBelow
 
 		public static void LoadContent()
 		{
-			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/soldier2");
+			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/soldier3");
 		}
 
 		public override void Update(GameTime gameTime)
