@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -10,7 +11,7 @@ namespace DepthsBelow
     {
         //EntityManager entityManager;
 
-        int wakingDistance = 13;
+        int wakingDistance = 6;
 
         List<SmallEnemy> swarm;
 
@@ -21,24 +22,28 @@ namespace DepthsBelow
             swarm = Swarm;
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            foreach (var entity in entityManager.Entities)
-            {
-                if (entity is Soldier) 
-                {
-                    Vector2 distance1 = new Vector2(this.GetComponent<Component.Transform>().Grid.Position.X, this.GetComponent<Component.Transform>().Grid.Position.Y);
-                    Vector2 distance2 = new Vector2(entity.GetComponent<Component.Transform>().Grid.Position.X, entity.GetComponent<Component.Transform>().Grid.Position.Y);
-                    if (Vector2.Distance(distance1, distance2) > wakingDistance)
-                    {
-                        var enemy = new SmallEnemy(entityManager, ref swarm);
-                        enemy.X = this.X;
-                        enemy.Y = this.Y;
-                        entityManager.Add(enemy);
-                        swarm.Add(enemy);
-                    }
-                }
-            }
+	        for (int index = 0; index < entityManager.Entities.Count; index++)
+	        {
+		        var entity = entityManager.Entities[index];
+		        if (entity is Soldier)
+		        {
+			        Vector2 distance1 = new Vector2(this.GetComponent<Component.Transform>().Grid.Position.X,
+			                                        this.GetComponent<Component.Transform>().Grid.Position.Y);
+			        Vector2 distance2 = new Vector2(entity.GetComponent<Component.Transform>().Grid.Position.X,
+			                                        entity.GetComponent<Component.Transform>().Grid.Position.Y);
+			        if (Vector2.Distance(distance1, distance2) < wakingDistance)
+			        {
+				        var enemy = new SmallEnemy(entityManager, ref swarm);
+				        enemy.X = this.X;
+				        enemy.Y = this.Y;
+				        swarm.Add(enemy);
+						this.Remove();
+				        break;
+			        }
+		        }
+	        }
         }
     }
 }
