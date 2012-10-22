@@ -14,11 +14,6 @@ namespace DepthsBelow
 	{
 		public List<Entity> Entities;
 
-        public List<Entity> Entities
-        {
-            get { return entities; }
-        }
-
 		public EntityManager()
 		{
 			Entities = new List<Entity>();
@@ -90,7 +85,7 @@ namespace DepthsBelow
 		/// <param name="gameTime"></param>
 		public void Update(GameTime gameTime)
 		{
-			foreach (var entity in Entities)
+			foreach (var entity in Entities.ToList())
 				entity.Update(gameTime);
 		}
 
