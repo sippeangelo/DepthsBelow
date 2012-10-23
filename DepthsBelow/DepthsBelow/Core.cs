@@ -46,6 +46,8 @@ namespace DepthsBelow
 
 		public SmallEnemy TestMonster;
 
+		public int Brightness = 30;
+
 		public Core()
 		{
 			GraphicsDeviceManager = new GraphicsDeviceManager(this);
@@ -167,7 +169,7 @@ namespace DepthsBelow
 
 			// Draw to the lighting render target
 			GraphicsDevice.SetRenderTarget(lightRenderTarget);
-			GraphicsDevice.Clear(new Color(10, 10, 10));
+			GraphicsDevice.Clear(new Color(Brightness, Brightness, Brightness));
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, null, null, null,
 							  Camera.Transform);
 
@@ -203,7 +205,7 @@ namespace DepthsBelow
 				{
 					var lightData = new Color[1];
 					lightRenderTarget.GetData<Color>(0, sourceRect, lightData, 0, 1);
-					if (lightData[0] != new Color(10, 10, 10))
+					if (lightData[0] != new Color(Brightness, Brightness, Brightness))
 						spriteRenderer.Draw(spriteBatch);
 				}
 			}

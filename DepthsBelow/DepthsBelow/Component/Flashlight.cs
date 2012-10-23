@@ -23,9 +23,9 @@ namespace DepthsBelow.Component
 		public Flashlight(Entity parent)
 			: base(parent)
 		{
-			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/lights/spot");
+			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/lights/spot_wide");
 			Color = Color.White;
-			Origin = new Vector2(50, 60);
+			Origin = new Vector2(50, Texture.Height / 2f);
 		}
 
 		public override void Update(GameTime gameTime)

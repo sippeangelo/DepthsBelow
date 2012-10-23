@@ -103,7 +103,11 @@ namespace DepthsBelow
 		public static void Draw(SpriteBatch spriteBatch)
 		{
 			foreach (var frame in Frames.OrderBy(f => f, new FrameSort()))
+			{
 				frame.Draw(spriteBatch);
+
+				
+			}
 		}
 
 		/// <summary>

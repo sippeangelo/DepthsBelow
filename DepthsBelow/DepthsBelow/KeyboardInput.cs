@@ -105,11 +105,11 @@ namespace DepthsBelow
         {
             KeyboardState ks = Keyboard.GetState();
 
-			// Lua reload scripts
-			if (ks.IsKeyUp(Keys.R) && lastKeyboardState.IsKeyDown(Keys.R))
-			{
-				core.Lua.Reload();
-			}
+			// Brightness
+			if (ks.IsKeyUp(Keys.Up) && lastKeyboardState.IsKeyDown(Keys.Up))
+				core.Brightness = (int)MathHelper.Clamp(core.Brightness + 5, 0, 254);
+			if (ks.IsKeyUp(Keys.Down) && lastKeyboardState.IsKeyDown(Keys.Down))
+				core.Brightness = (int)MathHelper.Clamp(core.Brightness - 5, 0, 254);			
 
 			// Debug test: grouping
 			if (ks.IsKeyUp(Keys.K) && lastKeyboardState.IsKeyDown(Keys.K))

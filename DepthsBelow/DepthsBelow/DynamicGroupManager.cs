@@ -12,6 +12,20 @@ namespace DepthsBelow
 		{
 			public List<Entity> Entities;
 			public float Panic;
+			public float MaxPanic
+			{
+				get
+				{
+					float maxPanic = 0;
+					foreach (var entity in Entities)
+					{
+						var stats = entity.GetComponent<Component.Stat>();
+						if (stats != null)
+							maxPanic += stats.MaxPanic;
+					}
+					return maxPanic;
+				}
+			}
 		}
 
 		private List<Entity> entities;
@@ -37,21 +51,27 @@ namespace DepthsBelow
 
 			foreach (var newGroup in newGroups)
 			{
-				foreach (var entity in newGroup.Entities)
+				for (int index = 0; index < newGroup.Entities.Count; index++)
 				{
+					var entity = newGroup.Entities[index];
+
 					Group oldGroup = null;
 					// Find the group the entity belonged to before
 					foreach (var group in Groups)
 					{
-						if (group.Entities.Contains(entity))
+						if (@group.Entities.Contains(entity))
 						{
-							oldGroup = group;
+							oldGroup = @group;
 							break;
 						}
 					}
 
 					if (oldGroup != null)
-						newGroup.Panic += oldGroup.Panic / oldGroup.Entities.Count;
+					{
+						newGroup.Panic += (oldGroup.Panic / oldGroup.MaxPanic) * (float)entity.GetComponent<Component.Stat>().MaxPanic;
+						oldGroup.Panic -= (oldGroup.Panic / oldGroup.MaxPanic) * (float)entity.GetComponent<Component.Stat>().MaxPanic;
+						oldGroup.Entities.Remove(entity);
+					}
 					else
 						newGroup.Panic = 10;
 				}

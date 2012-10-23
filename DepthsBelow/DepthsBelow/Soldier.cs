@@ -65,12 +65,16 @@ namespace DepthsBelow
 			var pfc = new PathFinder(this);
 			AddComponent(pfc);
 
-			var flashlight = new Flashlight(this);
+			var flashlight = new Flashlight(this)
+				{
+					Intensity = 0.8f
+				};
 			AddComponent(flashlight);
 
 			var stat = new Component.Stat(this)
 				           {
 							   MaxHP = 100,
+							   MaxPanic = 100,
 					           //Life = 10, 
 							   Defence = 10, 
 							   Strength = 10, 
@@ -92,7 +96,7 @@ namespace DepthsBelow
 
 		public static void LoadContent()
 		{
-			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/soldier3");
+			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/soldier5");
 		}
 
 		public override void Update(GameTime gameTime)

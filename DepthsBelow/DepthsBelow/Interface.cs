@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace DepthsBelow
 {
@@ -140,9 +141,12 @@ namespace DepthsBelow
 				}
 			};
 
-			var leftEdge = new Frame(UIParent);
-			leftEdge.Width = 20;
-			leftEdge.Height = GameServices.GetService<GraphicsDevice>().Viewport.Height;
+			var button = new GUI.Button(UIParent);
+			button.SetTexture("images/Enter");
+			button.X = 100;
+			button.Y = 100;
+			button.Width = 55;
+			button.Height = 40;
 
 			// Test GUI frames
 			/*var frame = new GUI.Frame()
@@ -228,6 +232,13 @@ namespace DepthsBelow
 			frame.Width = 164;
 			frame.Height = 19;
 
+			frame.OnClick += delegate(Frame frame1, GUIManager.MouseEventArgs args)
+			{
+				DynamicGroupManager.Group group = (DynamicGroupManager.Group)frame1["group"];
+				if (group != null)
+					group.Panic += 5;
+			};
+
 			var panicBarBg = new GUI.Frame(frame);
 			panicBarBg.SetTexture("images/GUI/health_background");
 			panicBarBg.Width = 136;
@@ -244,6 +255,13 @@ namespace DepthsBelow
 			panicBar.X = 1;
 			panicBar.Y = 1;
 			frame["panicBar"] = panicBar;
+
+			var text = new GUI.Text(frame);
+			text.SetFont("fonts/UnitName");
+			text.Value = "0%";
+			text.X = 4;
+			text.Y = 1;
+			frame["text"] = text;
 
 			return frame;
 		}
@@ -374,9 +392,12 @@ namespace DepthsBelow
 				var group = groups[index];
 
 				var pFrame = PanicFrames[index];
+				pFrame["group"] = group;
 				var pFrameBarBg = (GUI.Frame)pFrame["panicBarBg"];
 				var pFrameBar = (GUI.Frame)pFrame["panicBar"];
-				pFrameBar.Width = (int)(pFrameBarBg.Width * (group.Panic / 100f));
+				var pFrameText = (GUI.Text)pFrame["text"];
+				pFrameBar.Width = (int)(pFrameBarBg.Width * (group.Panic / group.MaxPanic));
+				pFrameText.Value = group.Panic.ToString() + " (" + (group.Panic / group.MaxPanic * 100f).ToString() + "%)";
 
 				pFrame.Visible = true;
 				if (lastFrame != null)

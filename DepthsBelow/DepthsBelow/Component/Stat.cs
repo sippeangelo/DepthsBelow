@@ -25,6 +25,8 @@ namespace DepthsBelow.Component
 					HP = value;
 			}
 	    }
+
+	    public int MaxPanic = 100;
 		
 		protected int hp = 0;
         protected int defence = 0;
