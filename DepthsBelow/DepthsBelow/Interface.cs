@@ -27,6 +27,9 @@ namespace DepthsBelow
 		
 		Random random = new Random();
 
+		private bool checkingDirection;
+		private Vector2 directionStart;
+
 		public Interface(Core core)
 		{
 			this.core = core;
@@ -55,8 +58,9 @@ namespace DepthsBelow
 
 				if (args.LeftButton == ButtonState.Pressed)
 				{
+					Debug.WriteLine("Left button pressed on UIParent");
 					// Deselect all units
-					if (!ks.IsKeyDown(Keys.LeftControl))
+					/*if (!ks.IsKeyDown(Keys.LeftControl))
 					{
 						foreach (var unit in core.Squad)
 							unit.Selected = false;
@@ -78,16 +82,10 @@ namespace DepthsBelow
 									unitFrame.Color = Color.Blue;
 							}
 						}
-					}
+					}*/
 				}
 
-				// Send orders with right click
-				if (args.RightButton == ButtonState.Pressed)
-				{
-					foreach (var unit in core.Squad)
-						if (unit.Selected)
-							unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
-				}
+
 
 				// Hide the selection rectangle
 				//selectionRectangle = Rectangle.Empty;
@@ -98,46 +96,97 @@ namespace DepthsBelow
 			{
 				//KeyboardState ks = Keyboard.GetState();
 				MouseState ms = args.MouseState;
-
 				var mousePos = new Point(ms.X, ms.Y);
 				var mouseRectangle = new Rectangle(mousePos.X, mousePos.Y, 1, 1);
 				var mouseWorldPos = core.Camera.ScreenToWorld(new Vector2(mousePos.X, mousePos.Y));
 				var mouseWorldRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 1, 1);
 
 				// Show the selection frame
-				var selectFrame = (GUI.Frame)frame["selectionFrame"];
-				if (!selectFrame.Visible)
+				if (args.LeftButton == ButtonState.Pressed)
 				{
-					selectFrame.X = (int)mousePos.X;
-					selectFrame.Y = (int)mousePos.Y;
-					selectFrame.Visible = true;
+					var selectFrame = (GUI.Frame)frame["selectionFrame"];
+					if (!selectFrame.Visible)
+					{
+						selectFrame.X = mousePos.X;
+						selectFrame.Y = mousePos.Y;
+						selectFrame.Visible = true;
+					}
+				}
+
+				if (args.RightButton == ButtonState.Pressed)
+				{
+					// Unit rotation
+					foreach (var unit in core.Squad)
+					{
+						if (unit.Selected && mouseWorldRectangle.Intersects(unit.GetComponent<Component.Collision>().Rectangle))
+						{
+							checkingDirection = true;
+							directionStart = unit.Transform.World + unit.Transform.World.Origin;
+						}
+					}
 				}
 			};
 
 			// OnRelease
 			UIParent.OnRelease += delegate(Frame frame, GUIManager.MouseEventArgs args)
 			{
-				// Show the selection frame
-				var selectFrame = (GUI.Frame)frame["selectionFrame"];
-				if (selectFrame.Visible)
-				{
-					var intersectionRectangle = core.Camera.ScreenToWorld(selectFrame.AbsoluteRectangle);
+				KeyboardState ks = Keyboard.GetState();
+				MouseState ms = args.MouseState;
+				var mousePos = new Point(ms.X, ms.Y);
+				var mouseRectangle = new Rectangle(mousePos.X, mousePos.Y, 1, 1);
+				var mouseWorldPos = core.Camera.ScreenToWorld(new Vector2(mousePos.X, mousePos.Y));
+				var mouseWorldRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 1, 1);
 
-					// Select all units in the rectangle
-					foreach (var soldier in core.Squad)
+				if (args.LeftButton == ButtonState.Pressed)
+				{
+					// Deselect all units
+					if (!ks.IsKeyDown(Keys.LeftControl))
 					{
-						if (intersectionRectangle.Intersects(soldier.GetComponent<Component.Collision>().Rectangle))
+						foreach (var unit in core.Squad)
+							unit.Selected = false;
+
+						foreach (var unitFrame in UnitFrames)
+							unitFrame.Color = Color.Black;
+					}
+					
+					// Select all soldier units inside the selection rectangle
+					var selectFrame = (GUI.Frame)frame["selectionFrame"];
+					if (selectFrame.Visible)
+					{
+						var intersectionRectangle = core.Camera.ScreenToWorld(selectFrame.AbsoluteRectangle);
+
+						// Select all units in the rectangle
+						foreach (var soldier in core.Squad)
 						{
-							soldier.Selected = true;
-							foreach (var unitFrame in UnitFrames)
+							if (intersectionRectangle.Intersects(soldier.GetComponent<Component.Collision>().Rectangle))
 							{
-								if (unitFrame["soldier"] == soldier)
-									unitFrame.Color = Color.Blue;
+								soldier.Selected = true;
+								foreach (var unitFrame in UnitFrames)
+								{
+									if (unitFrame["soldier"] == soldier)
+										unitFrame.Color = Color.Blue;
+								}
 							}
 						}
-					}
 
-					selectFrame.Visible = false;
+						selectFrame.Visible = false;
+					}
+				}
+
+				// Send orders with right click
+				if (args.RightButton == ButtonState.Pressed)
+				{
+					if (checkingDirection)
+					{
+						checkingDirection = false;
+					}
+					else
+					{
+						Debug.WriteLine("Right button pressed on UIParent");
+						foreach (var unit in core.Squad)
+							if (unit.Selected)
+								unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
+					}
 				}
 			};
 
@@ -431,6 +480,23 @@ namespace DepthsBelow
 			{
 				selectionFrame.Width = (int)mousePos.X - selectionFrame.X;
 				selectionFrame.Height = (int)mousePos.Y - selectionFrame.Y;
+			}
+
+			// Update rotations
+			if (checkingDirection)
+			{
+				foreach (var unit in core.Squad)
+					if (unit.Selected)
+					{
+						float directionX = mouseWorldPos.X - unit.Transform.World.X;
+						float directionY = mouseWorldPos.Y - unit.Transform.World.Y;
+						//var mouseDirection = mouseWorldPos;
+						//mouseDirection.Normalize();
+						unit.GetComponent<Component.Transform>().World.Rotation =
+							(float)
+							Math.Atan2(mouseWorldPos.Y - unit.Transform.World.Y - unit.Transform.World.Origin.Y,
+							           mouseWorldPos.X - unit.Transform.World.X - unit.Transform.World.Origin.X);
+					}
 			}
 
 			UpdateUnitFrames();

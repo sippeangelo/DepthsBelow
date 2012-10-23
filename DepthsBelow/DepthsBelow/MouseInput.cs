@@ -107,7 +107,8 @@ namespace DepthsBelow
 					Time = gameTime.TotalGameTime,
 					LeftButton = ButtonState.Pressed
 				};
-				OnPress(ms, gameTime);
+				GUIManager.RaiseAt("OnPress", mouseEvent, new Point(ms.X, ms.Y));
+
 			}
 			if (ms.MiddleButton == ButtonState.Pressed && lastMouseState.MiddleButton == ButtonState.Released)
 			{
@@ -117,7 +118,8 @@ namespace DepthsBelow
 					Time = gameTime.TotalGameTime,
 					MiddleButton = ButtonState.Pressed
 				};
-				OnPress(ms, gameTime);
+				GUIManager.RaiseAt("OnPress", mouseEvent, new Point(ms.X, ms.Y));
+
 			}
 			if (ms.RightButton == ButtonState.Pressed && lastMouseState.RightButton == ButtonState.Released)
 			{
@@ -127,24 +129,42 @@ namespace DepthsBelow
 					Time = gameTime.TotalGameTime,
 					RightButton = ButtonState.Pressed
 				};
-				OnPress(ms, gameTime);
+				GUIManager.RaiseAt("OnPress", mouseEvent, new Point(ms.X, ms.Y));
 			}
 
 			// OnRelease events
 			if (ms.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
 			{
-				OnClick(ms, gameTime);
-				OnRelease(ms, gameTime);
+				var mouseEvent = new GUIManager.MouseEventArgs()
+				{
+					MouseState = ms,
+					Time = gameTime.TotalGameTime,
+					LeftButton = ButtonState.Pressed
+				};
+				GUIManager.RaiseAt("OnClick", mouseEvent, new Point(ms.X, ms.Y));
+				GUIManager.RaiseAt("OnRelease", mouseEvent, new Point(ms.X, ms.Y));
 			}
 			if (ms.MiddleButton == ButtonState.Released && lastMouseState.MiddleButton == ButtonState.Pressed)
 			{
-				OnClick(ms, gameTime);
-				OnRelease(ms, gameTime);
+				var mouseEvent = new GUIManager.MouseEventArgs()
+				{
+					MouseState = ms,
+					Time = gameTime.TotalGameTime,
+					MiddleButton = ButtonState.Pressed
+				};
+				GUIManager.RaiseAt("OnClick", mouseEvent, new Point(ms.X, ms.Y));
+				GUIManager.RaiseAt("OnRelease", mouseEvent, new Point(ms.X, ms.Y));
 			}
 			if (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
 			{
-				OnClick(ms, gameTime);
-				OnRelease(ms, gameTime);
+				var mouseEvent = new GUIManager.MouseEventArgs()
+				{
+					MouseState = ms,
+					Time = gameTime.TotalGameTime,
+					RightButton = ButtonState.Pressed
+				};
+				GUIManager.RaiseAt("OnClick", mouseEvent, new Point(ms.X, ms.Y));
+				GUIManager.RaiseAt("OnRelease", mouseEvent, new Point(ms.X, ms.Y));
 			}
 
 			// TODO: OnClick events
@@ -243,7 +263,7 @@ namespace DepthsBelow
                 }*/
 
                 // Send orders with right click
-                if (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
+                /*if (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
                 {
                     if (checkingDirection == false)
                     {
@@ -254,8 +274,9 @@ namespace DepthsBelow
                             }
                     }
 
-                }
-                if (ms.RightButton == ButtonState.Pressed)
+                }*/
+
+                /*if (ms.RightButton == ButtonState.Pressed)
                 {
                     foreach (var unit in core.Squad)
                     {
@@ -277,25 +298,13 @@ namespace DepthsBelow
                             float directionY = mouseWorldPos.Y - unit.Transform.World.Y;
                             var mouseDirection = mouseWorldPos;
                             mouseDirection.Normalize();
-                            //float angle = (float)Math.Acos(Vector2.Dot(new Vector2(0, 1), mouseDirection)) * MathHelper.TwoPi;
-                            /*if (directionX < 0)
-                            {
-                                directionX *= -1;
-                                unit.GetComponent<Component.Transform>().World.Rotation = (float)Math.Atan(directionY / directionX);
-                            }
-                            else
-                            {
-                                */
-                            unit.GetComponent<Component.Transform>().World.Rotation = (float)Math.Atan2(mouseWorldPos.Y - unit.Transform.World.Y - unit.Transform.World.Origin.Y, mouseWorldPos.X - unit.Transform.World.X - unit.Transform.World.Origin.X);/*
-                        }*/
-                            //Console.WriteLine(angle);
-                            //unit.GetComponent<Component.Transform>().World.Rotation = angle;
+                            unit.GetComponent<Component.Transform>().World.Rotation = (float)Math.Atan2(mouseWorldPos.Y - unit.Transform.World.Y - unit.Transform.World.Origin.Y, mouseWorldPos.X - unit.Transform.World.X - unit.Transform.World.Origin.X);
                         }
                 }
                 else
                 {
                     checkingDirection = false;
-                }
+                }*/
             }
 			// Grid highlighting
 			Point mouseGridPos = Grid.WorldToGrid(mouseWorldPos);
