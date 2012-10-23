@@ -41,8 +41,9 @@ namespace DepthsBelow
 			selectionTexture = new Texture2D(core.GraphicsDevice, 1, 1);
 			selectionTexture.SetData(new Color[] { Color.White });
 
-            gridTexture = new Texture2D(core.GraphicsDevice, 1, 1);
-            gridTexture.SetData(new Color[] { Color.White });
+            //gridTexture = new Texture2D(core.GraphicsDevice, 1, 1);
+            //gridTexture.SetData(new Color[] { Color.White });
+			gridTexture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/selection");
 		}
 
 		public void OnPress(MouseState ms, GameTime gameTime)
@@ -317,7 +318,7 @@ namespace DepthsBelow
 		public void Draw(SpriteBatch spriteBatch)
 		{
 			spriteBatch.Draw(selectionTexture, selectionRectangle, Color.Red * 0.5f);
-			spriteBatch.Draw(gridTexture, gridRectangle, Color.Yellow * 0.3f);
+			spriteBatch.Draw(gridTexture, gridRectangle, Color.White * 0.7f);
 
             if (checkingDirection == true) 
             {

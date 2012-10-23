@@ -383,7 +383,15 @@ namespace DepthsBelow.GUI
 			if (Visible)
 			{
 				if (Texture != null)
-					spriteBatch.Draw(Texture, AbsoluteRectangle, Color);
+					spriteBatch.Draw(Texture, 
+						AbsoluteRectangle, 
+						null, 
+						Color, 
+						0, 
+						Vector2.Zero, 
+						((Width < 0) ? SpriteEffects.FlipHorizontally : 0)
+						| ((Height < 0) ? SpriteEffects.FlipVertically : 0),
+						0);
 
 				/*foreach (var child in Children)
 					child.Draw(spriteBatch);*/

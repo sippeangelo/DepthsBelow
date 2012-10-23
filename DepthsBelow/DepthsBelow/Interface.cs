@@ -153,7 +153,12 @@ namespace DepthsBelow
 					var selectFrame = (GUI.Frame)frame["selectionFrame"];
 					if (selectFrame.Visible)
 					{
+						Console.WriteLine("Before: " + selectFrame.AbsoluteRectangle.X + ", " + selectFrame.AbsoluteRectangle.Y + ", " + selectFrame.AbsoluteRectangle.Width + ", " + selectFrame.AbsoluteRectangle.Height);
+
 						var intersectionRectangle = core.Camera.ScreenToWorld(selectFrame.AbsoluteRectangle);
+
+						Console.WriteLine("After: " + intersectionRectangle.X + ", " + intersectionRectangle.Y + ", " + intersectionRectangle.Width + ", " + intersectionRectangle.Height);
+
 
 						// Select all units in the rectangle
 						foreach (var soldier in core.Squad)
@@ -192,7 +197,7 @@ namespace DepthsBelow
 
 			var button = new GUI.Button(UIParent);
 			button.SetTexture("images/Enter");
-			button.X = 100;
+			button.X = 200;
 			button.Y = 100;
 			button.Width = 55;
 			button.Height = 40;

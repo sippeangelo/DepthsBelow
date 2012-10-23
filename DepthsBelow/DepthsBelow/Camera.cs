@@ -38,9 +38,8 @@ namespace DepthsBelow
 		public Rectangle ScreenToWorld(Rectangle screenRectangle)
 		{
 			var pos = ScreenToWorld(new Vector2(screenRectangle.X, screenRectangle.Y));
-			screenRectangle.X = (int)pos.X;
-			screenRectangle.Y = (int)pos.Y;
-			return screenRectangle;
+			var size = ScreenToWorld(new Vector2(screenRectangle.X + screenRectangle.Width, screenRectangle.Y + screenRectangle.Height)) - pos;
+			return new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
 		}
 
 		public Vector2 WorldToScreen(Vector2 worldPos)
@@ -48,12 +47,11 @@ namespace DepthsBelow
 			return Vector2.Transform(worldPos, Transform);
 		}
 
-		public Rectangle WorldToScreen(Rectangle screenRectangle)
+		public Rectangle WorldToScreen(Rectangle worldRectangle)
 		{
-			var pos = WorldToScreen(new Vector2(screenRectangle.X, screenRectangle.Y));
-			screenRectangle.X = (int)pos.X;
-			screenRectangle.Y = (int)pos.Y;
-			return screenRectangle;
+			var pos = WorldToScreen(new Vector2(worldRectangle.X, worldRectangle.Y));
+			var size = WorldToScreen(new Vector2(worldRectangle.X + worldRectangle.Width, worldRectangle.Y + worldRectangle.Height)) - pos;
+			return new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y);
 		}
 
 		public void Update(GameTime gameTime)
