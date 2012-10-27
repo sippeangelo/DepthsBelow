@@ -330,7 +330,7 @@ namespace DepthsBelow
 
 			var nameText = new GUI.Text(frame);
 			nameText.SetFont("fonts/UnitName");
-			nameText.Value = soldier.Name + " " + soldier.GetHashCode();
+			nameText.Value = soldier.Name + " "/* + soldier.GetHashCode()*/;
 			nameText.X = 4;
 			nameText.Y = 1;
 			frame["nameText"] = nameText;

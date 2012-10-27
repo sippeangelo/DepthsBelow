@@ -104,9 +104,15 @@ namespace DepthsBelow
 			sceneRenderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
 			Map = Content.Load<Map>("maps/Aztek.Test");
+            //Map = Content.Load<Map>("maps/Cave.Level1");
 			// Load map objects
 			Map.ParseObjects(this);
 			GroupManager = new DynamicGroupManager(Squad.Cast<Entity>().ToList(), (float)Grid.TileSize * 1.5f);
+            Squad[0].Name = "Dean H. Jones";
+            Squad[1].Name = "Walter L. Verville";
+            Squad[2].Name = "Patrick Y. Southerland";
+            Squad[3].Name = "Andrew C. Friend";
+            Squad[4].Name = "Gary B. Whitley";
 			Interface.CreateUnitFrames(Squad);
 
 			// TODO: use this.Content to load your game content here

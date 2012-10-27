@@ -111,14 +111,25 @@ namespace DepthsBelow
                     // HACK: Make this work properly with other speeds...
                     float speed = 4f;
                     if (Transform.World.X < nodeWorldPos.X)
+                    {
                         Transform.World.X += speed;
+                        GetComponent<Component.Transform>().World.Rotation = MathHelper.ToRadians(0);
+                    }
                     if (Transform.World.X > nodeWorldPos.X)
+                    {
                         Transform.World.X -= speed;
+                        GetComponent<Component.Transform>().World.Rotation = MathHelper.ToRadians(180);
+                    }
                     if (Transform.World.Y < nodeWorldPos.Y)
+                    {
                         Transform.World.Y += speed;
+                        GetComponent<Component.Transform>().World.Rotation = MathHelper.ToRadians(90);
+                    }
                     if (Transform.World.Y > nodeWorldPos.Y)
+                    {
                         Transform.World.Y -= speed;
-
+                        GetComponent<Component.Transform>().World.Rotation = MathHelper.ToRadians(270);
+                    }
                     if (Transform.World == nodeWorldPos)
                     {
                         if (currentStep < numberOfSteps)
