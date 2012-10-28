@@ -205,13 +205,17 @@ namespace DepthsBelow
             {
                 
             }
-            if (ks.IsKeyDown(Keys.S)) 
+            if (ks.IsKeyDown(Keys.S) || ks.IsKeyDown(Keys.R)) 
             {
                 foreach (var soldier in core.Squad) 
                 {
                     if (soldier.Selected == true && soldier.Fired == false)
                     {
-                        core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>(), "Bullet"));
+                        if (ks.IsKeyDown(Keys.S)) {
+                            core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>(), "Bullet"));
+                        } else if (ks.IsKeyDown(Keys.R)) {
+                            core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>(), "Rocket"));
+                        }
                         soldier.Fired = true;
                         foreach (var shot in core.Volley)
                         {

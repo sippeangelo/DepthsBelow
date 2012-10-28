@@ -41,13 +41,14 @@ namespace DepthsBelow
         public Shot(EntityManager entityManager, Stat _soldierStat, string _type)
 			: base(entityManager)
         {
+            type = _type;
+
             if (Texture == null)
                 LoadContent();
 
             Transform.World.Origin = new Vector2(16, 16);
 
             Stat = _soldierStat;
-            type = _type;
 
             this.Color = Color.White;
             var rc = new SpriteRenderer(this) { Texture = Texture, Color = Color.White };
@@ -85,7 +86,7 @@ namespace DepthsBelow
                 {
                     if (this.GetComponent<Component.Collision>().Rectangle.Intersects(entity.GetComponent<Component.Collision>().Rectangle))
                     {
-                        if (Utility.HitTest(Stat, entity, Utility.CalculateHitChance(Stat, this.Stat.Remember, entity)))
+                        if (Utility.AttackTest(Stat, entity, Utility.CalculateHitChance(Stat, this.Stat.Remember, entity)))
                         {
                             this.Remove();
                             return;

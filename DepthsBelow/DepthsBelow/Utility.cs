@@ -36,7 +36,7 @@ namespace DepthsBelow
             //Console.WriteLine(chanceToHit);
             return chanceToHit;
         }
-        public static bool HitTest(Stat attacker, Entity defender, int chanceToHit)
+        public static bool AttackTest(Stat attacker, Entity defender, int chanceToHit)
         {
             Component.Stat shooting = attacker;
             Component.Stat dodging = defender.GetComponent<Component.Stat>();
