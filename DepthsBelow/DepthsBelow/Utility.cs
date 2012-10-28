@@ -19,9 +19,9 @@ namespace DepthsBelow
 		/// <param name="attacker">The attacking unit.</param>
 		/// <param name="defender">The recieving unit.</param>
 		/// <returns>Returns a hit chance percentage.</returns>
-        public static int CalculateHitChance(Entity attacker, Entity defender)
+        public static int CalculateHitChance(Stat attacker, Vector2 attackerPosition, Entity defender)
         {
-            Stat shooting = attacker.GetComponent<Stat>();
+            Stat shooting = attacker;
             Stat dodging = defender.GetComponent<Stat>();
             if (shooting == null || dodging == null) 
             {
@@ -29,16 +29,16 @@ namespace DepthsBelow
             }
             int baseHitChance = shooting.GetAim;
             int baseDodgeChance = dodging.GetDodge;
-            int distance = (int)Vector2.Distance(attacker.GetComponent<Transform>().World.Position, defender.GetComponent<Transform>().World.Position);
+            int distance = (int)Vector2.Distance(attackerPosition, defender.Transform.World.Position);
             int basePenalty = shooting.Penalty(distance / (Grid.TileSize));
             Console.WriteLine("Penalty = " + basePenalty);
             int chanceToHit = baseHitChance - baseDodgeChance - basePenalty;
             //Console.WriteLine(chanceToHit);
             return chanceToHit;
         }
-        public static bool HitTest(Entity attacker, Entity defender, int chanceToHit)
+        public static bool HitTest(Stat attacker, Entity defender, int chanceToHit)
         {
-            Component.Stat shooting = attacker.GetComponent<Component.Stat>();
+            Component.Stat shooting = attacker;
             Component.Stat dodging = defender.GetComponent<Component.Stat>();
             Random rand = new Random();
             if (rand.Next(0, 100) < chanceToHit) 

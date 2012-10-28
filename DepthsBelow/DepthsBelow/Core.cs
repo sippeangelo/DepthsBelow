@@ -118,7 +118,7 @@ namespace DepthsBelow
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent();
             SmallEnemy.LoadContent();
-            Shot.LoadContent();
+            //Shot.LoadContent();
             
 			MouseInput = new MouseInput(this);
 			MouseInput.LoadContent();

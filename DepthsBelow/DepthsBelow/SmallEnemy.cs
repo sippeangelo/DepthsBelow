@@ -54,7 +54,7 @@ namespace DepthsBelow
 	        var stat = new Component.Stat(this)
 		                   {
 			                   Life = 2, 
-							   Defence = 0, 
+							   Defence = 2, 
 							   Strength = 5000, 
 							   GetAim = 100, 
 							   GetDodge = 50
@@ -141,6 +141,18 @@ namespace DepthsBelow
                         }
                         else
                         {
+                            foreach (var entity in entityManager.Entities) {
+                                if (entity is Soldier)
+                                {
+                                    if (entity.GetComponent<Component.Collision>().Rectangle.Intersects(this.GetComponent<Component.Collision>().Rectangle)) 
+                                    {
+                                        if (Utility.HitTest(this.GetComponent<Component.Stat>(), entity, Utility.CalculateHitChance(this.GetComponent<Component.Stat>(), this.Transform.World.Position, entity)))
+                                        {
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
                             GetComponent<PathFinder>().Stop();
                         }
                     }

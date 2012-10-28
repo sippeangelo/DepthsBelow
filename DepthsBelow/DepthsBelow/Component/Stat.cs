@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace DepthsBelow.Component
 {
@@ -40,6 +41,14 @@ namespace DepthsBelow.Component
         protected int enemyDodge = 0;
 
         protected int penaltyRange = 5;
+
+        Vector2 rememberedPosition = Vector2.Zero;
+
+        public Vector2 Remember
+        {
+            get { return rememberedPosition; }
+            set { rememberedPosition = value; }
+        }
 
         public int GetAim
         {
@@ -84,6 +93,7 @@ namespace DepthsBelow.Component
         public void Kill()
         {
             hp = 0;
+            Parent.Remove();
             //Console.WriteLine("Blargh! I am dead!");
         }
 
@@ -95,7 +105,7 @@ namespace DepthsBelow.Component
         public Stat(Entity parent) 
 			: base (parent)
         {
-
+            rememberedPosition = Vector2.Zero;
         }
 
         public bool targetInSight()

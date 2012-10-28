@@ -236,7 +236,7 @@ namespace DepthsBelow
                         {
                             if (gridRectangle.Intersects(enemy.GetComponent<Component.Collision>().Rectangle))
                             {
-                                Console.WriteLine(Utility.CalculateHitChance(unit, enemy));
+                                Console.WriteLine(Utility.CalculateHitChance(unit.GetComponent<Component.Stat>(), unit.GetComponent<Component.Transform>().World.Position, enemy));
                             }
                         }
                     }

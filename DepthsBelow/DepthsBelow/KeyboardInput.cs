@@ -211,7 +211,7 @@ namespace DepthsBelow
                 {
                     if (soldier.Selected == true && soldier.Fired == false)
                     {
-                        core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>()));
+                        core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>(), "Bullet"));
                         soldier.Fired = true;
                         foreach (var shot in core.Volley)
                         {
@@ -225,10 +225,12 @@ namespace DepthsBelow
                             }
                             if (shot.direction == Vector2.Zero)
                             {
-                                double directionX = Math.Cos(soldier.GetComponent<Component.Transform>().World.Rotation);
-                                double directionY = Math.Sin(soldier.GetComponent<Component.Transform>().World.Rotation);
+                                double directionX = Math.Cos(soldier.Transform.World.Rotation);
+                                double directionY = Math.Sin(soldier.Transform.World.Rotation);
                                 shot.direction = new Vector2((float)directionX, (float)directionY);
                                 shot.Transform.World.Rotation = soldier.Transform.World.Rotation;
+                                Vector2 yo = soldier.Transform.World.Position;
+                                shot.Stat.Remember = yo;
                             }
                         }
                     }
@@ -268,7 +270,7 @@ namespace DepthsBelow
                         current = 0;
                         if (soldier.Selected == true && soldier.Fired == false && hit == true)
                         {
-                            core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>()));
+                            core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>(), "Bullet"));
                             soldier.Fired = true;
                             foreach (var shot in core.Volley)
                             {

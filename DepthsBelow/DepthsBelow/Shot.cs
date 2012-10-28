@@ -13,6 +13,7 @@ namespace DepthsBelow
         public static Texture2D Texture;
         public Color Color;
         public static Point Origin;
+        string type = "";
 
         Stat soldierStat;
 
@@ -37,7 +38,7 @@ namespace DepthsBelow
 
         public Vector2 direction = Vector2.Zero;
 
-        public Shot(EntityManager entityManager, Stat _soldierStat)
+        public Shot(EntityManager entityManager, Stat _soldierStat, string _type)
 			: base(entityManager)
         {
             if (Texture == null)
@@ -46,6 +47,7 @@ namespace DepthsBelow
             Transform.World.Origin = new Vector2(16, 16);
 
             Stat = _soldierStat;
+            type = _type;
 
             this.Color = Color.White;
             var rc = new SpriteRenderer(this) { Texture = Texture, Color = Color.White };
@@ -55,9 +57,16 @@ namespace DepthsBelow
             AddComponent(cc);
 
         }
-        public static void LoadContent()
+        public void LoadContent()
         {
-			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/Shot");
+            if (type == "Rocket")
+            {
+                Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/Shot");
+            }
+            else
+            {
+                Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/Shot3");
+            }
         }
         public override void Update(GameTime gameTime)
         {
@@ -76,7 +85,11 @@ namespace DepthsBelow
                 {
                     if (this.GetComponent<Component.Collision>().Rectangle.Intersects(entity.GetComponent<Component.Collision>().Rectangle))
                     {
-
+                        if (Utility.HitTest(Stat, entity, Utility.CalculateHitChance(Stat, this.Stat.Remember, entity)))
+                        {
+                            this.Remove();
+                            return;
+                        }
                     }
                 }
             }

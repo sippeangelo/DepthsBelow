@@ -77,7 +77,7 @@ namespace DepthsBelow
 							   MaxPanic = 100,
 					           //Life = 10, 
 							   Defence = 10, 
-							   Strength = 10, 
+							   Strength = 50, 
 							   GetAim = 40, 
 							   GetDodge = 20
 				           };
