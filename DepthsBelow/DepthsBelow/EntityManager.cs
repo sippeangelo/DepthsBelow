@@ -85,9 +85,9 @@ namespace DepthsBelow
 		/// <param name="gameTime"></param>
 		public void Update(GameTime gameTime)
 		{
-			foreach (var entity in Entities.ToList())
-				entity.Update(gameTime);
-		}
+            foreach (var entity in Entities.ToList())
+                entity.Update(gameTime);
+        }
 
 		/// <summary>
 		/// Draw all entities handled by the entity manager.

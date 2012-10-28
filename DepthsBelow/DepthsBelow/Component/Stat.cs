@@ -89,7 +89,7 @@ namespace DepthsBelow.Component
 
         public int Penalty(int distance)
         {
-            return panic + GetPenalty(stepsTaken) + (int)(GetPenalty(distance) / 2);
+            return panic/* + GetPenalty(stepsTaken)*/ + (int)(GetPenalty(distance));
         }
 
         public Stat(Entity parent) 

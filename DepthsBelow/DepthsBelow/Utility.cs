@@ -36,7 +36,7 @@ namespace DepthsBelow
             //Console.WriteLine(chanceToHit);
             return chanceToHit;
         }
-        /*public static bool HitTest(Entity attacker, Entity defender, int chanceToHit)
+        public static bool HitTest(Entity attacker, Entity defender, int chanceToHit)
         {
             Component.Stat shooting = attacker.GetComponent<Component.Stat>();
             Component.Stat dodging = defender.GetComponent<Component.Stat>();
@@ -47,7 +47,7 @@ namespace DepthsBelow
                 return true;
             }
             return false;
-        }*/
+        }
 		private static Texture2D blank;
 
 		public static void DrawLine(SpriteBatch batch, Color color, float width, Vector2 start, Vector2 end)

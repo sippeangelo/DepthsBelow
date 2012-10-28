@@ -69,6 +69,17 @@ namespace DepthsBelow
             // HACK: Make this work properly with other speeds...
             float speed = 4f;
             Transform.World.Position += speed * direction;
+
+            foreach (var entity in entityManager.Entities)
+            {
+                if (entity is SmallEnemy) 
+                {
+                    if (this.GetComponent<Component.Collision>().Rectangle.Intersects(entity.GetComponent<Component.Collision>().Rectangle))
+                    {
+
+                    }
+                }
+            }
         }
     }
 }

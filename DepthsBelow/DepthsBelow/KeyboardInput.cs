@@ -146,9 +146,32 @@ namespace DepthsBelow
                 
 				if (core.TurnManager.CurrentTurn == core.TurnManager["Computer"])
                 {
+                    foreach (var enemy in core.Swarm)
+                    {
+                        enemy.step = 0;
+                        Point target = Point.Zero;
+                        float distance = 7000;
+                        foreach (var unit in core.Squad)
+                        {
+                            Vector2 soldier = new Vector2(unit.Transform.Grid.X, unit.Transform.Grid.Y);
+                            Vector2 monster = new Vector2(enemy.Transform.Grid.X, enemy.Transform.Grid.Y);
+
+                            float newDistance = Vector2.Distance(soldier, monster);
+
+                            if (newDistance < distance)
+                            {
+                                target = unit.Transform.Grid;
+                                distance = newDistance;
+                            }
+                        }
+                        enemy.GetComponent<Component.PathFinder>().Goal = target;
+                        distance = 7000;
+
+                    }
+
                     core.TestMonster.step = 0;
-                    Point target = Point.Zero;
-                    float distance = 7000;
+                    Point testTarget = Point.Zero;
+                    float testDistance = 7000;
                     foreach (var unit in core.Squad)
                     {
                         Vector2 soldier = new Vector2(unit.Transform.Grid.X, unit.Transform.Grid.Y);
@@ -156,14 +179,14 @@ namespace DepthsBelow
 
                         float newDistance = Vector2.Distance(soldier, monster);
 
-                        if (newDistance < distance)
+                        if (newDistance < testDistance)
                         {
-                            target = unit.Transform.Grid;
-                            distance = newDistance;
+                            testTarget = unit.Transform.Grid;
+                            testDistance = newDistance;
                         }
                     }
-                    core.TestMonster.GetComponent<Component.PathFinder>().Goal = target;
-                    distance = 7000;
+                    core.TestMonster.GetComponent<Component.PathFinder>().Goal = testTarget;
+                    testDistance = 7000;
 
 					core.TurnManager.EndTurn();
                 }
