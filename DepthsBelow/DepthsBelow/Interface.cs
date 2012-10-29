@@ -133,8 +133,10 @@ namespace DepthsBelow
 				KeyboardState ks = Keyboard.GetState();
 				MouseState ms = args.MouseState;
 				var mousePos = new Point(ms.X, ms.Y);
+
 				var mouseRectangle = new Rectangle(mousePos.X, mousePos.Y, 1, 1);
 				var mouseWorldPos = core.Camera.ScreenToWorld(new Vector2(mousePos.X, mousePos.Y));
+                var mouseGridPos= Grid.WorldToGrid(mouseWorldPos);
 				var mouseWorldRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 1, 1);
 
 				if (args.LeftButton == ButtonState.Pressed)
@@ -188,9 +190,71 @@ namespace DepthsBelow
 					else
 					{
 						Debug.WriteLine("Right button pressed on UIParent");
-						foreach (var unit in core.Squad)
-							if (unit.Selected)
-								unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos);
+                        Point mainpath = Point.Zero;
+                        Stack<Soldier> soldierStack = new Stack<Soldier>();
+                        //core.Squad.Where(a=>a.Selected).ToList().ForEach(a => soldierStack.Push(a));
+                        foreach (var soldier in core.Squad)
+                        {
+                            if (soldier.Selected)
+                            {
+                                soldierStack.Push(soldier);
+                            }
+                        }
+
+                        byte[,] collisionMap = Core.Map.GetCollisionMap();
+                        int X=5;
+                        int Y=5;
+                        int x,y,dx,dy;
+                        x = y = dx =0;
+                        dy = -1;
+                        int t = (int)MathHelper.Max(X,Y);
+                        int maxI = t*t;
+                        for(int i =0; i < maxI; i++){
+    	                    if ((-X/2 < x&&x <= X/2) && (-Y/2 < y&&y <= Y/2))
+                            {
+                                Point point = new Point(x + mouseGridPos.X, y + mouseGridPos.Y);
+                                if (collisionMap[point.X,point.Y]==1)
+                                {
+                                    if (soldierStack.Count==0)
+                                    {
+                                        break;
+                                    }
+                                    var soldier = soldierStack.Pop();
+                                    
+                                    if (soldier==null)
+                                    {
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        soldier.GetComponent<Component.PathFinder>().Goal = point;
+                                        Console.WriteLine(x + " " + y);
+                                        Console.WriteLine(soldier.GetComponent<Component.PathFinder>().Goal.X + " " + soldier.GetComponent<Component.PathFinder>().Goal.Y);
+                                    }
+                                }
+                                
+
+    	                    }
+    	                    if( (x == y) || ((x < 0) && (x == -y)) || ((x > 0) && (x == 1-y))){
+    		                    t = dx;
+    		                    dx = -dy;
+    		                    dy = t;
+    	                    }
+    	                    x += dx;
+    	                    y += dy;
+                        }
+                        //foreach (var unit in core.Squad)
+                        //{
+                        //    if (unit.Selected)
+                        //    {
+                        //        if (mainpath==Point.Zero)
+                        //        {
+                        //            mainpath = unit.Position;
+                        //        }
+                        //        Vector2 fromMain = new Vector2((mainpath.X - unit.Position.X) * 30,(mainpath.Y-unit.Position.Y) * 30);
+                        //        unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos - fromMain);
+                        //    }
+                        //}
 					}
 				}
 			};

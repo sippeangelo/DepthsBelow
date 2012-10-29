@@ -113,30 +113,40 @@ namespace DepthsBelow
 				List<Point> soldierCollisions = new List<Point>();
 
 				// Collision with units at a standstill
-				foreach (var soldier in Squad)
-				{
-					if (soldier != this && !soldier.GetComponent<PathFinder>().IsMoving)
-					{
-						soldierCollisions.Add(soldier.Transform.Grid);
-					}
-				}
+                //foreach (var soldier in Squad)
+                //{
+                //    if (soldier != this)
+                //    {
+                //        if (!soldier.GetComponent<PathFinder>().IsMoving)
+                //        {
+                //            soldierCollisions.Add(soldier.Transform.Grid);
+                //        }
+                //        if (soldier.Transform.Grid == nextNode.Position)
+                //        {
+                //            GetComponent<PathFinder>().RecreatePath(soldierCollisions);
+                //            nextNode = GetComponent<PathFinder>().Next();
+                //            break;
+                //        }
+                //    }
+
+                //}
 
 				// Collision with moving units
-				foreach (var soldier in Squad)
-				{
-					if (soldier != this)
-					{
-						var pathFinder = soldier.GetComponent<PathFinder>();
-						var position = nextNode.Position;
-						if (soldier.Transform.Grid == position)
-						{
-							soldierCollisions.Add(soldier.Transform.Grid);
-							GetComponent<PathFinder>().RecreatePath(soldierCollisions);
-							nextNode = GetComponent<PathFinder>().Next();
-							break;
-						}
-					}
-				}
+                //foreach (var soldier in Squad)
+                //{
+                //    if (soldier != this)
+                //    {
+                //        var pathFinder = soldier.GetComponent<PathFinder>();
+                //        var position = nextNode.Position;
+                //        if (soldier.Transform.Grid == position)
+                //        {
+                //            soldierCollisions.Add(soldier.Transform.Grid);
+                //            GetComponent<PathFinder>().RecreatePath(soldierCollisions);
+                //            nextNode = GetComponent<PathFinder>().Next();
+                //            break;
+                //        }
+                //    }
+                //}
 
 				if (nextNode != null)
 				{
