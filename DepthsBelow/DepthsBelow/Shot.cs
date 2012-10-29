@@ -10,7 +10,7 @@ namespace DepthsBelow
 {
     public class Shot : Entity
     {
-        public static Texture2D Texture;
+        public Texture2D Texture;
         public Color Color;
         public static Point Origin;
         string type = "";
