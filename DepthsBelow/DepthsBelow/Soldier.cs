@@ -35,16 +35,16 @@ namespace DepthsBelow
             }
         }
 
-        public int NumberOfActionPoints = 10;
-        int spentActionPoints = 0;
+        public int MaxActionPoints = 10;
+        int actionPointsLeft = 0;
 
         public int AP
         {
-            get { return spentActionPoints; }
+            get { return actionPointsLeft; }
             set 
             {
-                spentActionPoints = value;
-                GetComponent<Component.Stat>().GetStep = spentActionPoints;
+                actionPointsLeft = value;
+                GetComponent<Component.Stat>().GetStep = actionPointsLeft;
             }
         }
 
@@ -174,17 +174,17 @@ namespace DepthsBelow
 
 					if (Transform.World == nodeWorldPos)
 					{
-                        if (AP < NumberOfActionPoints)
-                        {
-                            AP++;
+                        //if (AP < NumberOfActionPoints)
+                        //{
+                            //AP++;
                             lastLastNode = lastNode;
                             lastNode = nextNode;
                             nextNode = GetComponent<PathFinder>().Next();
-                        }
-                        else
+                        //}
+                        /*else
                         {
                             GetComponent<PathFinder>().Stop();
-                        }
+                        }*/
 					}
 				}
 			}

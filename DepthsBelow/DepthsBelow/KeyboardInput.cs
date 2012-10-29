@@ -140,7 +140,7 @@ namespace DepthsBelow
                 {
                     foreach (var unit in core.Squad)
                     {
-                        unit.AP = 0;
+                        unit.AP = unit.MaxActionPoints;
                         unit.Fired = false;
                     }
 
@@ -227,10 +227,10 @@ namespace DepthsBelow
                             cost = rocketCost;
                             type = "Rocket";
                         }
-                        if (soldier.AP <= soldier.NumberOfActionPoints - cost)
+                        if (soldier.AP >= cost)
                         {
                             core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>(), type));
-                            soldier.AP += cost;
+                            soldier.AP -= cost;
                             soldier.Fired = true;
                         }
                         else

@@ -84,6 +84,14 @@ namespace DepthsBelow.Component
 				return path != null && path.Count() != 0;
 			}
 		}
+
+        public int Length
+        {
+            get
+            {
+                return (path != null) ? path.Count : 0;
+            }
+        }
 		
 		private AStar.PathFinderFast pathFinder;
 		private List<AStar.PathFinderNode> path;

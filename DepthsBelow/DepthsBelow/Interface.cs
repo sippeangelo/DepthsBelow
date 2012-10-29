@@ -177,16 +177,29 @@ namespace DepthsBelow
 									Vector2 fromMain = new Vector2((mainpath.X - unit.Position.X)*Grid.TileSize,
 									                               (mainpath.Y - unit.Position.Y)*Grid.TileSize);
 									var goal = Grid.WorldToGrid(mouseWorldPos - fromMain);
-									unit.GetComponent<Component.PathFinder>().Goal = goal;
-									if (unit.GetComponent<Component.PathFinder>().IsMoving == false)
-									{
-										// If a path was not found, add the unit to the stack
-										soldierStack.Push(unit);
-									}
-									else
-									{
-										collisionMap[goal.X, goal.Y] = 0;
-									}
+                                    Console.WriteLine("First " + unit.AP);
+                                    unit.GetComponent<Component.PathFinder>().Goal = goal;
+                                    var length = unit.GetComponent<Component.PathFinder>().Length - 1;
+                                    if (unit.AP >= length)
+                                    {
+
+                                        if (unit.GetComponent<Component.PathFinder>().IsMoving == false)
+                                        {
+                                            // If a path was not found, add the unit to the stack
+                                            soldierStack.Push(unit);
+                                        }
+                                        else
+                                        {
+                                            unit.AP -= length;
+                                            Console.WriteLine("then " + unit.AP);
+                                            collisionMap[goal.X, goal.Y] = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        unit.GetComponent<Component.PathFinder>().Stop();   
+                                    }
+                                    
 								}
 							}
 
@@ -217,10 +230,16 @@ namespace DepthsBelow
 										}
 										else
 										{
-											soldier.GetComponent<Component.PathFinder>().Goal = point;
-											Console.WriteLine(x + " " + y);
-											Console.WriteLine(soldier.GetComponent<Component.PathFinder>().Goal.X + " " +
-											                  soldier.GetComponent<Component.PathFinder>().Goal.Y);
+                                            if (soldier.AP >= soldier.GetComponent<Component.PathFinder>().Length)
+                                            {
+                                                soldier.GetComponent<Component.PathFinder>().Goal = point;
+                                                soldier.AP -= soldier.GetComponent<Component.PathFinder>().Length;
+
+                                                Console.WriteLine(x + " " + y);
+                                                Console.WriteLine(soldier.GetComponent<Component.PathFinder>().Goal.X + " " +
+                                                                  soldier.GetComponent<Component.PathFinder>().Goal.Y);
+
+                                            }
 										}
 									}
 
