@@ -23,6 +23,9 @@ namespace DepthsBelow
 
         private bool hasFiredAlready = false;
 
+        int fireTimer = 0;
+        int timeSpentFired = 1000;
+
         public bool Fired
         {
             get { return hasFiredAlready; }
@@ -32,16 +35,16 @@ namespace DepthsBelow
             }
         }
 
-        public int numberOfSteps = 14;
-        int currentStep = 0;
+        public int NumberOfActionPoints = 10;
+        int spentActionPoints = 0;
 
-        public int step 
+        public int AP
         {
-            get { return currentStep; }
+            get { return spentActionPoints; }
             set 
             {
-                currentStep = value;
-                GetComponent<Component.Stat>().GetStep = currentStep;
+                spentActionPoints = value;
+                GetComponent<Component.Stat>().GetStep = spentActionPoints;
             }
         }
 
@@ -171,9 +174,9 @@ namespace DepthsBelow
 
 					if (Transform.World == nodeWorldPos)
 					{
-                        if (step < numberOfSteps)
+                        if (AP < NumberOfActionPoints)
                         {
-                            step++;
+                            AP++;
                             lastLastNode = lastNode;
                             lastNode = nextNode;
                             nextNode = GetComponent<PathFinder>().Next();
@@ -185,6 +188,15 @@ namespace DepthsBelow
 					}
 				}
 			}
+            if (Fired == true)
+            {
+                fireTimer += gameTime.ElapsedGameTime.Milliseconds;
+                if (fireTimer > timeSpentFired)
+                {
+                    fireTimer = 0;
+                    Fired = false;
+                }
+            }
 		}
 	}
 }

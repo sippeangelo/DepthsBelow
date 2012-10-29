@@ -18,6 +18,9 @@ namespace DepthsBelow
 
         int checkerSpeed = 2;
 
+        int bulletCost = 5;
+        int rocketCost = 10;
+
         public KeyboardInput(Core core)
         {
             this.core = core;
@@ -137,7 +140,7 @@ namespace DepthsBelow
                 {
                     foreach (var unit in core.Squad)
                     {
-                        unit.step = 0;
+                        unit.AP = 0;
                         unit.Fired = false;
                     }
 
@@ -211,30 +214,50 @@ namespace DepthsBelow
                 {
                     if (soldier.Selected == true && soldier.Fired == false)
                     {
-                        if (ks.IsKeyDown(Keys.S)) {
-                            core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>(), "Bullet"));
-                        } else if (ks.IsKeyDown(Keys.R)) {
-                            core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>(), "Rocket"));
-                        }
-                        soldier.Fired = true;
-                        foreach (var shot in core.Volley)
+                        bool enoughActionPoints = true;
+                        int cost = 0;
+                        string type = "";
+                        if (ks.IsKeyDown(Keys.S)) 
                         {
-                            if (shot.select == false)
+                            cost = bulletCost;
+                            type = "bullet";
+                        } 
+                        else if (ks.IsKeyDown(Keys.R)) 
+                        {
+                            cost = rocketCost;
+                            type = "Rocket";
+                        }
+                        if (soldier.AP <= soldier.NumberOfActionPoints - cost)
+                        {
+                            core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>(), type));
+                            soldier.AP += cost;
+                            soldier.Fired = true;
+                        }
+                        else
+                        {
+                            enoughActionPoints = false;
+                        }
+                        if (enoughActionPoints == true)
+                        {
+                            foreach (var shot in core.Volley)
                             {
-                                shot.select = true;
-                                shot.X = soldier.X;
-                                shot.Y = soldier.Y;
-                                //shot.Transform.World.X += Grid.TileSize / 2;
-                                //shot.Transform.World.Y += Grid.TileSize / 2;
-                            }
-                            if (shot.direction == Vector2.Zero)
-                            {
-                                double directionX = Math.Cos(soldier.Transform.World.Rotation);
-                                double directionY = Math.Sin(soldier.Transform.World.Rotation);
-                                shot.direction = new Vector2((float)directionX, (float)directionY);
-                                shot.Transform.World.Rotation = soldier.Transform.World.Rotation;
-                                Vector2 yo = soldier.Transform.World.Position;
-                                shot.Stat.Remember = yo;
+                                if (shot.select == false)
+                                {
+                                    shot.select = true;
+                                    shot.X = soldier.X;
+                                    shot.Y = soldier.Y;
+                                    //shot.Transform.World.X += Grid.TileSize / 2;
+                                    //shot.Transform.World.Y += Grid.TileSize / 2;
+                                }
+                                if (shot.direction == Vector2.Zero)
+                                {
+                                    double directionX = Math.Cos(soldier.Transform.World.Rotation);
+                                    double directionY = Math.Sin(soldier.Transform.World.Rotation);
+                                    shot.direction = new Vector2((float)directionX, (float)directionY);
+                                    shot.Transform.World.Rotation = soldier.Transform.World.Rotation;
+                                    Vector2 yo = soldier.Transform.World.Position;
+                                    shot.Stat.Remember = yo;
+                                }
                             }
                         }
                     }
