@@ -147,19 +147,21 @@ namespace DepthsBelow
                         }
                         else
                         {
-                            foreach (var entity in entityManager.Entities) {
-                                if (entity is Soldier)
+                            
+                            GetComponent<PathFinder>().Stop();
+                        }
+                        foreach (var entity in entityManager.Entities)
+                        {
+                            if (entity is Soldier)
+                            {
+                                if (entity.GetComponent<Component.Collision>().Rectangle.Intersects(this.GetComponent<Component.Collision>().Rectangle))
                                 {
-                                    if (entity.GetComponent<Component.Collision>().Rectangle.Intersects(this.GetComponent<Component.Collision>().Rectangle)) 
+                                    if (Utility.AttackTest(this.GetComponent<Component.Stat>(), entity, Utility.CalculateHitChance(this.GetComponent<Component.Stat>(), this.Transform.World.Position, entity)))
                                     {
-                                        if (Utility.AttackTest(this.GetComponent<Component.Stat>(), entity, Utility.CalculateHitChance(this.GetComponent<Component.Stat>(), this.Transform.World.Position, entity)))
-                                        {
-                                            break;
-                                        }
+                                        break;
                                     }
                                 }
                             }
-                            GetComponent<PathFinder>().Stop();
                         }
                     }
                 }
