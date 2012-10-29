@@ -193,68 +193,95 @@ namespace DepthsBelow
                         Point mainpath = Point.Zero;
                         Stack<Soldier> soldierStack = new Stack<Soldier>();
                         //core.Squad.Where(a=>a.Selected).ToList().ForEach(a => soldierStack.Push(a));
-                        foreach (var soldier in core.Squad)
+                        /*foreach (var soldier in core.Squad)
                         {
                             if (soldier.Selected)
                             {
                                 soldierStack.Push(soldier);
                             }
-                        }
+                        }*/
 
-                        byte[,] collisionMap = Core.Map.GetCollisionMap();
-                        int X=5;
-                        int Y=5;
-                        int x,y,dx,dy;
-                        x = y = dx =0;
-                        dy = -1;
-                        int t = (int)MathHelper.Max(X,Y);
-                        int maxI = t*t;
-                        for(int i =0; i < maxI; i++){
-    	                    if ((-X/2 < x&&x <= X/2) && (-Y/2 < y&&y <= Y/2))
-                            {
-                                Point point = new Point(x + mouseGridPos.X, y + mouseGridPos.Y);
-                                if (collisionMap[point.X,point.Y]==1)
-                                {
-                                    if (soldierStack.Count==0)
-                                    {
-                                        break;
-                                    }
-                                    var soldier = soldierStack.Pop();
-                                    
-                                    if (soldier==null)
-                                    {
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        soldier.GetComponent<Component.PathFinder>().Goal = point;
-                                        Console.WriteLine(x + " " + y);
-                                        Console.WriteLine(soldier.GetComponent<Component.PathFinder>().Goal.X + " " + soldier.GetComponent<Component.PathFinder>().Goal.Y);
-                                    }
-                                }
-                                
+						// Don't move into other soldiers
+						bool blocked = false;
+						foreach (var soldier in core.Squad)
+							if (soldier.Position == mouseGridPos)
+								blocked = true;
 
-    	                    }
-    	                    if( (x == y) || ((x < 0) && (x == -y)) || ((x > 0) && (x == 1-y))){
-    		                    t = dx;
-    		                    dx = -dy;
-    		                    dy = t;
-    	                    }
-    	                    x += dx;
-    	                    y += dy;
-                        }
-                        //foreach (var unit in core.Squad)
-                        //{
-                        //    if (unit.Selected)
-                        //    {
-                        //        if (mainpath==Point.Zero)
-                        //        {
-                        //            mainpath = unit.Position;
-                        //        }
-                        //        Vector2 fromMain = new Vector2((mainpath.X - unit.Position.X) * 30,(mainpath.Y-unit.Position.Y) * 30);
-                        //        unit.GetComponent<Component.PathFinder>().Goal = Grid.WorldToGrid(mouseWorldPos - fromMain);
-                        //    }
-                        //}
+						if (!blocked)
+						{
+							byte[,] collisionMap = Core.Map.GetCollisionMap();
+
+							// Try pathfinding
+							foreach (var unit in core.Squad)
+							{
+								if (unit.Selected)
+								{
+									if (mainpath == Point.Zero)
+									{
+										mainpath = unit.Position;
+									}
+									Vector2 fromMain = new Vector2((mainpath.X - unit.Position.X)*Grid.TileSize,
+									                               (mainpath.Y - unit.Position.Y)*Grid.TileSize);
+									var goal = Grid.WorldToGrid(mouseWorldPos - fromMain);
+									unit.GetComponent<Component.PathFinder>().Goal = goal;
+									if (unit.GetComponent<Component.PathFinder>().IsMoving == false)
+									{
+										// If a path was not found, add the unit to the stack
+										soldierStack.Push(unit);
+									}
+									else
+									{
+										collisionMap[goal.X, goal.Y] = 0;
+									}
+								}
+							}
+
+							// Loop in a spiral and assign the soldiers in the stack their own unblocked positions
+							int X = 10;
+							int Y = 10;
+							int x, y, dx, dy;
+							x = y = dx = 0;
+							dy = -1;
+							int t = (int) MathHelper.Max(X, Y);
+							int maxI = t*t;
+							for (int i = 0; i < maxI; i++)
+							{
+								if ((-X/2 < x && x <= X/2) && (-Y/2 < y && y <= Y/2))
+								{
+									Point point = new Point(x + mouseGridPos.X, y + mouseGridPos.Y);
+									if (collisionMap[point.X, point.Y] == 1)
+									{
+										if (soldierStack.Count == 0)
+										{
+											break;
+										}
+										var soldier = soldierStack.Pop();
+
+										if (soldier == null)
+										{
+											break;
+										}
+										else
+										{
+											soldier.GetComponent<Component.PathFinder>().Goal = point;
+											Console.WriteLine(x + " " + y);
+											Console.WriteLine(soldier.GetComponent<Component.PathFinder>().Goal.X + " " +
+											                  soldier.GetComponent<Component.PathFinder>().Goal.Y);
+										}
+									}
+
+
+								}
+								if ((x == y) || ((x < 0) && (x == -y)) || ((x > 0) && (x == 1 - y)))
+								{
+									t = dx;
+									dx = -dy;
+									dy = t;
+								}
+								x += dx;
+								y += dy;
+							}
+						}
 					}
 				}
 			};

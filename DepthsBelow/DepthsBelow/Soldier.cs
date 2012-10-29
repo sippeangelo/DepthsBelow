@@ -84,6 +84,13 @@ namespace DepthsBelow
 			AddComponent(stat);
 		}
 
+		public override void Remove()
+		{
+			Squad.Remove(this);
+
+			base.Remove();
+		}
+
 		public bool Selected
 		{
 			get { return _selected; }
@@ -113,23 +120,23 @@ namespace DepthsBelow
 				List<Point> soldierCollisions = new List<Point>();
 
 				// Collision with units at a standstill
-                //foreach (var soldier in Squad)
-                //{
-                //    if (soldier != this)
-                //    {
-                //        if (!soldier.GetComponent<PathFinder>().IsMoving)
-                //        {
-                //            soldierCollisions.Add(soldier.Transform.Grid);
-                //        }
-                //        if (soldier.Transform.Grid == nextNode.Position)
-                //        {
-                //            GetComponent<PathFinder>().RecreatePath(soldierCollisions);
-                //            nextNode = GetComponent<PathFinder>().Next();
-                //            break;
-                //        }
-                //    }
+				//foreach (var soldier in Squad)
+				//{
+				//    if (soldier != this)
+				//    {
+				//        if (!soldier.GetComponent<PathFinder>().IsMoving)
+				//        {
+				//            soldierCollisions.Add(soldier.Transform.Grid);
+				//        }
+				//        if (soldier.Transform.Grid == nextNode.Position)
+				//        {
+				//            GetComponent<PathFinder>().RecreatePath(soldierCollisions);
+				//            nextNode = GetComponent<PathFinder>().Next();
+				//            break;
+				//        }
+				//    }
 
-                //}
+				//}
 
 				// Collision with moving units
                 //foreach (var soldier in Squad)

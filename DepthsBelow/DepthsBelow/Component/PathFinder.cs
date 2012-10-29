@@ -166,7 +166,7 @@ namespace DepthsBelow.Component
 			if (path == null)
 				Debug.WriteLine(this.Parent.ToString() + ": Path not found!");
 
-			this.CollisionMap = new byte[100, 100];
+			//this.CollisionMap = new byte[100, 100];
 
 			return path;
 		}

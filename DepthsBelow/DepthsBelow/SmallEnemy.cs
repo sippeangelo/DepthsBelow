@@ -61,6 +61,12 @@ namespace DepthsBelow
 		                   };
 	        AddComponent(stat);
         }
+		public override void Remove()
+		{
+			Swarm.Remove(this);
+
+			base.Remove();
+		}
 
         public bool Selected
         {
@@ -148,7 +154,7 @@ namespace DepthsBelow
                                     {
                                         if (Utility.AttackTest(this.GetComponent<Component.Stat>(), entity, Utility.CalculateHitChance(this.GetComponent<Component.Stat>(), this.Transform.World.Position, entity)))
                                         {
-                                            return;
+                                            break;
                                         }
                                     }
                                 }
