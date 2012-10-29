@@ -45,52 +45,6 @@ namespace DepthsBelow
 			selectionFrame.Visible = false;
 			UIParent["selectionFrame"] = selectionFrame;
 
-			// OnClick
-			UIParent.OnClick += delegate(Frame frame, GUIManager.MouseEventArgs args)
-			{
-				KeyboardState ks = Keyboard.GetState();
-				MouseState ms = args.MouseState;
-
-				var mousePos = new Point(ms.X, ms.Y);
-				var mouseRectangle = new Rectangle(mousePos.X, mousePos.Y, 1, 1);
-				var mouseWorldPos = core.Camera.ScreenToWorld(new Vector2(mousePos.X, mousePos.Y));
-				var mouseWorldRectangle = new Rectangle((int)mouseWorldPos.X, (int)mouseWorldPos.Y, 1, 1);
-
-				if (args.LeftButton == ButtonState.Pressed)
-				{
-					Debug.WriteLine("Left button pressed on UIParent");
-					// Deselect all units
-					/*if (!ks.IsKeyDown(Keys.LeftControl))
-					{
-						foreach (var unit in core.Squad)
-							unit.Selected = false;
-
-						foreach (var unitFrame in UnitFrames)
-							unitFrame.Color = Color.Black;
-					}
-
-					// Select all units in the rectangle
-					foreach (var soldier in core.Squad)
-					{
-						if (mouseWorldRectangle.Intersects(soldier.GetComponent<Component.Collision>().Rectangle))
-						{
-							soldier.Selected = true;
-
-							foreach (var unitFrame in UnitFrames)
-							{
-								if (unitFrame["soldier"] == soldier)
-									unitFrame.Color = Color.Blue;
-							}
-						}
-					}*/
-				}
-
-
-
-				// Hide the selection rectangle
-				//selectionRectangle = Rectangle.Empty;
-			};
-
 			// OnPress
 			UIParent.OnPress += delegate(Frame frame, GUIManager.MouseEventArgs args)
 			{
@@ -493,12 +447,13 @@ namespace DepthsBelow
 				PanicFrames.Add(CreatePanicFrame());
 
 				// TODO: Remove this test ;) 
-				soldier.GetComponent<Component.Stat>().HP = random.Next(0, (int)soldier.GetComponent<Component.Stat>().MaxHP - 1);
+				//soldier.GetComponent<Component.Stat>().HP = random.Next(0, (int)soldier.GetComponent<Component.Stat>().MaxHP - 1);
 
 				var uFrame = CreateUnitFrame(soldier);
 				uFrame["soldier"] = soldier;
 				soldier["unitFrame"] = uFrame;
-				uFrame.OnClick += delegate(Frame f, GUIManager.MouseEventArgs e)
+				uFrame.OnPress += delegate(Frame frame, GUIManager.MouseEventArgs args) {  };
+				uFrame.OnRelease += delegate(Frame f, GUIManager.MouseEventArgs e)
 				{
 					var s = (Soldier)f["soldier"];
 					KeyboardState ks = Keyboard.GetState();
@@ -557,6 +512,12 @@ namespace DepthsBelow
 					var frame = (GUI.Frame) soldier["unitFrame"];
 					frame.X = lastFrame.X;
 					frame.Y = lastFrame.Y + lastFrame.Height;
+
+					// Update HP
+					//var healthBarBg = (GUI.Frame)frame["healthBarBg"];
+					//var healthBar = (GUI.Frame)frame["healthBar"];
+					//healthBar.Width = (int)((healthBarBg.Width - 2) * (soldier.GetComponent<Component.Stat>().HP / soldier.GetComponent<Component.Stat>().MaxHP));
+
 					lastFrame = frame;
 				}
 			}

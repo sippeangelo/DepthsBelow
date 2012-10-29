@@ -142,7 +142,7 @@ namespace DepthsBelow
 					Time = gameTime.TotalGameTime,
 					LeftButton = ButtonState.Pressed
 				};
-				GUIManager.RaiseAt("OnClick", mouseEvent, new Point(ms.X, ms.Y));
+				//GUIManager.RaiseAt("OnClick", mouseEvent, new Point(ms.X, ms.Y));
 				GUIManager.RaiseAt("OnRelease", mouseEvent, new Point(ms.X, ms.Y));
 			}
 			if (ms.MiddleButton == ButtonState.Released && lastMouseState.MiddleButton == ButtonState.Pressed)
@@ -153,7 +153,7 @@ namespace DepthsBelow
 					Time = gameTime.TotalGameTime,
 					MiddleButton = ButtonState.Pressed
 				};
-				GUIManager.RaiseAt("OnClick", mouseEvent, new Point(ms.X, ms.Y));
+				//GUIManager.RaiseAt("OnClick", mouseEvent, new Point(ms.X, ms.Y));
 				GUIManager.RaiseAt("OnRelease", mouseEvent, new Point(ms.X, ms.Y));
 			}
 			if (ms.RightButton == ButtonState.Released && lastMouseState.RightButton == ButtonState.Pressed)
@@ -164,7 +164,7 @@ namespace DepthsBelow
 					Time = gameTime.TotalGameTime,
 					RightButton = ButtonState.Pressed
 				};
-				GUIManager.RaiseAt("OnClick", mouseEvent, new Point(ms.X, ms.Y));
+				//GUIManager.RaiseAt("OnClick", mouseEvent, new Point(ms.X, ms.Y));
 				GUIManager.RaiseAt("OnRelease", mouseEvent, new Point(ms.X, ms.Y));
 			}
 
