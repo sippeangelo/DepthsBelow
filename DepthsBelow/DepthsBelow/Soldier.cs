@@ -36,7 +36,7 @@ namespace DepthsBelow
         }
 
         public int MaxActionPoints = 10;
-        int actionPointsLeft = 0;
+        int actionPointsLeft = 10;
 
         public int AP
         {
