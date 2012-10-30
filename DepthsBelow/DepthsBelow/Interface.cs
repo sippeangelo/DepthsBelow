@@ -30,6 +30,8 @@ namespace DepthsBelow
 		private bool checkingDirection;
 		private Vector2 directionStart;
 
+        GUI.Text hitChance;
+
 		public Interface(Core core)
 		{
 			this.core = core;
@@ -258,6 +260,10 @@ namespace DepthsBelow
 					}
 				}
 			};
+
+            hitChance = new Text(UIParent);
+            hitChance.SetFont("Arial");
+            hitChance.Value = "";
 
 			var button = new GUI.Button(UIParent);
 			button.SetTexture("images/Enter");
@@ -533,9 +539,9 @@ namespace DepthsBelow
 					frame.Y = lastFrame.Y + lastFrame.Height;
 
 					// Update HP
-					//var healthBarBg = (GUI.Frame)frame["healthBarBg"];
-					//var healthBar = (GUI.Frame)frame["healthBar"];
-					//healthBar.Width = (int)((healthBarBg.Width - 2) * (soldier.GetComponent<Component.Stat>().HP / soldier.GetComponent<Component.Stat>().MaxHP));
+					var healthBarBg = (GUI.Frame)frame["healthBarBg"];
+					var healthBar = (GUI.Frame)frame["healthBar"];
+					healthBar.Width = (int)((healthBarBg.Width - 2) * (soldier.GetComponent<Component.Stat>().Life / soldier.GetComponent<Component.Stat>().MaxHP));
 
 					lastFrame = frame;
 				}
@@ -574,6 +580,36 @@ namespace DepthsBelow
 							           mouseWorldPos.X - unit.Transform.World.X - unit.Transform.World.Origin.X);
 					}
 			}
+
+            bool onSomething = false;
+
+            foreach (var unit in core.Squad)
+            {
+                if (unit.Selected == true && unit.Fired == false)
+                {
+                    foreach (var enemy in core.Swarm)
+                    {
+                        if (core.MouseInput.gridRectangle.Intersects(enemy.GetComponent<Component.Collision>().Rectangle))
+                        {
+                            onSomething = true;
+                            hitChance.Visible = true;
+                            int chanceToHit = Utility.CalculateHitChance(unit.GetComponent<Component.Stat>(), unit.GetComponent<Component.Transform>().World.Position, enemy);
+                            hitChance.Value = chanceToHit.ToString() + "%";
+                            hitChance.X = ms.X - 15;
+                            hitChance.Y = ms.Y - 15;
+                            break;
+                        }
+                    }
+                    if (onSomething == true)
+                    {
+                        break;
+                    }
+                }
+            }
+            if (onSomething == false)
+            {
+                hitChance.Visible = false;
+            }
 
 			UpdateUnitFrames();
 		}

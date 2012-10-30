@@ -11,7 +11,8 @@ namespace DepthsBelow
     {
         //EntityManager entityManager;
 
-        int wakingDistance = 6;
+        int wakingDistance = 7;
+        int sleepingDistance = 6;
 
         List<SmallEnemy> swarm;
 
@@ -33,7 +34,7 @@ namespace DepthsBelow
 			                                        this.GetComponent<Component.Transform>().Grid.Position.Y);
 			        Vector2 distance2 = new Vector2(entity.GetComponent<Component.Transform>().Grid.Position.X,
 			                                        entity.GetComponent<Component.Transform>().Grid.Position.Y);
-			        if (Vector2.Distance(distance1, distance2) < wakingDistance)
+                    if (Vector2.Distance(distance1, distance2) < wakingDistance/* && Vector2.Distance(distance1, distance2) > sleepingDistance*/)
 			        {
 				        var enemy = new SmallEnemy(ref swarm);
 				        enemy.X = this.X;

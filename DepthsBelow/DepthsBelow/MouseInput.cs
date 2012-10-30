@@ -17,7 +17,7 @@ namespace DepthsBelow
 		MouseState lastMouseState;
 		Rectangle selectionRectangle;
 		Texture2D selectionTexture;
-        Rectangle gridRectangle;
+        public Rectangle gridRectangle;
         Texture2D gridTexture;
 
         Vector2 directionStart;

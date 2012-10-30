@@ -22,6 +22,8 @@ namespace DepthsBelow
         public int numberOfSteps = 5;
         public int currentStep = 0;
 
+        public bool AttackedThisTurn = false;
+
         public int step
         {
             get { return currentStep; }
@@ -54,9 +56,9 @@ namespace DepthsBelow
 
 	        var stat = new Component.Stat(this)
 		                   {
-			                   Life = 2, 
-							   Defence = 2, 
-							   Strength = 5000, 
+			                   Life = 50, 
+							   Defence = 25, 
+							   Strength = 26, 
 							   GetAim = 100, 
 							   GetDodge = 50
 		                   };
@@ -157,9 +159,13 @@ namespace DepthsBelow
                             {
                                 if (entity.GetComponent<Component.Collision>().Rectangle.Intersects(this.GetComponent<Component.Collision>().Rectangle))
                                 {
-                                    if (Utility.AttackTest(this.GetComponent<Component.Stat>(), entity, Utility.CalculateHitChance(this.GetComponent<Component.Stat>(), this.Transform.World.Position, entity)))
+                                    if (AttackedThisTurn == false)
                                     {
-                                        break;
+                                        if (Utility.AttackTest(this.GetComponent<Component.Stat>(), entity, Utility.CalculateHitChance(this.GetComponent<Component.Stat>(), this.Transform.World.Position, entity)))
+                                        {
+                                            AttackedThisTurn = true;
+                                            break;
+                                        }
                                     }
                                 }
                             }
