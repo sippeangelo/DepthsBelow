@@ -152,6 +152,7 @@ namespace DepthsBelow
                     foreach (var enemy in core.Swarm)
                     {
                         enemy.step = 0;
+                        enemy.AttackedThisTurn = false;
                         Point target = Point.Zero;
                         float distance = 7000;
                         foreach (var unit in core.Squad)

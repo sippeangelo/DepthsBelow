@@ -22,6 +22,8 @@ namespace DepthsBelow
         public int numberOfSteps = 5;
         public int currentStep = 0;
 
+        public bool AttackedThisTurn = false;
+
         public int step
         {
             get { return currentStep; }
@@ -150,15 +152,20 @@ namespace DepthsBelow
                             
                             GetComponent<PathFinder>().Stop();
                         }
+
                         foreach (var entity in entityManager.Entities)
                         {
                             if (entity is Soldier)
                             {
                                 if (entity.GetComponent<Component.Collision>().Rectangle.Intersects(this.GetComponent<Component.Collision>().Rectangle))
                                 {
-                                    if (Utility.AttackTest(this.GetComponent<Component.Stat>(), entity, Utility.CalculateHitChance(this.GetComponent<Component.Stat>(), this.Transform.World.Position, entity)))
+                                    if (AttackedThisTurn == false)
                                     {
-                                        break;
+                                        if (Utility.AttackTest(this.GetComponent<Component.Stat>(), entity, Utility.CalculateHitChance(this.GetComponent<Component.Stat>(), this.Transform.World.Position, entity)))
+                                        {
+                                            AttackedThisTurn = true;
+                                            break;
+                                        }
                                     }
                                 }
                             }

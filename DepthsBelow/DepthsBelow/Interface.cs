@@ -539,9 +539,9 @@ namespace DepthsBelow
 					frame.Y = lastFrame.Y + lastFrame.Height;
 
 					// Update HP
-					//var healthBarBg = (GUI.Frame)frame["healthBarBg"];
-					//var healthBar = (GUI.Frame)frame["healthBar"];
-					//healthBar.Width = (int)((healthBarBg.Width - 2) * (soldier.GetComponent<Component.Stat>().HP / soldier.GetComponent<Component.Stat>().MaxHP));
+					var healthBarBg = (GUI.Frame)frame["healthBarBg"];
+					var healthBar = (GUI.Frame)frame["healthBar"];
+					healthBar.Width = (int)((healthBarBg.Width - 2) * (soldier.GetComponent<Component.Stat>().Life / soldier.GetComponent<Component.Stat>().MaxHP));
 
 					lastFrame = frame;
 				}
