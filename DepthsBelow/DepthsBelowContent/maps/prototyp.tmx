@@ -29,6 +29,36 @@
   <object type="SquadStart" x="768" y="2720" width="32" height="32"/>
   <object type="BossSpawn" x="832" y="2720" width="32" height="32"/>
   <object type="Door" x="640" y="2656" width="32" height="64"/>
+  <object type="EnemySpawn" x="992" y="2304" width="32" height="32"/>
+  <object type="EnemySpawn" x="1184" y="2144" width="32" height="32"/>
+  <object type="EnemySpawn" x="992" y="2688" width="32" height="32"/>
+  <object type="EnemySpawn" x="1088" y="2560" width="32" height="32"/>
+  <object type="EnemySpawn" x="1120" y="1888" width="32" height="32"/>
+  <object type="EnemySpawn" x="1632" y="1664" width="32" height="32"/>
+  <object type="EnemySpawn" x="1600" y="2112" width="32" height="32"/>
+  <object type="EnemySpawn" x="1760" y="1824" width="32" height="32"/>
+  <object type="EnemySpawn" x="1824" y="1920" width="32" height="32"/>
+  <object type="EnemySpawn" x="1984" y="1696" width="32" height="32"/>
+  <object type="EnemySpawn" x="1984" y="2048" width="32" height="32"/>
+  <object type="EnemySpawn" x="1824" y="2208" width="32" height="32"/>
+  <object type="EnemySpawn" x="2080" y="1792" width="32" height="32"/>
+  <object type="EnemySpawn" x="2272" y="1664" width="32" height="32"/>
+  <object type="EnemySpawn" x="2336" y="1728" width="32" height="32"/>
+  <object type="EnemySpawn" x="2272" y="2112" width="32" height="32"/>
+  <object type="EnemySpawn" x="2304" y="2016" width="32" height="32"/>
+  <object type="EnemySpawn" x="2720" y="1888" width="32" height="32"/>
+  <object type="EnemySpawn" x="2720" y="1824" width="32" height="32"/>
+  <object type="EnemySpawn" x="2752" y="1856" width="32" height="32"/>
+  <object type="EnemySpawn" x="2112" y="800" width="32" height="32"/>
+  <object type="EnemySpawn" x="2112" y="960" width="32" height="32"/>
+  <object type="EnemySpawn" x="2112" y="1120" width="32" height="32"/>
+  <object type="EnemySpawn" x="2112" y="1280" width="32" height="32"/>
+  <object type="EnemySpawn" x="3424" y="1280" width="32" height="32"/>
+  <object type="EnemySpawn" x="3424" y="1120" width="32" height="32"/>
+  <object type="EnemySpawn" x="3424" y="960" width="32" height="32"/>
+  <object type="EnemySpawn" x="3424" y="800" width="32" height="32"/>
+  <object type="EnemySpawn" x="3424" y="640" width="32" height="32"/>
+  <object type="EnemySpawn" x="2112" y="640" width="32" height="32"/>
  </objectgroup>
  <layer name="Collision" width="256" height="256">
   <data encoding="base64" compression="zlib">

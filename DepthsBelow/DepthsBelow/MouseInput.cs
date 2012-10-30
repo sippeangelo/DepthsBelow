@@ -86,6 +86,8 @@ namespace DepthsBelow
 				Time = gameTime.TotalGameTime
 			};
 
+            //Console.WriteLine(Grid.GridToWorld(new Point()));
+
 			bool handledByUI = GUIManager.RaiseAt("OnClick", mouseEvent, new Point(ms.X, ms.Y));
 
 			if (handledByUI)
