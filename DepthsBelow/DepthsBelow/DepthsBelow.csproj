@@ -122,6 +122,7 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Component\Flashlight.cs" />
+    <Compile Include="Door.cs" />
     <Compile Include="DynamicGroupManager.cs" />
     <Compile Include="MonsterSpawn.cs" />
     <Compile Include="TurnManager.cs" />

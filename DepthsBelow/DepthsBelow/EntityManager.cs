@@ -74,6 +74,11 @@ namespace DepthsBelow
 			return components;
 		}
 
+		public static List<T> GetEntities<T>() where T : Entity
+		{
+			return Entities.OfType<T>().ToList();
+		}
+
 		/// <summary>
 		/// Update all entities handled by the entity manager.
 		/// </summary>

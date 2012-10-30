@@ -101,16 +101,24 @@ namespace DepthsBelow
 			lightRenderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
 			sceneRenderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
-			Map = Content.Load<Map>("maps/Aztek.Test");
+			Map = Content.Load<Map>("maps/prototyp");
+			//Map = Content.Load<Map>("maps/Aztek.Test");
             //Map = Content.Load<Map>("maps/Cave.Level1");
+
 			// Load map objects
 			Map.ParseObjects(this);
+
+			Squad[0].Name = "Dean H. Jones";
+			Squad[1].Name = "Walter L. Verville";
+			Squad[2].Name = "Patrick Y. Southerland";
+			Squad[3].Name = "Andrew C. Friend";
+			Squad[4].Name = "Gary B. Whitley";
+
+			// Center the camera on a unit
+			Camera.Position = Squad[0].Transform.World.Position * -1 + new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
+
 			GroupManager = new DynamicGroupManager(Squad.Cast<Entity>().ToList(), (float)Grid.TileSize * 1.5f);
-            Squad[0].Name = "Dean H. Jones";
-            Squad[1].Name = "Walter L. Verville";
-            Squad[2].Name = "Patrick Y. Southerland";
-            Squad[3].Name = "Andrew C. Friend";
-            Squad[4].Name = "Gary B. Whitley";
+           
 			Interface.CreateUnitFrames(Squad);
 
 			// TODO: use this.Content to load your game content here

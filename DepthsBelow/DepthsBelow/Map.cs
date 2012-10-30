@@ -90,6 +90,14 @@ namespace DepthsBelow
                         enemy.X = mapObjectGridPos.X;
                         enemy.Y = mapObjectGridPos.Y;
                     }
+					if (mapObject.Type == "Door")
+					{
+						var door = new Door();
+						var mapObjectPos = new Vector2(mapObject.Bounds.X, mapObject.Bounds.Y);
+						var mapObjectGridPos = Grid.WorldToGrid(mapObjectPos);
+						door.X = mapObjectGridPos.X;
+						door.Y = mapObjectGridPos.Y;
+					}
 				}
 			}
 		}

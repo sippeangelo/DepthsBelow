@@ -157,12 +157,19 @@ namespace DepthsBelow.Component
             {
                 if (collision.Solid && collision.Parent != this.Parent)
                 {
-                    try
-                    {
-                        var pos = collision.Parent.Position;
-                        mapCollisionMap[pos.X, pos.Y] = 0;
-                    }
-                    catch { }
+					var pos = Grid.WorldToGrid(new Vector2(collision.Rectangle.X, collision.Rectangle.Y));
+
+					for (int x = 0; x < Math.Ceiling(collision.Rectangle.Width / (double)Grid.TileSize); x++)
+						for (int y = 0; y < Math.Ceiling(collision.Rectangle.Height / (double)Grid.TileSize); y++)
+						{
+							try
+							{
+								mapCollisionMap[pos.X + x, pos.Y + y] = 0;
+							}
+							catch
+							{
+							}
+						}
                 }
             }
 

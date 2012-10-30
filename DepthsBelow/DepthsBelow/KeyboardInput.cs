@@ -204,9 +204,9 @@ namespace DepthsBelow
                 core.TestMonster.X = 12;
                 core.TestMonster.Y = 4;
             }
-            if (ks.IsKeyDown(Keys.N))
+			if (ks.IsKeyUp(Keys.O) && lastKeyboardState.IsKeyDown(Keys.O))
             {
-                
+                EntityManager.GetEntities<Door>()[0].Toggle();
             }
             if (ks.IsKeyDown(Keys.S) || ks.IsKeyDown(Keys.R)) 
             {

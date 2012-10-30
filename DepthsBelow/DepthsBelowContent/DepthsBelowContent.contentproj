@@ -66,20 +66,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="maps\tilesets\collision.png">
-      <Name>collision</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="maps\tilesets\cave.png">
-      <Name>cave</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="images\Monster.png">
       <Name>Monster</Name>
       <Importer>TextureImporter</Importer>
@@ -183,22 +169,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="maps\tilesets\aztek.png">
-      <Name>aztek</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="maps\Aztek.Test.tmx">
       <Name>Aztek.Test</Name>
-      <Importer>TmxImporter</Importer>
-      <Processor>MapProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="maps\Cave.Level1.tmx">
-      <Name>Cave.Level1</Name>
       <Importer>TmxImporter</Importer>
       <Processor>MapProcessor</Processor>
     </Compile>
@@ -234,6 +206,30 @@
   <ItemGroup>
     <Compile Include="images\Shot3.bmp">
       <Name>Shot3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="maps\prototyp.tmx">
+      <Name>prototyp</Name>
+      <Importer>TmxImporter</Importer>
+      <Processor>MapProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="images\door_closed.png">
+      <Name>door_closed</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\door_destroyed.png">
+      <Name>door_destroyed</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="images\door_open.png">
+      <Name>door_open</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -38,7 +38,7 @@ namespace DepthsBelow.Component
 		public void Draw(SpriteBatch spriteBatch)
 		{
 			var transform = this.Parent.GetComponent<Transform>();
-			spriteBatch.Draw(Texture, transform.World.Position + new Vector2(Grid.TileSize / 2, Grid.TileSize / 2), null, Color, transform.World.Rotation, transform.World.Origin, Scale, SpriteEffects, 0);
+			spriteBatch.Draw(Texture, transform.World.Position + transform.World.Origin, null, Color, transform.World.Rotation, transform.World.Origin, Scale, SpriteEffects, 0);
 		}
 	}
 }
