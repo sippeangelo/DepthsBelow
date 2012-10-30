@@ -15,8 +15,8 @@ namespace DepthsBelow
 
         List<SmallEnemy> swarm;
 
-        public MonsterSpawn(EntityManager entityManager, ref List<SmallEnemy> Swarm)
-            : base(entityManager)
+        public MonsterSpawn(ref List<SmallEnemy> Swarm)
+            : base()
         {
             //this.entityManager = entityManager;
             swarm = Swarm;
@@ -24,9 +24,9 @@ namespace DepthsBelow
 
         public override void Update(GameTime gameTime)
         {
-	        for (int index = 0; index < entityManager.Entities.Count; index++)
+	        for (int index = 0; index < EntityManager.Entities.Count; index++)
 	        {
-		        var entity = entityManager.Entities[index];
+		        var entity = EntityManager.Entities[index];
 		        if (entity is Soldier)
 		        {
 			        Vector2 distance1 = new Vector2(this.GetComponent<Component.Transform>().Grid.Position.X,
@@ -35,7 +35,7 @@ namespace DepthsBelow
 			                                        entity.GetComponent<Component.Transform>().Grid.Position.Y);
 			        if (Vector2.Distance(distance1, distance2) < wakingDistance)
 			        {
-				        var enemy = new SmallEnemy(entityManager, ref swarm);
+				        var enemy = new SmallEnemy(ref swarm);
 				        enemy.X = this.X;
 				        enemy.Y = this.Y;
 				        swarm.Add(enemy);

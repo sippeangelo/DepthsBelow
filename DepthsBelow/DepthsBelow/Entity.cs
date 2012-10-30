@@ -18,8 +18,6 @@ namespace DepthsBelow
 		/// </summary>
 		public Component.Transform Transform;
 
-		protected EntityManager entityManager;
-
 		/// <summary>
 		/// Shorthand to the grid transform position.
 		/// </summary>
@@ -61,11 +59,10 @@ namespace DepthsBelow
 		/// <summary>
 		/// Creates a game object and adds it to the referenced entity manager.
 		/// </summary>
-		/// <param name="entityManager">An instance of EntityManager to add the entity to.</param>
-		public Entity(EntityManager entityManager)
+        /// 
+        public Entity()
 		{
-			this.entityManager = entityManager;
-			entityManager.Add(this);
+			EntityManager.Add(this);
 			
 			Components = new List<Component.Component>();
 
@@ -88,7 +85,7 @@ namespace DepthsBelow
 		/// </summary>
 		public virtual void Remove()
 		{
-			entityManager.Remove(this);
+			EntityManager.Remove(this);
 			Dispose();
 		}
 

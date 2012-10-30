@@ -72,7 +72,7 @@ namespace DepthsBelow
 				{
 					if (mapObject.Type == "SquadStart")
 					{
-						var soldier = new Soldier(core.EntityManager, ref core.Squad);
+						var soldier = new Soldier(ref core.Squad);
 						soldier.Name = "Derp";
 						// HACK: For some reason, the tile object coordinates are offset by one tile on the Y-axis in the Tiled map file (https://github.com/bjorn/tiled/issues/91)
 						var mapObjectPos = new Vector2(mapObject.Bounds.X, mapObject.Bounds.Y - Grid.TileSize);
@@ -84,7 +84,7 @@ namespace DepthsBelow
 					}
                     if (mapObject.Type == "MonsterSpawn")
                     {
-                        var enemy = new MonsterSpawn(core.EntityManager, ref core.Swarm);
+                        var enemy = new MonsterSpawn(ref core.Swarm);
                         var mapObjectPos = new Vector2(mapObject.Bounds.X, mapObject.Bounds.Y - Grid.TileSize);
                         var mapObjectGridPos = Grid.WorldToGrid(mapObjectPos);
                         enemy.X = mapObjectGridPos.X;

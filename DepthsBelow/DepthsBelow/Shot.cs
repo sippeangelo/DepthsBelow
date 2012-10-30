@@ -38,8 +38,8 @@ namespace DepthsBelow
 
         public Vector2 direction = Vector2.Zero;
 
-        public Shot(EntityManager entityManager, Stat _soldierStat, string _type)
-			: base(entityManager)
+        public Shot(Stat _soldierStat, string _type)
+            : base()
         {
             type = _type;
 
@@ -80,7 +80,7 @@ namespace DepthsBelow
             float speed = 4f;
             Transform.World.Position += speed * direction;
 
-            foreach (var entity in entityManager.Entities)
+            foreach (var entity in EntityManager.Entities)
             {
                 if (entity is SmallEnemy) 
                 {

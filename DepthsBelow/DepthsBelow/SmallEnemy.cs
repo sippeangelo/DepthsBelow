@@ -31,8 +31,8 @@ namespace DepthsBelow
             }
         }
 
-        public SmallEnemy(EntityManager entityManager, ref List<SmallEnemy> swarm)
-			: base(entityManager)
+        public SmallEnemy(ref List<SmallEnemy> swarm)
+            : base()
         {
             if (Texture == null)
                 LoadContent();
@@ -150,7 +150,7 @@ namespace DepthsBelow
                             
                             GetComponent<PathFinder>().Stop();
                         }
-                        foreach (var entity in entityManager.Entities)
+                        foreach (var entity in EntityManager.Entities)
                         {
                             if (entity is Soldier)
                             {

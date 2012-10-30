@@ -27,7 +27,6 @@ namespace DepthsBelow
 
 		public Lua Lua;
 
-		public EntityManager EntityManager;
 		public TurnManager TurnManager;
 
 		public Camera Camera;
@@ -76,7 +75,6 @@ namespace DepthsBelow
 
 			Lua = new Lua();
 
-			EntityManager = new EntityManager();
 			TurnManager = new TurnManager(new string[] { "Player", "Computer" });
 
 			Camera = new Camera(this);
@@ -124,7 +122,7 @@ namespace DepthsBelow
 			MouseInput.LoadContent();
             KeyboardInput = new KeyboardInput(this);
 
-			TestMonster = new SmallEnemy(EntityManager, ref Swarm);
+			TestMonster = new SmallEnemy(ref Swarm);
 			TestMonster.X = 12;
 			TestMonster.Y = 4;
             Swarm.Add(TestMonster);

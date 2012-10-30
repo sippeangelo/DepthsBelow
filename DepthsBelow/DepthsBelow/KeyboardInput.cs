@@ -229,7 +229,7 @@ namespace DepthsBelow
                         }
                         if (soldier.AP >= cost)
                         {
-                            core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>(), type));
+                            core.Volley.Add(new Shot(soldier.GetComponent<Component.Stat>(), type));
                             soldier.AP -= cost;
                             soldier.Fired = true;
                         }
@@ -297,7 +297,7 @@ namespace DepthsBelow
                         current = 0;
                         if (soldier.Selected == true && soldier.Fired == false && hit == true)
                         {
-                            core.Volley.Add(new Shot(core.EntityManager, soldier.GetComponent<Component.Stat>(), "Bullet"));
+                            core.Volley.Add(new Shot(soldier.GetComponent<Component.Stat>(), "Bullet"));
                             soldier.Fired = true;
                             foreach (var shot in core.Volley)
                             {

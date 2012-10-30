@@ -152,6 +152,8 @@ namespace DepthsBelow.Component
 		{
 			byte[,] mapCollisionMap = Core.Map.GetCollisionMap();
 
+            // Add solid collision component entities
+
 			if (appendCollisionMap != null)
 				foreach (var point in appendCollisionMap)
 					mapCollisionMap[point.X, point.Y] = 0;

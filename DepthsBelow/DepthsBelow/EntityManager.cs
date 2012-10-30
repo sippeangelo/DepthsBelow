@@ -10,20 +10,15 @@ namespace DepthsBelow
 	/// <summary>
 	/// Manages a group of entities.
 	/// </summary>
-	public class EntityManager : IDisposable
+	public static class EntityManager
 	{
-		public List<Entity> Entities;
-
-		public EntityManager()
-		{
-			Entities = new List<Entity>();
-		}
+		public static List<Entity> Entities = new List<Entity>();
 
 		/// <summary>
 		/// Implementation of IDisposable.
 		/// Dispose of the entity manager, and all entities it contains.
 		/// </summary>
-		public void Dispose()
+        public static void Dispose()
 		{
 			foreach (var entity in Entities)
 				entity.Dispose();
@@ -35,7 +30,7 @@ namespace DepthsBelow
 		/// Add an entity to the entity manager.
 		/// </summary>
 		/// <param name="entity">The entity to add.</param>
-		public void Add(Entity entity)
+		public static void Add(Entity entity)
 		{
 			Entities.Add(entity);
 		}
@@ -44,7 +39,7 @@ namespace DepthsBelow
 		/// Remove an entity from the entity manager.
 		/// </summary>
 		/// <param name="entity">The entity to remove.</param>
-		public void Remove(Entity entity)
+        public static void Remove(Entity entity)
 		{
 			Entities.Remove(entity);
 		}
@@ -52,7 +47,7 @@ namespace DepthsBelow
 		/// <summary>
 		/// Reset the entity manager, disposing any entities it contains.
 		/// </summary>
-		public void Reset()
+        public static void Reset()
 		{
 			foreach (var entity in Entities)
 				entity.Dispose();
@@ -65,7 +60,7 @@ namespace DepthsBelow
 		/// </summary>
 		/// <typeparam name="T">The component type.</typeparam>
 		/// <returns>Returns the component of requested type.</returns>
-		public List<T> GetComponents<T>() where T : Component.Component
+        public static List<T> GetComponents<T>() where T : Component.Component
 		{
 			List<T> components = new List<T>();
 
@@ -83,7 +78,7 @@ namespace DepthsBelow
 		/// Update all entities handled by the entity manager.
 		/// </summary>
 		/// <param name="gameTime"></param>
-		public void Update(GameTime gameTime)
+        public static void Update(GameTime gameTime)
 		{
             foreach (var entity in Entities.ToList())
                 entity.Update(gameTime);
@@ -93,7 +88,7 @@ namespace DepthsBelow
 		/// Draw all entities handled by the entity manager.
 		/// </summary>
 		/// <param name="spriteBatch"></param>
-		public void Draw(SpriteBatch spriteBatch)
+        public static void Draw(SpriteBatch spriteBatch)
 		{
 			foreach (var entity in Entities)
 			{

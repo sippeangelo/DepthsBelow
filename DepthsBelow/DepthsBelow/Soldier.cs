@@ -48,8 +48,8 @@ namespace DepthsBelow
             }
         }
 
-		public Soldier(EntityManager entityManager, ref List<Soldier> squad)
-			: base(entityManager)
+		public Soldier(ref List<Soldier> squad)
+            : base()
 		{
 			if (Texture == null)
 				LoadContent();
