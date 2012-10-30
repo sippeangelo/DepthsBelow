@@ -14,12 +14,15 @@ namespace DepthsBelow
         int wakingDistance = 7;
         int sleepingDistance = 6;
 
+        string type;
+
         List<SmallEnemy> swarm;
 
-        public MonsterSpawn(ref List<SmallEnemy> Swarm)
+        public MonsterSpawn(string _type, ref List<SmallEnemy> Swarm)
             : base()
         {
             //this.entityManager = entityManager;
+            type = _type;
             swarm = Swarm;
         }
 
@@ -37,6 +40,10 @@ namespace DepthsBelow
                     if (Vector2.Distance(distance1, distance2) < wakingDistance/* && Vector2.Distance(distance1, distance2) > sleepingDistance*/)
 			        {
 				        var enemy = new SmallEnemy(ref swarm);
+                        if (type == "BUB") 
+                        {
+                            enemy.LoadBoss();
+                        }
 				        enemy.X = this.X;
 				        enemy.Y = this.Y;
 				        swarm.Add(enemy);

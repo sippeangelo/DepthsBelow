@@ -17,6 +17,7 @@ namespace DepthsBelow.Component
 		/// The texture to be rendered.
 		/// </summary>
 		public Texture2D Texture;
+        public Texture2D AlternativeTexture;
 		/// <summary>
 		/// Color modifier.
 		/// </summary>
@@ -38,7 +39,14 @@ namespace DepthsBelow.Component
 		public void Draw(SpriteBatch spriteBatch)
 		{
 			var transform = this.Parent.GetComponent<Transform>();
-			spriteBatch.Draw(Texture, transform.World.Position + transform.World.Origin, null, Color, transform.World.Rotation, transform.World.Origin, Scale, SpriteEffects, 0);
+            if (AlternativeTexture == null)
+            {
+                spriteBatch.Draw(Texture, transform.World.Position + transform.World.Origin, null, Color, transform.World.Rotation, transform.World.Origin, Scale, SpriteEffects, 0);
+            }
+            else
+            {
+                spriteBatch.Draw(AlternativeTexture, transform.World.Position + transform.World.Origin - new Vector2(Grid.TileSize, Grid.TileSize), null, Color, transform.World.Rotation, transform.World.Origin, Scale, SpriteEffects, 0);
+            }
 		}
 	}
 }

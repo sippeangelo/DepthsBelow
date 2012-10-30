@@ -86,6 +86,19 @@ namespace DepthsBelow
 			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/Monster");
         }
 
+        public void LoadBoss()
+        {
+            GetComponent<SpriteRenderer>().AlternativeTexture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/Pineapple");
+            var stat = new Component.Stat(this)
+                            {
+                                Life = 500,
+                                Defence = 15,
+                                Strength = 70,
+                                GetAim = 80,
+                                GetDodge = 5
+                            };
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
