@@ -171,7 +171,7 @@ namespace DepthsBelow
 			// TODO: OnClick events
 
 			// Tooltip stuff
-			var tooltip = core.Lua.GetObject<GUI.Frame>("ToolTip");
+			/*var tooltip = core.Lua.GetObject<GUI.Frame>("ToolTip");
 			if (tooltip != null)
 			{
 				tooltip.Visible = false;
@@ -189,7 +189,7 @@ namespace DepthsBelow
 					tooltip.X = ms.X + 10;
 					tooltip.Y = ms.Y + 15;
 				}
-			}
+			}*/
 
             if (core.TurnManager.CurrentTurn == core.TurnManager["Player"])
             {

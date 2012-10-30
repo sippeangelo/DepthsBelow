@@ -46,6 +46,7 @@ namespace DepthsBelow
             AddComponent(rc);
 
             var cc = new Collision(this, 32, 32);
+			cc.Solid = true;
             AddComponent(cc);
 
             var pfc = new PathFinder(this);

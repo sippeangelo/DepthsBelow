@@ -19,6 +19,11 @@ namespace DepthsBelow.Component
 		/// </summary>
 	    public Rectangle Rectangle;
 
+        /// <summary>
+        /// Whether the entity is solid to other entities.
+        /// </summary>
+        public bool Solid = false;
+
 		/// <summary>
 		/// Width of the collision rectangle.
 		/// </summary>
