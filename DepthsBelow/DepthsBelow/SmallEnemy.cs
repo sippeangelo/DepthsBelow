@@ -53,9 +53,9 @@ namespace DepthsBelow
 
 	        var stat = new Component.Stat(this)
 		                   {
-			                   Life = 2, 
-							   Defence = 2, 
-							   Strength = 5000, 
+			                   Life = 50, 
+							   Defence = 25, 
+							   Strength = 26, 
 							   GetAim = 100, 
 							   GetDodge = 50
 		                   };

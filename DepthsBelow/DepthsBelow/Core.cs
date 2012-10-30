@@ -33,7 +33,7 @@ namespace DepthsBelow
 		public Camera Camera;
 		public Interface Interface;
 
-		public static MouseInput MouseInput;
+		public/* static*/ MouseInput MouseInput;
         public static KeyboardInput KeyboardInput;
 		public List<Soldier> Squad;
 		public DynamicGroupManager GroupManager;
