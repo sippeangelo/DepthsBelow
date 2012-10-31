@@ -11,6 +11,8 @@ namespace DepthsBelow
 	/// </summary>
 	public class TurnManager
 	{
+        public static int currentTurn = 0;
+
 		/// <summary>
 		/// A player turn token.
 		/// </summary>
@@ -110,6 +112,11 @@ namespace DepthsBelow
 				currentTokenIndex = 0;
 
 			Debug.WriteLine(prevTurn.Name + " turn ended. Current turn: " + CurrentTurn.Name);
+            if (CurrentTurn.Name == "Player")
+            {
+                currentTurn++;
+                Console.WriteLine("Turn: " + currentTurn);
+            }
 		}
 	}
 }

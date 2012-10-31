@@ -11,19 +11,22 @@ namespace DepthsBelow
     {
         //EntityManager entityManager;
 
-        int wakingDistance = 7;
+        int wakingDistance = 12;
         int sleepingDistance = 6;
+        int wakingTurn = 0;
 
         string type;
 
         List<SmallEnemy> swarm;
 
-        public MonsterSpawn(string _type, ref List<SmallEnemy> Swarm)
+        public MonsterSpawn(string _type, int _wakingDistance, int _wakingTurn, ref List<SmallEnemy> Swarm)
             : base()
         {
             //this.entityManager = entityManager;
             type = _type;
             swarm = Swarm;
+            wakingDistance = _wakingDistance;
+            wakingTurn = _wakingTurn;
         }
 
         public override void Update(GameTime gameTime)
@@ -37,7 +40,7 @@ namespace DepthsBelow
 			                                        this.GetComponent<Component.Transform>().Grid.Position.Y);
 			        Vector2 distance2 = new Vector2(entity.GetComponent<Component.Transform>().Grid.Position.X,
 			                                        entity.GetComponent<Component.Transform>().Grid.Position.Y);
-                    if (Vector2.Distance(distance1, distance2) < wakingDistance/* && Vector2.Distance(distance1, distance2) > sleepingDistance*/)
+                    if (Vector2.Distance(distance1, distance2) < wakingDistance && TurnManager.currentTurn >= wakingTurn/* && Vector2.Distance(distance1, distance2) > sleepingDistance*/)
 			        {
 				        var enemy = new SmallEnemy(ref swarm);
                         if (type == "BUB") 

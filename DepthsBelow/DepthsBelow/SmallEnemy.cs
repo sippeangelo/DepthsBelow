@@ -19,7 +19,7 @@ namespace DepthsBelow
 
         private PathFinder.Node nextNode;
 
-        public int numberOfSteps = 5;
+        public int numberOfSteps = 8;
         public int currentStep = 0;
 
         public bool AttackedThisTurn = false;
@@ -58,7 +58,7 @@ namespace DepthsBelow
 		                   {
 			                   Life = 50, 
 							   Defence = 25, 
-							   Strength = 26, 
+							   Strength = 70, 
 							   GetAim = 100, 
 							   GetDodge = 50
 		                   };
