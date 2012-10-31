@@ -247,8 +247,9 @@ namespace DepthsBelow
                                     shot.select = true;
                                     shot.X = soldier.X;
                                     shot.Y = soldier.Y;
-                                    //shot.Transform.World.X += Grid.TileSize / 2;
-                                    //shot.Transform.World.Y += Grid.TileSize / 2;
+	                                shot.Transform.World.Position += soldier.Transform.World.Origin;
+	                                //shot.Transform.World.X += Grid.TileSize / 2;
+	                                //shot.Transform.World.Y += Grid.TileSize / 2;
                                 }
                                 if (shot.direction == Vector2.Zero)
                                 {

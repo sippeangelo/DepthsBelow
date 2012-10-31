@@ -116,7 +116,7 @@ namespace DepthsBelow
                     }
 					if (mapObject.Type == "Door")
 					{
-						var door = new Door();
+						var door = new Door(true);
 						var mapObjectPos = new Vector2(mapObject.Bounds.X, mapObject.Bounds.Y);
 						var mapObjectGridPos = Grid.WorldToGrid(mapObjectPos);
 						door.X = mapObjectGridPos.X;

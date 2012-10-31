@@ -93,17 +93,28 @@ namespace DepthsBelow
 
             foreach (var entity in EntityManager.Entities)
             {
-                if (entity is SmallEnemy) 
-                {
-                    if (this.GetComponent<Component.Collision>().Rectangle.Intersects(entity.GetComponent<Component.Collision>().Rectangle))
-                    {
-                        if (Utility.AttackTest(Stat, entity, Utility.CalculateHitChance(Stat, this.Stat.Remember, entity)))
-                        {
-                            this.Remove();
-                            return;
-                        }
-                    }
-                }
+	            var collision = entity.GetComponent<Component.Collision>();
+				if (collision == null)
+					continue;
+
+				if (this.GetComponent<Component.Collision>().Rectangle.Intersects(collision.Rectangle))
+				{
+					if (entity is SmallEnemy)
+					{
+						if (Utility.AttackTest(Stat, entity, Utility.CalculateHitChance(Stat, this.Stat.Remember, entity)))
+						{
+							this.Remove();
+							return;
+						}
+					}
+
+					if (entity is Door && type == "Rocket")
+					{
+						((Door)entity).Kill();
+						this.Remove();
+						return;
+					}
+				}
             }
         }
     }

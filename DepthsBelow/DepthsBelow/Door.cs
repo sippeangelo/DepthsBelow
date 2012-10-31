@@ -20,17 +20,26 @@ namespace DepthsBelow
 		public bool Alive = true;
 		public bool IsOpen;
 
-		public Door()
+		public Door(bool horizontal)
 			: base()
 		{
 			LoadContent();
 
 			IsOpen = false;
 
+			if (horizontal)
+				Transform.World.Rotation = -MathHelper.PiOver2;
+
 			var rc = new SpriteRenderer(this) { Texture = Texture, Color = Color.White };
+			if (horizontal)
+				rc.Offset.Y += Texture.Width;
 			AddComponent(rc);
 
-			var cc = new Collision(this, Texture.Width, Texture.Height);
+			Collision cc;
+			if (horizontal)
+				cc = new Collision(this, Texture.Height, Texture.Width);
+			else
+				cc = new Collision(this, Texture.Width, Texture.Height);
 			cc.Solid = true;
 			AddComponent(cc);
 		}
