@@ -52,7 +52,7 @@ namespace DepthsBelow
             if (Texture == null)
                 LoadContent();
 
-            Transform.World.Origin = new Vector2(16, 16);
+            //Transform.World.Origin = new Vector2(16, 16);
 
             Stat = _soldierStat;
 
@@ -63,6 +63,7 @@ namespace DepthsBelow
 
             this.Color = Color.White;
             var rc = new SpriteRenderer(this) { Texture = Texture, Color = Color.White };
+			rc.Offset = new Vector2(16, 16);
             AddComponent(rc);
 
             var cc = new Collision(this, 32, 32);
