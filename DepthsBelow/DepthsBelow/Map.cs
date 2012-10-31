@@ -100,7 +100,7 @@ namespace DepthsBelow
                     }
                     if (mapObject.Type == "DelayedMonsterSpawn" || mapObject.Type == "DelayedEnemySpawn")
                     {
-                        var enemy = new MonsterSpawn("Monster", 200, 8, ref core.Swarm);
+                        var enemy = new MonsterSpawn("Monster", 200, 4, ref core.Swarm);
                         var mapObjectPos = new Vector2(mapObject.Bounds.X, mapObject.Bounds.Y - Grid.TileSize);
                         var mapObjectGridPos = Grid.WorldToGrid(mapObjectPos);
                         enemy.X = mapObjectGridPos.X;

@@ -101,7 +101,7 @@ namespace DepthsBelow
 			lightRenderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
 			sceneRenderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
-			Map = Content.Load<Map>("maps/prototyp");
+			Map = Content.Load<Map>("maps/prototyp2");
 			//Map = Content.Load<Map>("maps/Aztek.Test");
             //Map = Content.Load<Map>("maps/Cave.Level1");
 
