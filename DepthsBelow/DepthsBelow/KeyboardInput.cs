@@ -207,7 +207,25 @@ namespace DepthsBelow
             }
 			if (ks.IsKeyUp(Keys.O) && lastKeyboardState.IsKeyDown(Keys.O))
             {
-                EntityManager.GetEntities<Door>()[0].Toggle();
+	            try
+	            {
+					EntityManager.GetEntities<Door>()[0].Toggle();
+	            }
+	            catch
+	            {
+		            
+	            }
+            }
+			if (ks.IsKeyUp(Keys.P) && lastKeyboardState.IsKeyDown(Keys.P))
+            {
+	            try
+	            {
+					EntityManager.GetEntities<Door>()[1].Toggle();
+	            }
+	            catch
+	            {
+		            
+	            }
             }
             if (ks.IsKeyDown(Keys.S) || ks.IsKeyDown(Keys.R)) 
             {
@@ -247,7 +265,7 @@ namespace DepthsBelow
                                     shot.select = true;
                                     shot.X = soldier.X;
                                     shot.Y = soldier.Y;
-	                                shot.Transform.World.Position += soldier.Transform.World.Origin;
+	                                //shot.Transform.World.Position += soldier.Transform.World.Origin;
 	                                //shot.Transform.World.X += Grid.TileSize / 2;
 	                                //shot.Transform.World.Y += Grid.TileSize / 2;
                                 }
