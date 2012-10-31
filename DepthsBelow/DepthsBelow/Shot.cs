@@ -23,6 +23,12 @@ namespace DepthsBelow
             set { soldierStat = value; }
         }
 
+        public string Type
+        {
+            get { return type; }
+            set { type = value; }
+        }
+
         private bool _selected = false; //I guess as in "currently doing something"
 
         public bool select
@@ -49,6 +55,11 @@ namespace DepthsBelow
             Transform.World.Origin = new Vector2(16, 16);
 
             Stat = _soldierStat;
+
+            if (type == "Rocket")
+            {
+                Stat.Strength = 50000;
+            }
 
             this.Color = Color.White;
             var rc = new SpriteRenderer(this) { Texture = Texture, Color = Color.White };

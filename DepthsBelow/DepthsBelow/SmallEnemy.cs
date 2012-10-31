@@ -92,6 +92,7 @@ namespace DepthsBelow
             GetComponent<SpriteRenderer>().Texture = Texture;
             Transform.World.Origin = new Vector2(((float)Texture.Width) / 2f, ((float)Texture.Height) / 2f);
             GetComponent<SpriteRenderer>().Offset = (new Vector2(Texture.Width / 2f, Texture.Height / 2f) - new Vector2(Grid.TileSize / 2, Grid.TileSize / 2)) * -1;
+            GetComponent<Stat>()._MaxHP = 500;
             GetComponent<Stat>().MaxHP = 500;
             GetComponent<Stat>().Life = 500;
             GetComponent<Stat>().Defence = 15;
