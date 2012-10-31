@@ -232,16 +232,26 @@ namespace DepthsBelow
 										}
 										else
 										{
-                                            if (soldier.AP >= soldier.GetComponent<Component.PathFinder>().Length)
-                                            {
-                                                soldier.GetComponent<Component.PathFinder>().Goal = point;
-                                                soldier.AP -= soldier.GetComponent<Component.PathFinder>().Length;
+											Console.WriteLine("before " + soldier.AP);
 
-                                                Console.WriteLine(x + " " + y);
-                                                Console.WriteLine(soldier.GetComponent<Component.PathFinder>().Goal.X + " " +
-                                                                  soldier.GetComponent<Component.PathFinder>().Goal.Y);
+											soldier.GetComponent<Component.PathFinder>().Goal = point;
+											var length = soldier.GetComponent<Component.PathFinder>().Length - 1;
 
-                                            }
+											if (soldier.GetComponent<Component.PathFinder>().IsMoving == true)
+											{
+												if (soldier.AP >= length)
+												{
+
+													soldier.AP -= length;
+
+													Console.WriteLine("then " + soldier.AP);
+
+												}
+												else
+												{
+													soldier.GetComponent<Component.PathFinder>().Stop();
+												}
+											}
 										}
 									}
 
