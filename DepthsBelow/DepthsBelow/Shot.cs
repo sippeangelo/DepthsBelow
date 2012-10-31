@@ -62,7 +62,7 @@ namespace DepthsBelow
         {
             if (type == "Rocket")
             {
-                Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/Shot");
+                Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/RocketProjectile");
             }
             else
             {

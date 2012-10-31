@@ -88,18 +88,16 @@ namespace DepthsBelow
 
         public void LoadBoss()
         {
-			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/Pineapple");
-			GetComponent<SpriteRenderer>().Texture = Texture;
-			Transform.World.Origin = new Vector2(((float)Texture.Width) / 2f, ((float)Texture.Height) / 2f);
-			GetComponent<SpriteRenderer>().Offset = (new Vector2(Texture.Width / 2f, Texture.Height / 2f) - new Vector2(Grid.TileSize / 2, Grid.TileSize / 2)) * -1;
-            var stat = new Component.Stat(this)
-                            {
-                                Life = 500,
-                                Defence = 15,
-                                Strength = 70,
-                                GetAim = 80,
-                                GetDodge = 5
-                            };
+            Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/Pineapple");
+            GetComponent<SpriteRenderer>().Texture = Texture;
+            Transform.World.Origin = new Vector2(((float)Texture.Width) / 2f, ((float)Texture.Height) / 2f);
+            GetComponent<SpriteRenderer>().Offset = (new Vector2(Texture.Width / 2f, Texture.Height / 2f) - new Vector2(Grid.TileSize / 2, Grid.TileSize / 2)) * -1;
+            GetComponent<Stat>().MaxHP = 500;
+            GetComponent<Stat>().Life = 500;
+            GetComponent<Stat>().Defence = 15;
+            GetComponent<Stat>().Strength = 70;
+            GetComponent<Stat>().GetAim = 80;
+            GetComponent<Stat>().GetDodge = 5;
         }
 
         public override void Update(GameTime gameTime)
