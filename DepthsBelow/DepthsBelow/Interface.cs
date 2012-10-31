@@ -548,6 +548,11 @@ namespace DepthsBelow
 			foreach (var panicFrame in PanicFrames)
 				panicFrame.Visible = false;
 
+			foreach (var unitFrame in UnitFrames)
+			{
+				unitFrame.Visible = false;
+			}
+
 			GUI.Frame lastFrame = null;
 			for (int index = 0; index < groups.Count; index++)
 			{
@@ -574,6 +579,7 @@ namespace DepthsBelow
 					var frame = (GUI.Frame) soldier["unitFrame"];
 					frame.X = lastFrame.X;
 					frame.Y = lastFrame.Y + lastFrame.Height;
+					frame.Visible = true;
 
 					// Update HP
 					var healthBarBg = (GUI.Frame)frame["healthBarBg"];

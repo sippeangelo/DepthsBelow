@@ -89,7 +89,7 @@ namespace DepthsBelow
 			{
 				var soldier = entities[index];
 
-				if (!alreadyGrouped.Contains(soldier))
+				if (!alreadyGrouped.Contains(soldier) && soldier.GetComponent<Component.Stat>().Life > 0)
 				{
 					var group = new List<Entity>();
 					GetNearChain(ref group, soldier, maxRange);
@@ -110,7 +110,7 @@ namespace DepthsBelow
 			{
 				var nearSoldier = entities[index];
 
-				if (!group.Contains(nearSoldier))
+				if (!group.Contains(nearSoldier) && nearSoldier.GetComponent<Component.Stat>().Life > 0)
 				{
 					float distance = Vector2.Distance(nearSoldier.Transform.World + nearSoldier.Transform.World.Origin,
 														  entity.Transform.World + entity.Transform.World.Origin);
