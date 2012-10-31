@@ -26,6 +26,9 @@ namespace DepthsBelow.Component
 		/// Scale of the texture.
 		/// </summary>
 		public float Scale;
+
+		public Vector2 Offset;
+
 		public SpriteEffects SpriteEffects;
 
 		public SpriteRenderer(Entity parent) 
@@ -39,14 +42,7 @@ namespace DepthsBelow.Component
 		public void Draw(SpriteBatch spriteBatch)
 		{
 			var transform = this.Parent.GetComponent<Transform>();
-            if (AlternativeTexture == null)
-            {
-                spriteBatch.Draw(Texture, transform.World.Position + transform.World.Origin, null, Color, transform.World.Rotation, transform.World.Origin, Scale, SpriteEffects, 0);
-            }
-            else
-            {
-                spriteBatch.Draw(AlternativeTexture, transform.World.Position + transform.World.Origin - new Vector2(Grid.TileSize, Grid.TileSize), null, Color, transform.World.Rotation, transform.World.Origin, Scale, SpriteEffects, 0);
-            }
+			spriteBatch.Draw(Texture, transform.World.Position + transform.World.Origin + Offset, null, Color, transform.World.Rotation, transform.World.Origin, Scale, SpriteEffects, 0);
 		}
 	}
 }

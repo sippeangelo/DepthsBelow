@@ -406,7 +406,7 @@ namespace DepthsBelow
 			frame.SetTexture("images/GUI/unit_background");
 			frame.Color = Color.Black;
 			frame.Width = 164;
-			frame.Height = 35;
+			frame.Height = 42;
 
 			var nameText = new GUI.Text(frame);
 			nameText.SetFont("fonts/UnitName");
@@ -431,6 +431,33 @@ namespace DepthsBelow
 			healthBar.X = 1;
 			healthBar.Y = 1;
 			frame["healthBar"] = healthBar;
+
+			var actionBarBg = new GUI.Frame(frame);
+			actionBarBg.SetTexture("images/GUI/health_background");
+			actionBarBg.Width = 136;
+			actionBarBg.Height = 8;
+			actionBarBg.X = 3;
+			actionBarBg.Y = 31;
+			frame["actionBarBg"] = actionBarBg;
+
+			var actionBar = new GUI.Frame(actionBarBg);
+			actionBar.SetTexture("images/GUI/bar_solid");
+			actionBar.Color = Color.Orange;
+			actionBar.Width = (int)((healthBarBg.Width - 2) * (soldier.GetComponent<Component.Stat>().HP / soldier.GetComponent<Component.Stat>().MaxHP));
+			actionBar.Height = 6;
+			actionBar.X = 1;
+			actionBar.Y = 1;
+			frame["actionBar"] = actionBar;
+
+			for (int i = 1; i < 10; i++)
+			{
+				var line = new GUI.Frame(actionBar);
+				line.Texture = Utility.GetSolidTexture();
+				line.Color = Color.Black;
+				line.Height = 6;
+				line.Width = 1;
+				line.X = (int)(i * ((float)actionBarBg.Width/10f)) - 1;
+			}
 
 			return frame;
 		}
@@ -532,7 +559,7 @@ namespace DepthsBelow
 				var pFrameBar = (GUI.Frame)pFrame["panicBar"];
 				var pFrameText = (GUI.Text)pFrame["text"];
 				pFrameBar.Width = (int)(pFrameBarBg.Width * (group.Panic / group.MaxPanic));
-				pFrameText.Value = group.Panic.ToString() + " (" + (group.Panic / group.MaxPanic * 100f).ToString() + "%)";
+				pFrameText.Value = Math.Round(group.Panic).ToString() + " (" + Math.Round(group.Panic / group.MaxPanic * 100f).ToString() + "%)";
 
 				pFrame.Visible = true;
 				if (lastFrame != null)
@@ -553,6 +580,10 @@ namespace DepthsBelow
 					var healthBar = (GUI.Frame)frame["healthBar"];
 					healthBar.Width = (int)((healthBarBg.Width - 2) * (soldier.GetComponent<Component.Stat>().Life / soldier.GetComponent<Component.Stat>().MaxHP));
 
+					// Update Action Points
+					var actionBarBg = (GUI.Frame)frame["actionBarBg"];
+					var actionBar = (GUI.Frame)frame["actionBar"];
+					actionBar.Width = (int)(((float)actionBarBg.Width - 2f) * ((float)soldier.AP / (float)soldier.MaxActionPoints));
 					lastFrame = frame;
 				}
 			}

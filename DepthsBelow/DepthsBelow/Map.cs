@@ -106,14 +106,14 @@ namespace DepthsBelow
                         enemy.X = mapObjectGridPos.X;
                         enemy.Y = mapObjectGridPos.Y;
                     }
-                    /*if (mapObject.Type == "BossSpawn")
+                    if (mapObject.Type == "BossSpawn")
                     {
                         var enemy = new MonsterSpawn("BUB", 12, 0, ref core.Swarm);
                         var mapObjectPos = new Vector2(mapObject.Bounds.X, mapObject.Bounds.Y - Grid.TileSize);
                         var mapObjectGridPos = Grid.WorldToGrid(mapObjectPos);
                         enemy.X = mapObjectGridPos.X;
                         enemy.Y = mapObjectGridPos.Y;
-                    }*/
+                    }
 					if (mapObject.Type == "Door")
 					{
 						var door = new Door();

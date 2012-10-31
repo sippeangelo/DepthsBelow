@@ -10,7 +10,7 @@ namespace DepthsBelow
 {
     public class SmallEnemy : Entity
     {
-        public static Texture2D Texture;
+        public Texture2D Texture;
         public Color Color;
         public static Point Origin;
         private bool _selected; //I guess as in "currently doing something"
@@ -81,14 +81,17 @@ namespace DepthsBelow
             }
         }
 
-        public static void LoadContent()
+        public void LoadContent()
         {
 			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/Monster");
         }
 
         public void LoadBoss()
         {
-            GetComponent<SpriteRenderer>().AlternativeTexture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/Pineapple");
+			Texture = GameServices.GetService<ContentManager>().Load<Texture2D>("images/Pineapple");
+			GetComponent<SpriteRenderer>().Texture = Texture;
+			Transform.World.Origin = new Vector2(((float)Texture.Width) / 2f, ((float)Texture.Height) / 2f);
+			GetComponent<SpriteRenderer>().Offset = (new Vector2(Texture.Width / 2f, Texture.Height / 2f) - new Vector2(Grid.TileSize / 2, Grid.TileSize / 2)) * -1;
             var stat = new Component.Stat(this)
                             {
                                 Life = 500,

@@ -123,7 +123,7 @@ namespace DepthsBelow
 
 			// TODO: use this.Content to load your game content here
 			Soldier.LoadContent();
-            SmallEnemy.LoadContent();
+            //SmallEnemy.LoadContent();
             //Shot.LoadContent();
             
 			MouseInput = new MouseInput(this);
@@ -222,14 +222,14 @@ namespace DepthsBelow
 				}
 			}
 
-/*#if DEBUG
+#if DEBUG
 			var debugTexture = new Texture2D(GraphicsDevice, 1, 1);
 			debugTexture.SetData(new Color[] { Color.White });
 			foreach (var collisionComponent in EntityManager.GetComponents<Component.Collision>())
 			{
 				spriteBatch.Draw(debugTexture, collisionComponent.Rectangle, Color.Red * 0.5f);
 			}
-#endif*/
+#endif
 
 			// Draw mouse input visuals
 			MouseInput.Draw(spriteBatch);
