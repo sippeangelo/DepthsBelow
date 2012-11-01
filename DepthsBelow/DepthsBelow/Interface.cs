@@ -564,7 +564,7 @@ namespace DepthsBelow
 				var pFrameBar = (GUI.Frame)pFrame["panicBar"];
 				var pFrameText = (GUI.Text)pFrame["text"];
 				pFrameBar.Width = (int)(pFrameBarBg.Width * (group.Panic / group.MaxPanic));
-				pFrameText.Value = Math.Round(group.Panic).ToString() + " (" + Math.Round(group.Panic / group.MaxPanic * 100f).ToString() + "%)";
+				pFrameText.Value = Math.Round(group.Panic).ToString() + "/" + group.MaxPanic.ToString() + " (" + Math.Round(group.Panic / group.MaxPanic * 100f).ToString() + "%)";
 
 				pFrame.Visible = true;
 				if (lastFrame != null)

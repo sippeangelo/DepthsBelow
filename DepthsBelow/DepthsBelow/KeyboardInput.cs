@@ -220,7 +220,10 @@ namespace DepthsBelow
             {
 	            try
 	            {
-					EntityManager.GetEntities<Door>()[1].Toggle();
+		            var pos = core.GroupManager.Groups[1].Entities[0].Transform.World.Position;
+					var enemy = new SmallEnemy(ref core.Swarm);
+		            enemy.Transform.World.Position = pos + new Vector2(0, Grid.TileSize*3);
+					core.Swarm.Add(enemy);
 	            }
 	            catch
 	            {

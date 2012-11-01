@@ -20,7 +20,7 @@ namespace DepthsBelow
 					foreach (var entity in Entities)
 					{
 						var stats = entity.GetComponent<Component.Stat>();
-						if (stats != null)
+						if (stats != null && stats.Life > 0)
 							maxPanic += stats.MaxPanic;
 					}
 					return maxPanic;
@@ -68,12 +68,16 @@ namespace DepthsBelow
 
 					if (oldGroup != null)
 					{
-						newGroup.Panic += (oldGroup.Panic / oldGroup.MaxPanic) * (float)entity.GetComponent<Component.Stat>().MaxPanic;
-						oldGroup.Panic -= (oldGroup.Panic / oldGroup.MaxPanic) * (float)entity.GetComponent<Component.Stat>().MaxPanic;
-						oldGroup.Entities.Remove(entity);
+						if (entity.GetComponent<Component.Stat>().Life > 0)
+						{
+							newGroup.Panic += (oldGroup.Panic/oldGroup.MaxPanic)*(float) entity.GetComponent<Component.Stat>().MaxPanic;
+							//if (entity.GetComponent<Component.Stat>().Life > 0)
+							oldGroup.Panic -= (oldGroup.Panic/oldGroup.MaxPanic)*(float) entity.GetComponent<Component.Stat>().MaxPanic;
+							oldGroup.Entities.Remove(entity);
+						}
 					}
 					else
-						newGroup.Panic = 10;
+						newGroup.Panic = 125;
 				}
 			}
 

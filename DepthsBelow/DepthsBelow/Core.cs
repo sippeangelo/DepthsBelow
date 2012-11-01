@@ -109,15 +109,20 @@ namespace DepthsBelow
 			Map.ParseObjects(this);
 
 			Squad[0].Name = "Dean H. Jones";
+			Squad[0].Transform.World.Rotation = -MathHelper.PiOver2;
 			Squad[1].Name = "Walter L. Verville";
+			Squad[1].Transform.World.Rotation = -MathHelper.PiOver2;
 			Squad[2].Name = "Patrick Y. Southerland";
+			Squad[2].Transform.World.Rotation = -MathHelper.PiOver2;
 			Squad[3].Name = "Andrew C. Friend";
+			Squad[3].Transform.World.Rotation = -MathHelper.PiOver2;
 			Squad[4].Name = "Gary B. Whitley";
+			Squad[4].Transform.World.Rotation = -MathHelper.PiOver2;
 
 			// Center the camera on a unit
 			Camera.Position = Squad[0].Transform.World.Position * -1 + new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2);
 
-			GroupManager = new DynamicGroupManager(Squad.Cast<Entity>().ToList(), (float)Grid.TileSize * 1.5f);
+			GroupManager = new DynamicGroupManager(Squad.Cast<Entity>().ToList(), (float)Grid.TileSize * 3.5f);
            
 			Interface.CreateUnitFrames(Squad);
 
